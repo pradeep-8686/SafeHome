@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:layout_marginLeft="@dimen/_10dp"
+        android:layout_marginRight="@dimen/_10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_10dp"
+        app:cardBackgroundColor="@color/black_hash">
+
+        <LinearLayout
+            android:id="@+id/notices_list_item_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_marginRight="@dimen/_10dp"
+                android:layout_marginLeft="@dimen/_10dp"
+                android:weightSum="1"
+                android:layout_marginTop="@dimen/_10dp"
+                android:orientation="horizontal"
+                android:background="@drawable/rounded_events_blue_gradient_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:src="@drawable/notice_read"/>
+
+                <TextView
+                    android:id="@+id/notice_type_txt"
+                    android:textColor="@color/white"
+                    android:layout_width="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="start"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="General Announcements"/>
+
+                <TextView
+                    android:id="@+id/notice_posted_time_txt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="6m ago"
+                    android:layout_weight="0.2"
+                    android:textSize="@dimen/_12sp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/poppins_regular"
+                    />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/notices_posted_nameTxt"
+                android:layout_marginTop="@dimen/_7dp"
+                android:layout_marginLeft="@dimen/_20dp"
+                android:text="Posted by: Admin"
+                android:textSize="@dimen/_14sp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/notices_description_txt"
+                android:layout_marginTop="@dimen/_5dp"
+                android:layout_marginBottom="@dimen/_15dp"
+                android:layout_marginLeft="@dimen/_20dp"
+                android:text="@string/notice_dialog_txt"
+                android:textSize="@dimen/_14sp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"/>
+
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

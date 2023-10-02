@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/added_member_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/escalated_dialog_close"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:src="@drawable/close" />
+
+        <TextView
+            android:id="@+id/member_mob_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/escalated_approval_txt"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sp" />
+
+        <TextView
+            android:id="@+id/escalate_dialog_Ok_txt"
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_marginBottom="@dimen/_10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/rectangler_vrify_bg"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

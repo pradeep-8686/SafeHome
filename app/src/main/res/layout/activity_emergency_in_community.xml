@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/black_screes_bg"
+    android:orientation="vertical"
+    tools:context=".communityview.ResidentsActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/back_btn_click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:paddingLeft="20dp"
+            android:paddingTop="18dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tittle_txt"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="0dp"
+            android:gravity="center"
+            android:text="Emergency Contacts"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20sp" />
+    </RelativeLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/rectangle_et_bg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/select_vehicle_type_header">
+
+        <TextView
+            android:id="@+id/select_block_txt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Search"
+            android:padding="7dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white_29"
+            android:textSize="14sp"
+            android:drawableRight="@drawable/search_img"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/emergency_contacts_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp" />
+
+</LinearLayout>

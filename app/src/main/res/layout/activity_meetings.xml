@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/black_screes_bg"
+    android:orientation="vertical"
+    tools:context=".complaints.ComplaintsActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/back_btn_click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="15dp"
+            android:src="@drawable/back"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tittle_txt"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="40dp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:text="Meetings"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/back_btn_click"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/my_vehicles_tab_bg"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tittle_txt">
+
+        <TextView
+            android:id="@+id/personal_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/rectangler_vrify_bg"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:text="Upcoming "
+            android:textColor="@color/white" />
+
+
+        <TextView
+            android:id="@+id/community_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Completed"
+            android:textColor="@color/white" />
+
+
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/vehicle_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_layout" />
+</LinearLayout>

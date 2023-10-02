@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/black_screes_bg"
+    android:orientation="vertical"
+    tools:context=".communityview.AssociationMembersActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/back_btn_click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:paddingLeft="20dp"
+            android:paddingTop="18dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tittle_txt"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="0dp"
+            android:gravity="center"
+            android:text="Association Members"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20sp" />
+    </RelativeLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/association_member_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>

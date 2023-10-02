@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="1000">
+
+    <translate
+        android:fromXDelta="100%p"
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:toXDelta="0" />
+
+    <alpha
+        android:fromAlpha="0.5"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:toAlpha="1" />
+
+</set>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--&lt;!&ndash;from left&ndash;&gt;-->
+    <!--<set xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    android:duration="1000">-->
+
+    <!--    <translate-->
+    <!--        android:interpolator="@android:anim/decelerate_interpolator"-->
+    <!--        android:fromXDelta="-100%p"-->
+    <!--        android:toXDelta="0" />-->
+
+    <!--    <alpha-->
+    <!--        android:fromAlpha="0.5"-->
+    <!--        android:toAlpha="1"-->
+    <!--        android:interpolator="@android:anim/accelerate_decelerate_interpolator" />-->
+
+    <!--</set>-->
+
+    <!--from bottom-->
+    <!--    <?xml version="1.0" encoding="utf-8"?>-->
+    <!--<set xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:duration="400">-->
+
+    <!--<translate-->
+    <!--    android:interpolator="@android:anim/accelerate_decelerate_interpolator"-->
+    <!--    android:fromYDelta="50%p"-->
+    <!--    android:toYDelta="0" />-->
+
+    <!--<alpha-->
+    <!--    android:fromAlpha="0"-->
+    <!--    android:toAlpha="1"-->
+    <!--    android:interpolator="@android:anim/accelerate_decelerate_interpolator" />-->
+
+    <!--</set>-->
+
+
+    <!--fall down-->
+    <!--    <?xml version="1.0" encoding="utf-8"?>-->
+    <!--<layoutAnimation-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:animation="@anim/item_animation_fall_down"-->
+    <!--android:delay="15%"-->
+    <!--android:animationOrder="normal" />-->

@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/black_screes_bg"
+    tools:context=".activity.SignInActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/user_name_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_60dp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:text="Welcome John"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/select_state_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="@dimen/_30dp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="left"
+            android:paddingLeft="@dimen/_20dp"
+            android:text="@string/state"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user_name_text" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/select_state_cl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="05dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/rectangle_et_bg"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/select_state_header">
+
+            <TextView
+                android:id="@+id/select_state_txt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:padding="5dp"
+                android:text="@string/select_state"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/select_state_dropdown"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/select_state_dropdown"
+                android:layout_width="43dp"
+                android:layout_height="45dp"
+                android:background="@drawable/right_side_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/bottom_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/select_city_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="@dimen/_15dp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="left"
+            android:paddingLeft="@dimen/_20dp"
+            android:text="@string/city"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/select_state_cl" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/select_city_cl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/rectangle_et_bg"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/select_city_header">
+
+            <TextView
+                android:id="@+id/select_city_txt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:padding="5dp"
+                android:text="@string/select_city"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/select_city_dropdown"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/select_city_dropdown"
+                android:layout_width="43dp"
+                android:layout_height="45dp"
+                android:background="@drawable/right_side_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/bottom_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/select_community_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="@dimen/_15dp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="left"
+            android:paddingLeft="@dimen/_20dp"
+            android:text="@string/community"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/select_city_cl" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/select_community_cl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/rectangle_et_bg"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/select_community_header">
+
+            <TextView
+                android:id="@+id/select_community_txt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:padding="5dp"
+                android:text="@string/select_community"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/select_community_dropdown"/>
+
+            <ImageView
+                android:id="@+id/select_community_dropdown"
+                android:layout_width="43dp"
+                android:layout_height="45dp"
+                android:background="@drawable/right_side_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/bottom_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/select_block_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="@dimen/_15dp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="left"
+            android:paddingLeft="@dimen/_20dp"
+            android:text="@string/block"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/select_community_cl" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/select_block_cl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/rectangle_et_bg"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/select_block_header">
+
+            <TextView
+                android:id="@+id/select_block_txt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:padding="5dp"
+                android:text="@string/select_block"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/select_block_dropdown"/>
+
+            <ImageView
+                android:id="@+id/select_block_dropdown"
+                android:layout_width="43dp"
+                android:layout_height="45dp"
+                android:background="@drawable/right_side_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/bottom_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/select_flat_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="@dimen/_15dp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="left"
+            android:paddingLeft="@dimen/_20dp"
+            android:text="@string/flat"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/select_block_cl" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/select_flat_cl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/rectangle_et_bg"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/select_flat_header">
+
+            <TextView
+                android:id="@+id/select_flat_txt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:padding="5dp"
+                android:text="@string/select_flot"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@id/select_flat_dropdown"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/select_flat_dropdown"
+                android:layout_width="43dp"
+                android:layout_height="45dp"
+                android:background="@drawable/right_side_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/bottom_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <CheckBox
+            android:id="@+id/agree_cb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="bottom"
+            android:text="@string/i_agree"
+            android:textColor="@color/hash_color"
+            android:textSize="@dimen/_14sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/select_flat_cl" />
+
+        <TextView
+            android:id="@+id/terms_and_conditions_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/terms_and_condition"
+            android:textColor="@color/app_color"
+            android:textSize="@dimen/_14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/agree_cb"
+            app:layout_constraintStart_toEndOf="@+id/agree_cb">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/submit_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginRight="@dimen/_20dp"
+            android:background="@drawable/rectangle_red_bg"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/submit"
+            android:textColor="@color/white"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/terms_and_conditions_txt">
+
+        </TextView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/submit_btn">
+
+        </View>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

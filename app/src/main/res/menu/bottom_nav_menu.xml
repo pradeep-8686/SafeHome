@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/icon_metro_home"
+        android:title="@string/home"
+        android:enabled="true"/>
+
+    <item
+        android:id="@+id/community"
+        android:icon="@drawable/society"
+        android:title="@string/community"
+        android:enabled="true"
+        />
+
+    <item       android:id="@+id/marketplace"
+        android:icon="@drawable/market_place_icon1"
+        android:title="@string/market_place"
+        android:enabled="true"
+        />
+
+    <item
+        android:id="@+id/aroundMe"
+        android:icon="@drawable/aroundme"
+        android:title="@string/around_me"
+        android:enabled="true"
+        />
+
+    <item
+        android:id="@+id/menu"
+        android:icon="@drawable/menu1"
+        android:title="@string/menu"
+        android:enabled="true"
+        />
+
+</menu>

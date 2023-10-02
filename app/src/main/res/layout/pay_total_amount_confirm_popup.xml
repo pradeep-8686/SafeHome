@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:layout_margin="5dp"
+   android:background="#fff"
+    android:orientation="vertical"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp">
+
+    <LinearLayout
+        android:id="@+id/added_member_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="end"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:src="@drawable/close" />
+
+        <TextView
+            android:id="@+id/member_mob_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Did yoy pay the Total Invoiced Amount?"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/no_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/plain_rectangle_bg"
+            android:gravity="center"
+            android:text="@string/no"
+            android:textColor="@color/app_color" />
+
+        <TextView
+            android:id="@+id/yes_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/rectangler_vrify_bg"
+            android:gravity="center"
+            android:text="@string/yes"
+            android:textColor="@color/white">
+
+        </TextView>
+
+    </LinearLayout>
+
+</LinearLayout>

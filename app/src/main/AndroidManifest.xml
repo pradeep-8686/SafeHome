@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/sh_app_icon"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/sh_app_icon"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:targetApi="31">
+        <activity
+            android:name=".meetings.MeetingMinutesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".meetings.MeetingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".complaints.RaiseComplaintActivity"
+            android:exported="false" />
+        <activity
+            android:name=".complaints.ComplaintsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".notice.NoticeDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".services.ServicesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".services.ServiceSelectedMemberInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".services.ServicesMemberListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".dailyhelp.DailyHelpMemberListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".dailyhelp.SelectedMemberInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".dailyhelp.DailyHelpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".eventsview.EventsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".facilitiesview.FacilitiesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".maintenance.MaintenanceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".communityview.AssociationMembersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".communityview.ResidentsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".residentview.AddFlatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".residentview.AddTenantActivity"
+            android:exported="false" />
+        <activity
+            android:name=".residentview.AddVehicleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".residentview.AddMemeberActivity"
+            android:exported="false" />
+        <activity
+            android:name=".communityview.EmergencyContactActivity"
+            android:exported="false" />
+        <activity
+            android:name=".residentview.FlatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".residentview.TenantActivity"
+            android:exported="false" />
+        <activity
+            android:name=".residentview.MyVehicleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".residentview.MyFamilyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.PersonalInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.SignInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.OTPActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".notice.NoticeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".facilitiesview.ListBookNowActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.MessagingApp.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

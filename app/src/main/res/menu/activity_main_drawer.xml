@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <group android:id="@+id/grp1">
+        <item
+            android:id="@+id/my_family"
+            android:icon="@drawable/family_big"
+            android:title="@string/my_family" />
+
+        <item
+            android:id="@+id/my_vehicles"
+            android:icon="@drawable/my_vehicle_big"
+            android:title="@string/my_vehicles" />
+
+        <item
+            android:id="@+id/tenant"
+            android:icon="@drawable/tenant_big"
+            android:title="@string/tenant" />
+
+        <item
+            android:id="@+id/add_flat"
+            android:icon="@drawable/add_flat_big"
+            android:title="@string/add_flat" />
+
+        <item
+            android:id="@+id/e_intercom"
+            android:icon="@drawable/e_intercom_big"
+            android:title="@string/e_intercom" />
+
+        <item
+            android:id="@+id/notifications"
+            android:icon="@drawable/notifications_big"
+            android:title="@string/notification" />
+
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/settings_big"
+            android:title="@string/settings" />
+
+        <item
+            android:id="@+id/support"
+            android:icon="@drawable/support_icon_01"
+            android:title="@string/support" />
+
+        <item
+            android:id="@+id/signout"
+            android:icon="@drawable/signout_icon_big"
+            android:title="@string/sign_out" />
+
+    </group>
+
+
+
+</menu>

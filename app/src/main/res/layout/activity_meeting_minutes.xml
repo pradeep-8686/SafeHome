@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/black_screes_bg"
+    tools:context=".complaints.RaiseComplaintActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/back_btn_click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="15dp"
+            android:src="@drawable/back"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tittle_txt"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="40dp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:text="Meeting Minutes"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/back_btn_click"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_complaint_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingEnd="16dp"
+                android:text="General Body Meeting"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingEnd="16dp"
+                android:text="Meeting Date : 25/08/2023"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_complaint_type" />
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingEnd="16dp"
+                android:text="Time : 10:00 A.M - 12:00 P.M"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+            <TextView
+                android:id="@+id/ok_btn"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_weight="1"
+                android:background="@drawable/rectangler_vrify_bg"
+                android:gravity="center"
+                android:text="ok"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+
+            <TextView
+                android:id="@+id/pay_now_txt2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/pay_now_solid_bg"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="View"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@+id/tv_complaint_type2"
+                app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+            <TextView
+                android:id="@+id/tv_complaint_type2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="24dp"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingEnd="16dp"
+                android:text="Agenda :"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/pay_now_txt2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/pay_now_txt2" />
+
+
+            <EditText
+                android:id="@+id/et_comment"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/search_layout_bg"
+                android:backgroundTint="#F4E9E9"
+                android:ems="10"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="start"
+                android:inputType="textImeMultiLine"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_complaint_type3" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="@dimen/_24dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/download_icon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_comment" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="@dimen/_24dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="16dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/share_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+                app:layout_constraintStart_toEndOf="@+id/imageView6"
+                app:layout_constraintTop_toTopOf="@+id/imageView6" />
+
+
+            <TextView
+                android:id="@+id/tv_complaint_type3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingEnd="16dp"
+                android:text="Meeting Minutes :"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pay_now_txt2" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                app:layout_constraintTop_toBottomOf="@+id/yes_btn" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

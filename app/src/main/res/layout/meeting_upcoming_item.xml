@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginBottom="2dp"
+    android:layout_marginTop="@dimen/_10dp"
+    android:layout_marginLeft="@dimen/_10dp"
+    android:layout_marginRight="@dimen/_10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/_10dp"
+    app:cardBackgroundColor="@color/black_hash">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/notices_list_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvOrganisedBy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="start"
+            android:text="Organised By : Admin"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+        <TextView
+            android:id="@+id/tvMeetingDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="start"
+            android:text="Meeting Date : 25/08/2023"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvOrganisedBy" />
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="start"
+            android:text="Time : 10:00 A.M - 12:00 P.M"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvMeetingDate" />
+
+        <TextView
+            android:id="@+id/btnViewAgenda"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/pay_now_solid_bg"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:text="View Agenda"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvTime"
+            app:layout_constraintTop_toBottomOf="@+id/tvTime" />
+
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_escalate_to"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:fontFamily="@font/poppins_medium"-->
+<!--            android:paddingEnd="16dp"-->
+<!--            android:text="RSVP"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="@dimen/_14sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/escalate_to_cl"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/escalate_to_cl"-->
+<!--            app:layout_constraintHorizontal_bias="1.0"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/btnViewAgenda"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/escalate_to_cl" />-->
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/escalate_to_cl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTime">
+
+            <TextView
+                android:id="@+id/selectResponse"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:background="@drawable/pay_now_solid_bg"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="Select Response"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                 />
+
+<!--            <ImageView-->
+<!--                android:id="@+id/image"-->
+<!--                android:layout_width="@dimen/_30dp"-->
+<!--                android:layout_height="@dimen/_30dp"-->
+<!--                android:background="@drawable/right_side_bg"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="8dp"-->
+<!--                android:background="@drawable/bottom_arrow"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/rounded_events_blue_gradient_bg"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvMeetingName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="start"
+                android:text="General Body Meeting"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="@dimen/_24dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="8dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/location_new"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvMeetingName"
+                app:layout_constraintTop_toBottomOf="@+id/tvMeetingName" />
+
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="32dp"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="start"
+                android:text="Club House"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

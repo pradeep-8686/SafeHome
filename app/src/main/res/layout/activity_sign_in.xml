@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/black_screes_bg"
+    tools:context=".activity.SignInActivity">
+
+    <ImageView
+        android:id="@+id/app_logo_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_40dp"
+        android:src="@drawable/safehome_logo__1_"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/signin_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20dp"
+        android:src="@drawable/sign_in"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_logo_text" />
+
+    <ImageView
+        android:id="@+id/signin_text_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_marginTop="@dimen/_20dp"
+        android:src="@drawable/sign_in_txt"
+        android:paddingRight="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signin_img" />
+
+
+    <TextView
+        android:id="@+id/mobile_number_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:gravity="left"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/_16sp"
+        android:layout_marginLeft="5dp"
+        android:paddingLeft="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signin_text_img" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/edittext_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rectangle_et_bg"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mobile_number_header">
+
+        <EditText
+            android:id="@+id/mobile_number_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_mobile_number"
+            android:textColorHint="@color/white_29"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:inputType="number"
+            android:maxLength="10"
+            android:fontFamily="@font/poppins_regular"
+            android:drawableRight="@drawable/mobile_number"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/mobile_number_error_case"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="@dimen/_5dp"
+        android:fontFamily="@font/poppins_regular"
+        android:gravity="left"
+        android:paddingLeft="@dimen/_20dp"
+        android:text="@string/please_enter_mobile_number"
+        android:textColor="@color/app_color"
+        android:textSize="@dimen/_12sp"
+        android:visibility="gone"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edittext_layout" />
+
+
+    <TextView
+        android:id="@+id/submit_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/submit"
+        android:background="@drawable/rectangle_red_bg"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mobile_number_error_case"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="20dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:layout_marginRight="@dimen/_20dp"
+        android:textColor="@color/white">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/dont_have_account_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_16sp"
+        android:text="@string/dont_have_an_account"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="27dp"
+        app:layout_constraintTop_toBottomOf="@+id/submit_btn">
+    </TextView>
+
+    <TextView
+        android:id="@+id/signup_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/app_color"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/_16sp"
+        android:text="@string/signup"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintStart_toEndOf="@+id/dont_have_account_txt"
+        app:layout_constraintTop_toTopOf="@+id/dont_have_account_txt"
+        app:layout_constraintBottom_toBottomOf="@+id/dont_have_account_txt"
+        app:layout_constraintTop_toBottomOf="@+id/submit_btn">
+    </TextView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
