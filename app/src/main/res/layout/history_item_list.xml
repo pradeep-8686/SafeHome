@@ -97,7 +97,7 @@
                 android:paddingTop="1dp"
                 android:paddingBottom="5dp"
                 android:paddingRight="5dp"
-                android:text="Payment Mode:"
+                android:text="Payment Mode :"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
 
@@ -135,7 +135,7 @@
                 android:paddingTop="1dp"
                 android:paddingRight="5dp"
                 android:paddingBottom="5dp"
-                android:text="Paid On:"
+                android:text="Paid On :"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
 
@@ -173,7 +173,7 @@
                 android:paddingTop="1dp"
                 android:paddingBottom="5dp"
                 android:paddingRight="5dp"
-                android:text="Invoice Period:"
+                android:text="Invoice Period :"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
 

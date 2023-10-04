@@ -48,6 +48,24 @@ class HistoryAdapter (
             holder.paid_on_txt_tv.text = invoiceDate!!.replace("-", "/")
             val monthYear = Utils.formatDateToMonth(invoiceDate)
             holder.invoice_period_text_tv.text = monthYear
+
+/*
+            var startDate = ""
+
+            if (myDues.invoiceDate!!.contains("T")) {
+                startDate = Utils.changeDateFormat(myDues?.invoiceDate!!.split("T")[0])
+                    .replace("-", "/")
+            } else {
+                startDate = myDues?.invoiceDate!!.replace("-", "/")
+            }
+
+            myDues.invoiceDate = startDate
+            myDues.invoiceDate = startDate
+
+            holder.booking_date_tv.text = "$startDate"
+*/
+
+
         }
         holder.due_type_image_view.setImageResource(R.drawable.common_area_maintainance_icon)
     }

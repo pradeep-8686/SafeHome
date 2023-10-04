@@ -178,14 +178,14 @@ class HistoryFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun loadDefaultData(categoryModelList : ArrayList<CategoryModel.Data>) {
 
-//        binding.yearTxt.text = "2023"
+        binding.yearTxt.text = "2023"
         selectedYear = yearList[0]
 
         if (categoryModelList.isNotEmpty()) {
-//            binding.tvCategory.text = categoryModelList[0].categoryName
-//            selectedCategoryId = categoryModelList[0].categoryId
+            binding.tvCategory.text = categoryModelList[0].categoryName
+            selectedCategoryId = categoryModelList[0].categoryId.toString()
         }
-        getPaidMaintenanaceDetailsByResident()
+        getPaidMaintenanaceDetailsByResident( selectedCategoryId, selectedYear)
         Log.d(TAG, "$selectedCategoryId , $selectedYear")
 
 

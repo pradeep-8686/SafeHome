@@ -351,7 +351,12 @@ class PersonalFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     fun clickAction(personalComplaintsModel: PersonalComplaintsModel){
-        if (viewComplaints != null) {
+
+
+        val intent = Intent(requireContext(), ComplaintStatusActivity::class.java)
+        intent.putExtra("status", personalComplaintsModel.status)
+        startActivity(intent)
+        /*if (viewComplaints != null) {
             if (viewComplaints!!.isShowing) {
                 viewComplaints!!.dismiss()
             } else {
@@ -359,7 +364,7 @@ class PersonalFragment : Fragment() {
             }
         } else {
             availableTimePopup(personalComplaintsModel)
-        }
+        }*/
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)

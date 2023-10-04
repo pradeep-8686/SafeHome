@@ -12,7 +12,7 @@ data class MaintenanceHistoryModel(
         val cgstPercentage: Double,
         val dueAmount: Double,
         val invoiceAmount: Double,
-        val invoiceDate: String,
+        var invoiceDate: String,
         val invoiceDueDate: String,
         val invoiceFromDate: String,
         val invoiceNumber: Int,
