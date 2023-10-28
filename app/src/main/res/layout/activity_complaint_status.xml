@@ -38,7 +38,7 @@
             android:layout_marginEnd="40dp"
             android:fontFamily="@font/poppins_regular"
             android:gravity="center"
-            android:text="Complaints"
+            android:text="Plumbing Issue"
             android:textColor="@color/white"
             android:textSize="@dimen/_20sp"
             app:layout_constraintRight_toRightOf="parent"
@@ -51,8 +51,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="5dp"
+        android:id="@+id/mainLayout"
         android:layout_marginTop="24dp"
-        android:background="@drawable/my_dues_gradient_bg"
         android:gravity="center"
         app:cardCornerRadius="5dp"
         app:cardElevation="5dp"
@@ -127,7 +127,7 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="32dp"
                     android:fontFamily="@font/poppins_regular"
-                    android:text="Complaint Type "
+                    android:text="Type "
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sp"
                     app:layout_constraintEnd_toStartOf="@+id/tv_complaint_type"
@@ -145,7 +145,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="24dp"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="Complaint Type "
+                    android:text=" Resident Level"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_complaint_type_title"
@@ -163,7 +163,7 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/poppins_regular"
-                    android:text="Category  "
+                    android:text="Status "
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sp"
                     app:layout_constraintEnd_toStartOf="@+id/tv_category"
@@ -181,7 +181,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="24dp"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="Plumbing Issue"
+                    android:text=" Pending"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_category_title"
@@ -263,7 +263,7 @@
                     app:layout_constraintStart_toEndOf="@+id/tv_assigned_to_title"
                     app:layout_constraintTop_toTopOf="@+id/tv_assigned_to_title" />
 
-                <TextView
+               <!-- <TextView
                     android:id="@+id/tv_details_disclosed_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -298,7 +298,7 @@
                     app:layout_constraintHorizontal_weight="0.65"
                     app:layout_constraintStart_toEndOf="@+id/tv_details_disclosed_title"
                     app:layout_constraintTop_toTopOf="@+id/tv_details_disclosed_title" />
-
+-->
                 <TextView
                     android:id="@+id/tv_description_title"
                     android:layout_width="0dp"
@@ -315,7 +315,7 @@
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintHorizontal_weight="0.35"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_details_disclosed_title" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_assigned_to_title" />
 
 
                 <TextView
@@ -350,7 +350,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/com_img_1"
+                    android:src="@drawable/com_img_2"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView3"
                     app:layout_constraintStart_toEndOf="@+id/imageView3"
                     app:layout_constraintTop_toTopOf="@+id/imageView3" />
@@ -559,6 +559,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="16dp"
+                    app:tint="@color/white"
                     android:src="@drawable/c_attach_image"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"

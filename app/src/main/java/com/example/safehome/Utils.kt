@@ -3,8 +3,12 @@ package com.example.safehome
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class Utils {
@@ -66,6 +70,38 @@ class Utils {
             val outPutFormat = SimpleDateFormat("dd-MM-yyy", Locale.getDefault())
             return outPutFormat.format(date)
         }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun dateToMonthYear(inputDate: String): String{
+            val inputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+            val outputFormatter = DateTimeFormatter.ofPattern("MMM yyyy") // "Sep 2023" format
+            var formattedDate :String = ""
+            try {
+                val dateTime = LocalDateTime.parse(inputDate, inputFormatter)
+                 formattedDate = dateTime.format(outputFormatter)
+
+                println(formattedDate)
+            } catch (e: Exception) {
+                println("Error: ${e.message}")
+            }
+            return formattedDate
+        }
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun dateMonthYear(inputDate: String): String{
+            val inputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+            val outputFormatter = DateTimeFormatter.ofPattern("dd MMM, yyyy") // "Sep 2023" format
+            var formattedDate :String = ""
+            try {
+                val dateTime = LocalDateTime.parse(inputDate, inputFormatter)
+                formattedDate = dateTime.format(outputFormatter)
+
+                println(formattedDate)
+            } catch (e: Exception) {
+                println("Error: ${e.message}")
+            }
+            return formattedDate
+        }
+
         fun changeDateFormatToMMDDYYYY(inputDate: String): String{
             val myFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val date = myFormat.parse(inputDate)
@@ -89,10 +125,12 @@ class Utils {
                 return inputDate // Return the input string if parsing fails
             }
         }
+        @RequiresApi(Build.VERSION_CODES.O)
         fun formatDateMonthYear(inputDate: String): String {
             // Define the input and output date formats
-            val inputFormat = SimpleDateFormat("YYYY-MM-dd", Locale.getDefault())
-            val outputFormat = SimpleDateFormat("DD/MM/yyyy", Locale.getDefault())
+      //      val inputFormat = SimpleDateFormat("YYYY-MM-dd", Locale.getDefault())
+            val inputFormat = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+            val outputFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
             try {
                 // Parse the input date string to a Date object

@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/black_screes_bg"
+    tools:context=".polls.RaisePollActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/black_screes_bg">
+
+        <LinearLayout
+            android:id="@+id/linearLayout7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/back_btn_click"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingTop="20dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="15dp"
+                android:src="@drawable/back"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tittle_txt"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="40dp"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                android:text="Update a Poll"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_20sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/back_btn_click"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_question"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Question* "
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout7" />
+
+
+        <EditText
+            android:id="@+id/et_comment"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/search_layout_bg"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="start"
+            android:inputType="textMultiLine"
+            android:paddingHorizontal="12dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="32dp"
+            android:textColor="@color/white"
+            android:textColorHint="#727883"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_question" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/img_poll"
+            app:layout_constraintBottom_toTopOf="@+id/et_title"
+            app:layout_constraintEnd_toEndOf="@+id/et_comment"
+            app:layout_constraintStart_toStartOf="@+id/et_comment"
+            app:layout_constraintTop_toBottomOf="@+id/tv_question" />
+        <EditText
+            android:id="@+id/et_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/search_layout_bg"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="start"
+            android:hint="Enter your question here"
+            android:inputType="textMultiLine"
+            android:paddingHorizontal="12dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Should we sanitize community on
+a weekly basis?"
+            android:textColor="@color/white"
+            android:textColorHint="#727883"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/et_comment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+
+        <ImageView
+            android:id="@+id/img_attach_photo"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="4dp"
+            android:src="@drawable/c_attach_image"
+            app:layout_constraintBottom_toBottomOf="@+id/et_comment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/tv_attach_photo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Attach Photo"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/img_attach_photo"
+            app:layout_constraintStart_toEndOf="@+id/img_attach_photo"
+            app:layout_constraintTop_toTopOf="@+id/img_attach_photo" />
+
+
+        <TextView
+            android:id="@+id/tv_option1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Option 1*"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_comment" />
+
+        <EditText
+            android:id="@+id/et_option1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/search_layout_bg"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="start"
+            android:ems="10"
+            android:inputType="text"
+            android:padding="8dp"
+            android:text="Yes"
+            android:textColor="@color/white"
+            android:textColorHint="#727883"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_option1" />
+
+        <TextView
+            android:id="@+id/tv_option2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Option 2*"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_option1" />
+
+        <EditText
+            android:id="@+id/et_option2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/search_layout_bg"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="start"
+            android:ems="10"
+            android:inputType="text"
+            android:text="No"
+            android:padding="8dp"
+            android:textColor="@color/white"
+            android:textColorHint="#727883"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_option2" />
+
+
+        <TextView
+            android:id="@+id/tvAddOption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="+ Add Option"
+            android:textColor="#3F7AE4"
+            android:textSize="@dimen/_14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_option2" />
+
+
+        <TextView
+            android:id="@+id/tv_keep_poll_for"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Keep Poll For*"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvAddOption" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_tv_complaint_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/rectangle_et_bg"
+            app:layout_constraintEnd_toEndOf="@+id/tv_keep_poll_for"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_keep_poll_for">
+
+            <TextView
+                android:id="@+id/keep_poll_for_txt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:hint="Select"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="5dp"
+                android:text="3 days"
+                android:paddingBottom="5dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/light_white"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/right_side_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/bottom_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Date*"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_tv_complaint_type" />
+
+        <LinearLayout
+            android:id="@+id/ll_date"
+            android:layout_marginTop="@dimen/_5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:layout_marginLeft="13dp"
+            android:layout_marginRight="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_date"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginRight="@dimen/_10dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:layout_marginEnd="4dp"
+                    android:text="From"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/start_date_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left|center_horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
+                    android:text="DD/MM/YYYY"
+                    android:drawablePadding="5dp"
+                    android:drawableRight="@drawable/calendar"
+                    android:background="@drawable/editext_bg"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sp">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginLeft="@dimen/_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:layout_marginEnd="4dp"
+                    android:text="To"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/end_date_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left|center_horizontal|center"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
+                    android:text="DD/MM/YYYY"
+                    android:drawablePadding="8dp"
+                    android:drawableRight="@drawable/calendar"
+                    android:background="@drawable/editext_bg"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sp">
+
+                </TextView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_post_to"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Post To*"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_date" />
+
+        <TextView
+            android:id="@+id/et_poll_to"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/search_layout_bg"
+            android:editable="false"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="start"
+            android:hint="Select"
+            android:text="All Members"
+            android:inputType="textMultiLine"
+            android:padding="8dp"
+            android:textColor="@color/white"
+            android:textColorHint="#727883"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_post_to" />
+
+
+        <TextView
+            android:id="@+id/tv_delayed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Do you want results to be public?*"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_poll_to" />
+
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_delayed"
+            app:layout_constraintTop_toBottomOf="@+id/tv_delayed">
+
+            <RadioButton
+                android:id="@+id/radioButtonYes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
+                android:checked="true"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/radioButtonNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="No"
+                android:textColor="@color/white" />
+        </RadioGroup>
+
+
+        <LinearLayout
+            android:id="@+id/button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="64dp"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup">
+
+            <TextView
+                android:id="@+id/btnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/plain_rectangle_bg"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                android:paddingVertical="8dp"
+                android:text="Cancel"
+                android:textColor="@color/white" />
+
+            <View
+                android:layout_width="30dp"
+                android:layout_height="1dp" />
+
+            <TextView
+                android:id="@+id/btnCreate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/rectangler_vrify_bg"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                android:paddingVertical="8dp"
+                android:text="Update"
+                android:textColor="@color/white">
+
+            </TextView>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

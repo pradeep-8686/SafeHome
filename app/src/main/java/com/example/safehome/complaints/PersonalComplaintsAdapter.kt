@@ -1,5 +1,6 @@
 package com.example.safehome.complaints
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -38,6 +39,7 @@ class PersonalComplaintsAdapter(
         return MyViewHolder(view)
     }
 
+    @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val complaint = personalComplaintsList[position]
@@ -45,31 +47,42 @@ class PersonalComplaintsAdapter(
         if (complaint.status != null) {
             holder.tv_status.text = complaint.status
 
-            if(complaint.status == "Pending"){
-
                 Glide.with(context)
-                    .load(R.drawable.c_pending)
+                    .load(complaint.icon)
                     .fitCenter()
                     .into(holder.iv_status_image)
 
-            }else if (complaint.status == "In-Progress"){
+/*            when ( holder.tv_status.text) {
+                "Pending" -> {
+
                 Glide.with(context)
                     .load(R.drawable.c_in_progress)
                     .fitCenter()
                     .into(holder.iv_status_image)
 
-            }else if (complaint.status == "Resolved"){
 
-                Glide.with(context)
-                    .load(R.drawable.c_completed)
-                    .fitCenter()
-                    .into(holder.iv_status_image)
-            }else{
-                Glide.with(context)
-                    .load(R.drawable.c_re_initiate)
-                    .fitCenter()
-                    .into(holder.iv_status_image)
-            }
+                }
+                "In-Progress" -> {
+                    Glide.with(context)
+                        .load(R.drawable.c_in_progress)
+                        .fitCenter()
+                        .into(holder.iv_status_image)
+
+                }
+                "Resolved" -> {
+
+                    Glide.with(context)
+                        .load(R.drawable.c_completed)
+                        .fitCenter()
+                        .into(holder.iv_status_image)
+                }
+                else -> {
+                    Glide.with(context)
+                        .load(R.drawable.c_re_initiate)
+                        .fitCenter()
+                        .into(holder.iv_status_image)
+                }
+            }*/
         }
         if (complaint.complaintType != null) {
 
@@ -79,7 +92,7 @@ class PersonalComplaintsAdapter(
             holder.tv_description.text = complaint.description
         }
         if (complaint.assignTo != null) {
-            holder.tv_assigned_to.text = "To : ${complaint.assignTo}"
+            holder.tv_assigned_to.text = "Raised : ${complaint.assignTo}"
         }
 
         if (complaint.createdAt != null) {

@@ -53,6 +53,32 @@
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvPostedBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="5dp"
+                android:layout_toStartOf="@+id/tvPostedDate"
+                android:gravity="right"
+                android:text="Admin"
+                android:textColor="@color/black"
+                android:textSize="11sp"/>
+
+            <TextView
+                android:id="@+id/tvPostedDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="40dp"
+                android:layout_marginRight="5dp"
+                android:gravity="right"
+                android:text="6m ago"
+                android:textColor="@color/black"
+                android:textSize="11sp"/>
         </RelativeLayout>
 
 

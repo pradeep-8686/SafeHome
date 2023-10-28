@@ -1,6 +1,5 @@
 package com.example.safehome.meetings
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -14,27 +13,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.PopupWindow
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.safehome.HomeActivity
 import com.example.safehome.R
 import com.example.safehome.Utils
 import com.example.safehome.adapter.YearAdapter
 import com.example.safehome.custom.CustomProgressDialog
 import com.example.safehome.databinding.FragmentMeetingCompletedBinding
-import com.example.safehome.maintenance.HistoryFragment
-import com.example.safehome.model.MeetingCompletedModel
-import com.example.safehome.model.MeetingUpcomingModel
+import com.example.safehome.model.UpcomingMeetingsModel
 import com.example.safehome.repository.APIClient
 import com.example.safehome.repository.APIInterface
 import retrofit2.Call
@@ -47,13 +36,13 @@ class MeetingsCompletedFragment : Fragment() {
 
 
     private lateinit var binding: FragmentMeetingCompletedBinding
-    private var meetingCompletedModelList: ArrayList<MeetingCompletedModel> = ArrayList()
+    private var meetingCompletedModelList: ArrayList<UpcomingMeetingsModel.Data.MeetingData> = ArrayList()
     private lateinit var communityComplaintsAdapter: MeetingCompletedAdapter
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var apiInterface: APIInterface
     var User_Id: String? = ""
     var Auth_Token: String? = ""
-    private lateinit var callMeetingCompletedModel: Call<MeetingCompletedModel>
+    private lateinit var callMeetingCompletedModel: Call<UpcomingMeetingsModel>
 
     private var yearList: ArrayList<String> = ArrayList()
     private var complaintStatusList: ArrayList<String> = ArrayList()
@@ -67,6 +56,7 @@ class MeetingsCompletedFragment : Fragment() {
     private var selectedYear: String? = null
 
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -80,9 +70,9 @@ class MeetingsCompletedFragment : Fragment() {
         User_Id = Utils.getStringPref(requireContext(), "residentId", "")
         Auth_Token = Utils.getStringPref(requireContext(), "Token", "")
 
-//        getAllUpcomingEventsApiCall()
+        getAllUpcomingEventsApiCall("2023")
         addData()
-        populateData(meetingCompletedModelList)
+     //   populateData(meetingCompletedModelList)
         addYearList()
 
         binding.yearCl.setOnClickListener {
@@ -134,6 +124,7 @@ class MeetingsCompletedFragment : Fragment() {
             }
         })
 
+//        binding.yearTxt.text = yearList[0]
 
         return binding.root
     }
@@ -144,12 +135,11 @@ class MeetingsCompletedFragment : Fragment() {
         customProgressDialog.progressDialogShow(requireContext(), this.getString(R.string.loading))
 
         // here sign up service call
-        callMeetingCompletedModel =
-            apiInterface.getMeetingCompleted("bearer " + Auth_Token, complaintStatus, year)
-        callMeetingCompletedModel.enqueue(object : Callback<MeetingCompletedModel> {
+        callMeetingCompletedModel = apiInterface.getMeetingCompleted("bearer " + Auth_Token, year, 1, "10")
+        callMeetingCompletedModel.enqueue(object : Callback<UpcomingMeetingsModel> {
             override fun onResponse(
-                call: Call<MeetingCompletedModel>,
-                response: Response<MeetingCompletedModel>
+                call: Call<UpcomingMeetingsModel>,
+                response: Response<UpcomingMeetingsModel>
             ) {
                 customProgressDialog.progressDialogDismiss()
                 Log.e("Response: ", response.body().toString())
@@ -158,8 +148,8 @@ class MeetingsCompletedFragment : Fragment() {
                     if (meetingCompletedModelList.isNotEmpty()) {
                         meetingCompletedModelList.clear()
                     }
-                    /* if(response.body()!!.statusCode == 1) {
-                         MeetingCompletedModelList = response.body()!!.data.events as ArrayList<Events>
+                     if(response.body()!!.statusCode == 1) {
+                         meetingCompletedModelList = response.body()!!.data.meetingData as ArrayList<UpcomingMeetingsModel.Data.MeetingData>
                      }else{
                          Toast.makeText(
                              requireContext(),
@@ -167,12 +157,12 @@ class MeetingsCompletedFragment : Fragment() {
                              Toast.LENGTH_LONG
                          ).show()
                      }
-                     populateData(MeetingCompletedModelList)*/
+                     populateData(meetingCompletedModelList)
 
                 }
             }
 
-            override fun onFailure(call: Call<MeetingCompletedModel>, t: Throwable) {
+            override fun onFailure(call: Call<UpcomingMeetingsModel>, t: Throwable) {
                 customProgressDialog.progressDialogDismiss()
                 Utils.showToast(requireContext(), t.message.toString())
             }
@@ -182,7 +172,7 @@ class MeetingsCompletedFragment : Fragment() {
     private fun addData() {
 
 
-        val c1 = MeetingCompletedModel(
+    /*    val c1 = MeetingCompletedModel(
             "General Body Meeting",
             "Club House",
             "Admin",
@@ -201,11 +191,11 @@ class MeetingsCompletedFragment : Fragment() {
             false
         )
         meetingCompletedModelList.add(c2)
-
+*/
 
     }
 
-    private fun populateData(meetingCompletedModelList: ArrayList<MeetingCompletedModel>) {
+    private fun populateData(meetingCompletedModelList: ArrayList<UpcomingMeetingsModel.Data.MeetingData>) {
         //    upcomingList.clear()
 
         if (this.meetingCompletedModelList.size == 0) {
@@ -223,14 +213,15 @@ class MeetingsCompletedFragment : Fragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    fun clickAction(meetingCompletedModel: MeetingCompletedModel) {
+    fun clickAction(meetingCompletedModel: UpcomingMeetingsModel.Data.MeetingData) {
 
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    fun viewAgendaClickAction(meetingCompletedModel: MeetingCompletedModel) {
+    fun viewAgendaClickAction(meetingCompletedModel: UpcomingMeetingsModel.Data.MeetingData) {
 
         val intent = Intent(requireContext(), MeetingMinutesActivity::class.java)
+        intent.putExtra("Meetingdata", meetingCompletedModel)
         startActivity(intent)
 
     }
@@ -238,6 +229,11 @@ class MeetingsCompletedFragment : Fragment() {
     private fun addYearList() {
         yearList.add("2023")
         yearList.add("2022")
+        yearList.add("2021")
+        yearList.add("2020")
+
+        binding.yearTxt.text =  yearList[0]
+        selectedYear = yearList[0]
     }
 
     private fun yearDropDown() {
@@ -275,15 +271,10 @@ class MeetingsCompletedFragment : Fragment() {
             binding.yearTxt.text = year
         }
         selectedYear = year
-        /* if (selectedCategoryId != null){
+         if (selectedYear != null){
 
-             getAllUpcomingEventsApiCall(selectedCategoryId!!, selectedYear!!)
-         }else{
              getAllUpcomingEventsApiCall(selectedYear!!)
-
-         }*/
-
-        Log.d(HistoryFragment.TAG, "$selectedCategoryId!! , $selectedYear!!")
+         }
 
     }
 
@@ -306,22 +297,22 @@ class MeetingsCompletedFragment : Fragment() {
 
     fun filter(text: String) {
 
-        val myDuesList = ArrayList<MeetingCompletedModel>()
-        val courseAry: ArrayList<MeetingCompletedModel> = meetingCompletedModelList
-
+        val meetingsCompletedList = ArrayList<UpcomingMeetingsModel.Data.MeetingData>()
+        val courseAry: ArrayList<UpcomingMeetingsModel.Data.MeetingData> = meetingCompletedModelList
         for (eachCourse in courseAry) {
-
             if (
-                !eachCourse.meetingName.isNullOrBlank() && eachCourse.meetingName.lowercase(
-                    Locale.getDefault()
-                ).contains(text.lowercase(Locale.getDefault()))
-
+                !eachCourse.topicName.isNullOrBlank() && eachCourse.topicName.lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
+                !eachCourse.facilityName.isNullOrBlank() && eachCourse.facilityName.lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
+                !eachCourse.organisedBy.isNullOrBlank() && eachCourse.organisedBy.lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
+                !eachCourse.meetingDate.isNullOrBlank() && eachCourse.meetingDate.lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
+                !eachCourse.startTime.isNullOrBlank() && eachCourse.startTime.lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
+                !eachCourse.endTime.isNullOrBlank() && eachCourse.endTime.lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault()))
             ) {
-                myDuesList.add(eachCourse)
+                meetingsCompletedList.add(eachCourse)
             }
         }
 
-        communityComplaintsAdapter.filterList(myDuesList);
+        communityComplaintsAdapter.filterList(meetingsCompletedList);
     }
 
 

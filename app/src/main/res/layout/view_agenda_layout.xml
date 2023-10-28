@@ -36,7 +36,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/tv_status"
+                android:id="@+id/agenda_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -51,7 +51,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/agenda_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -65,10 +65,10 @@
                 android:textSize="@dimen/_12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_status" />
+                app:layout_constraintTop_toBottomOf="@+id/agenda_title" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/agenda_time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -82,10 +82,10 @@
                 android:textSize="@dimen/_12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintTop_toBottomOf="@+id/agenda_date" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/agenda_location"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -99,7 +99,7 @@
                 android:textSize="@dimen/_12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                app:layout_constraintTop_toBottomOf="@+id/agenda_time" />
 
 
             <TextView
@@ -117,7 +117,7 @@
                 android:textSize="@dimen/_16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                app:layout_constraintTop_toBottomOf="@+id/agenda_location" />
 
             <TextView
                 android:id="@+id/textView7"

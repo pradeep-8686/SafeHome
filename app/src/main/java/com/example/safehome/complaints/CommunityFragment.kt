@@ -67,7 +67,7 @@ class CommunityFragment : Fragment() {
     private var viewComplaints: PopupWindow? = null
     private var viewComplaintsDialog: Dialog? = null
 
-    private var selectedCategoryId: String? =  null
+    private var selectedCategoryId: String? = null
     private var selectedYear: String? = null
 
 
@@ -89,7 +89,7 @@ class CommunityFragment : Fragment() {
         addYearList()
         addCategoryList()
 
-
+//        binding.yearTxt.text = yearList[0]
         binding.yearCl.setOnClickListener {
             if (categoryPopupWindow != null) {
                 if (categoryPopupWindow!!.isShowing) {
@@ -142,7 +142,7 @@ class CommunityFragment : Fragment() {
 
         binding.sampleEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                if (personalComplaintsModelList.isNotEmpty()){
+                if (personalComplaintsModelList.isNotEmpty()) {
 
                     filter(p0.toString())
                 }
@@ -166,13 +166,13 @@ class CommunityFragment : Fragment() {
     }
 
 
-
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun getAllUpcomingEventsApiCall(complaintStatus: String? = null, year: String? = null) {
         customProgressDialog.progressDialogShow(requireContext(), this.getString(R.string.loading))
 
         // here sign up service call
-        callPersonalComplaintsModel = apiInterface.getCommunityComplaints("bearer " + Auth_Token, complaintStatus, year)
+        callPersonalComplaintsModel =
+            apiInterface.getCommunityComplaints("bearer " + Auth_Token, complaintStatus, year)
         callPersonalComplaintsModel.enqueue(object : Callback<CommunityComplaintsModel> {
             override fun onResponse(
                 call: Call<CommunityComplaintsModel>,
@@ -207,44 +207,67 @@ class CommunityFragment : Fragment() {
     }
 
     private fun addData() {
-        val attachPhoto =  ArrayList<Int>()
+        val attachPhoto = ArrayList<Int>()
         attachPhoto.add(R.drawable.c_park_1)
-        attachPhoto.add(R.drawable.c_park_2)
+        attachPhoto.add(R.drawable.c_park_1)
 
-        val c1 = CommunityComplaintsModel("Pending", "Parking Issue", "Plumbing Issue", "High", "All Members", "Yes", "Parking Done in Wrong Slot....","2 Days Ago",  attachPhoto)
+        val c1 = CommunityComplaintsModel(
+            "Pending",
+            "Parking Issue",
+            "Plumbing Issue",
+            "High",
+            "All Members",
+            "Yes",
+            "Parking Done in Wrong Slot....",
+            "2 Days Ago",
+            attachPhoto
+        )
         personalComplaintsModelList.add(c1)
-        val attachPhoto2 =  ArrayList<Int>()
+
+
+        val attachPhoto2 = ArrayList<Int>()
         attachPhoto2.add(R.drawable.com_img_6)
         attachPhoto2.add(R.drawable.com_img_7)
 
         //In-Progress
-        val c2 = CommunityComplaintsModel("Pending", "Plumbing Issue", "Plumbing Issue", "Medium", "Admin", "Yes", "Water pipe is broken. Need immediate action","3 Hrs Ago", attachPhoto2)
+        val c2 = CommunityComplaintsModel(
+            "In-Progress",
+            "Plumbing Issue",
+            "Plumbing Issue",
+            "Medium",
+            "Admin",
+            "Yes",
+            "Water pipe is broken. Need immediate action",
+            "3 Hrs Ago",
+            attachPhoto2
+        )
         personalComplaintsModelList.add(c2)
 
-      /*  val attachPhoto3 =  ArrayList<Int>()
-        attachPhoto3.add(R.drawable.com_img_6)
-        attachPhoto3.add(R.drawable.com_img_7)
+        /*  val attachPhoto3 =  ArrayList<Int>()
+          attachPhoto3.add(R.drawable.com_img_6)
+          attachPhoto3.add(R.drawable.com_img_7)
 
-        val c3 = PersonalComplaintsModel("Resolved", "Resident Level", "Plumbing Issue", "Low", "Admin", "Yes", "Water pipe is broken. Need immediate action","3 Days Ago",attachPhoto3)
-        personalComplaintsModelList.add(c3)
+          val c3 = PersonalComplaintsModel("Resolved", "Resident Level", "Plumbing Issue", "Low", "Admin", "Yes", "Water pipe is broken. Need immediate action","3 Days Ago",attachPhoto3)
+          personalComplaintsModelList.add(c3)
 
-        val attachPhoto4 =  ArrayList<Int>()
-        val c4 = PersonalComplaintsModel("Reinitiate", "Resident Level", "Plumbing Issue", "High", "Admin", "Yes", "Water pipe is broken. Need immediate action","4 Days Ago",attachPhoto4)
-        personalComplaintsModelList.add(c4)
+          val attachPhoto4 =  ArrayList<Int>()
+          val c4 = PersonalComplaintsModel("Reinitiate", "Resident Level", "Plumbing Issue", "High", "Admin", "Yes", "Water pipe is broken. Need immediate action","4 Days Ago",attachPhoto4)
+          personalComplaintsModelList.add(c4)
 
-*/
+  */
 
     }
 
     private fun populateData(personalComplaintsModelList: ArrayList<CommunityComplaintsModel>) {
         //    upcomingList.clear()
 
-        if (personalComplaintsModelList.size == 0){
+        if (personalComplaintsModelList.size == 0) {
             binding.emptyEventsTxt.visibility = View.VISIBLE
-        }else {
+        } else {
             binding.emptyEventsTxt.visibility = View.GONE
             binding.personalRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-            communityComplaintsAdapter = CommunityComplaintsAdapter(requireContext(), personalComplaintsModelList)
+            communityComplaintsAdapter =
+                CommunityComplaintsAdapter(requireContext(), personalComplaintsModelList)
             binding.personalRecyclerView.adapter = communityComplaintsAdapter
             communityComplaintsAdapter.setCallback(this@CommunityFragment)
 
@@ -253,21 +276,30 @@ class CommunityFragment : Fragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    fun clickAction(personalComplaintsModel: CommunityComplaintsModel){
-        if (viewComplaints != null) {
-            if (viewComplaints!!.isShowing) {
-                viewComplaints!!.dismiss()
-            } else {
-                availableTimePopup(personalComplaintsModel)
-            }
-        } else {
-            availableTimePopup(personalComplaintsModel)
-        }
+    fun clickAction(personalComplaintsModel: CommunityComplaintsModel) {
+
+        val intent = Intent(requireContext(), ComplaintStatusActivity::class.java)
+        intent.putExtra("status", personalComplaintsModel.status)
+//        intent.putExtra("complaintModel", personalComplaintsModelList)
+        startActivity(intent)
+
+//        if (viewComplaints != null) {
+//            if (viewComplaints!!.isShowing) {
+//                viewComplaints!!.dismiss()
+//            } else {
+//                availableTimePopup(personalComplaintsModel)
+//            }
+//        } else {
+//            availableTimePopup(personalComplaintsModel)
+//        }
+
     }
 
     private fun addYearList() {
         yearList.add("2023")
         yearList.add("2022")
+        binding.yearTxt.text =  yearList[0]
+        selectedYear = yearList[0]
     }
 
     private fun addCategoryList() {
@@ -276,6 +308,7 @@ class CommunityFragment : Fragment() {
         complaintStatusList.add("Resolved")
         complaintStatusList.add("Reinitiate")
     }
+
     private fun yearDropDown() {
         val layoutInflater: LayoutInflater =
             requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -333,7 +366,8 @@ class CommunityFragment : Fragment() {
             val linearLayoutManager = LinearLayoutManager(requireContext())
             val dropDownRecyclerView = view.findViewById<RecyclerView>(R.id.drop_down_recycler_view)
             dropDownRecyclerView.layoutManager = linearLayoutManager
-            val categoryAdapter = ComplaintStatusCommunityAdapter(requireContext(), complaintStatusList)
+            val categoryAdapter =
+                ComplaintStatusCommunityAdapter(requireContext(), complaintStatusList)
 
             dropDownRecyclerView.adapter = categoryAdapter
             categoryAdapter.setCallbackComplaintStatusCommunity(this@CommunityFragment)
@@ -362,6 +396,7 @@ class CommunityFragment : Fragment() {
         }
 
     }
+
     fun filter(text: String) {
         val myDuesList = ArrayList<CommunityComplaintsModel>()
         val courseAry: ArrayList<CommunityComplaintsModel> = personalComplaintsModelList
@@ -370,7 +405,8 @@ class CommunityFragment : Fragment() {
 
             if (
                 !eachCourse.complaintType.isNullOrBlank() && eachCourse.complaintType.lowercase(
-                    Locale.getDefault()).contains(text.lowercase(Locale.getDefault()))
+                    Locale.getDefault()
+                ).contains(text.lowercase(Locale.getDefault()))
 
             ) {
                 myDuesList.add(eachCourse)
@@ -401,7 +437,7 @@ class CommunityFragment : Fragment() {
         viewComplaintsDialog!!.window!!.attributes = lp
 
         val resolved = "Is Your Complaint Resolved?"
-        val  delayed= "Is the Action getting delayed?"
+        val delayed = "Is the Action getting delayed?"
 
         val close = view.findViewById<ImageView>(R.id.close)
         val yes_btn: TextView = view.findViewById(R.id.yes_btn)
@@ -423,14 +459,14 @@ class CommunityFragment : Fragment() {
         radio_group_re_initiate.visibility = View.GONE
         tv_escalate_to.visibility = View.GONE
         escalate_to_cl.visibility = View.GONE
-        if (personalComplaintsModel.status == "Pending"){
+        if (personalComplaintsModel.status == "Pending") {
 
             tv_delayed.text = delayed
 
-        }else if (personalComplaintsModel.status == "Resolved"){
+        } else if (personalComplaintsModel.status == "Resolved") {
             tv_delayed.text = resolved
 
-        }else{
+        } else {
             tv_delayed.text = delayed
 
         }
@@ -441,22 +477,23 @@ class CommunityFragment : Fragment() {
             // Check which radio button is selected
             when (selectedRadioButton) {
                 radioButtonYes -> {
-                    if (tv_delayed.text == delayed){
+                    if (tv_delayed.text == delayed) {
                         tv_escalate_to.visibility = View.VISIBLE
                         escalate_to_cl.visibility = View.VISIBLE
-                    }else{
+                    } else {
                         img_attach_photo.visibility = View.VISIBLE
                         tv_attach_photo.visibility = View.VISIBLE
                         tv_re_initiate.visibility = View.GONE
                         radio_group_re_initiate.visibility = View.GONE
                     }
                 }
+
                 radioButtonNo -> {
 
-                    if (tv_delayed.text == delayed){
+                    if (tv_delayed.text == delayed) {
                         tv_escalate_to.visibility = View.GONE
                         escalate_to_cl.visibility = View.GONE
-                    }else{
+                    } else {
                         img_attach_photo.visibility = View.GONE
                         tv_attach_photo.visibility = View.GONE
 
@@ -478,6 +515,7 @@ class CommunityFragment : Fragment() {
                     tv_escalate_to.text = "Assigned To"
 
                 }
+
                 re_initiate_no -> {
 
                     tv_escalate_to.visibility = View.GONE
@@ -487,11 +525,10 @@ class CommunityFragment : Fragment() {
             }
         }
 
-        yes_btn.setOnClickListener{
+        yes_btn.setOnClickListener {
             if (viewComplaintsDialog!!.isShowing) {
                 viewComplaintsDialog!!.dismiss()
             }
-
 
         }
 
@@ -512,7 +549,7 @@ class CommunityFragment : Fragment() {
         }
         if (ComplaintStatus != null) {
             binding.tvCategory.text = ComplaintStatus
-           // selectedCategoryId = ComplaintStatus
+            // selectedCategoryId = ComplaintStatus
         }
         Log.d(HistoryFragment.TAG, "$ComplaintStatus")
     }

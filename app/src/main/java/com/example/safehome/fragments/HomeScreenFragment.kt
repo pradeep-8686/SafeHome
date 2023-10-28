@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +17,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
@@ -22,17 +25,25 @@ import com.bumptech.glide.Glide
 import com.example.safehome.R
 import com.example.safehome.Utils
 import com.example.safehome.complaints.ComplaintsActivity
+import com.example.safehome.custom.CustomProgressDialog
 import com.example.safehome.dailyhelp.DailyHelpActivity
 import com.example.safehome.databinding.FragmentHomeScreenBinding
 import com.example.safehome.eventsview.EventsActivity
 import com.example.safehome.facilitiesview.FacilitiesActivity
 import com.example.safehome.maintenance.MaintenanceActivity
 import com.example.safehome.meetings.MeetingsActivity
+import com.example.safehome.model.GetAllNoticeStatus
 import com.example.safehome.model.ImageSource
+import com.example.safehome.model.Notice
 import com.example.safehome.notice.NoticeActivity
+import com.example.safehome.repository.APIClient
+import com.example.safehome.repository.APIInterface
 import com.example.safehome.services.ServicesActivity
 import com.example.safehome.viewpageradapter.HomeBottomViewPagerAdapter
 import com.example.safehome.viewpageradapter.HomeTopViewPagerAdapter
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.Timer
 import kotlin.concurrent.schedule
 
@@ -51,6 +62,13 @@ class HomeScreenFragment : Fragment() {
     private lateinit var imageSourceList: ArrayList<ImageSource>
     private lateinit var timer: Timer
 
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var apiInterface: APIInterface
+    var Auth_Token: String? = ""
+    private var residentId: String?= null
+    private lateinit var getAllNoticeCall: Call<GetAllNoticeStatus>
+    private var getAllNoticeStatusList: ArrayList<Notice> = ArrayList()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,16 +78,80 @@ class HomeScreenFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        customProgressDialog = CustomProgressDialog()
+        apiInterface = APIClient.getClient(requireContext())
+        residentId = Utils.getStringPref(requireContext(), "residentId", "")
+        Auth_Token = Utils.getStringPref(requireContext(), "Token", "")
+
+
         dialogPopupEvents()
         viewPagerAddChangeListener()
-        // getAlbumsData()
+       //  getAlbumsData()
         addImageDataSource()
         loadTopImageView()
         clickEvents()
+     //   getAllnoticeApiCall("","2023")
+
     }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun getAllnoticeApiCall(noticeView: String?, year: String) {
+        Log.e("Token", Auth_Token.toString())
+        customProgressDialog.progressDialogShow(requireContext(), this.getString(R.string.loading))
+
+        getAllNoticeCall = apiInterface.getallNoticesStatus("bearer " + Auth_Token,10,1,noticeView,year)
+        getAllNoticeCall.enqueue(object : Callback<GetAllNoticeStatus> {
+            override fun onResponse(
+                call: Call<GetAllNoticeStatus>,
+                response: Response<GetAllNoticeStatus>
+            ) {
+                customProgressDialog.progressDialogDismiss()
+                // here successfully response
+                if (response.isSuccessful && response.body() != null) {
+
+                    if (response.body()!!.statusCode != null) {
+                        when (response.body()!!.statusCode) {
+                            1 -> {
+                                if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
+                                    //  Utils.showToast(requireContext(), response.body()!!.message.toString())
+                                    if (getAllNoticeStatusList.isNotEmpty()) {
+                                        getAllNoticeStatusList.clear()
+                                    }
+                                    getAllNoticeStatusList =
+                                        response.body()!!.data.noticedata as ArrayList<Notice>
+
+                                 //   populateTopImageSliderData(getAllNoticeStatusList)
+
+                                }
+                            }
+
+                            else -> {
+                                if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
+                                    Utils.showToast(
+                                        requireContext(),
+                                        response.body()!!.message.toString()
+                                    )
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    customProgressDialog.progressDialogDismiss()
+                    Utils.showToast(requireContext(), response.body()!!.message.toString())
+                }
+            }
+
+            override fun onFailure(call: Call<GetAllNoticeStatus>, t: Throwable) {
+                customProgressDialog.progressDialogDismiss()
+                Utils.showToast(requireContext(), t.message.toString())
+            }
+        })
+    }
+
 
     private fun clickEvents() {
 
@@ -361,9 +443,9 @@ class HomeScreenFragment : Fragment() {
         lp.copyFrom(commuteDialog.window!!.attributes)
 
         lp.width = (Utils.screenWidth * 0.9).toInt()
-         lp.height =LinearLayout.LayoutParams.WRAP_CONTENT
+        lp.height =LinearLayout.LayoutParams.WRAP_CONTENT
 
-       // lp.height = (Utils.screenHeight * 0.5).toInt()
+        // lp.height = (Utils.screenHeight * 0.5).toInt()
         // lp.height =LinearLayout.LayoutParams.MATCH_PARENT
         // lp.height =LinearLayout.LayoutParams.MATCH_PARENT
         lp.gravity = Gravity.CENTER
@@ -395,9 +477,9 @@ class HomeScreenFragment : Fragment() {
         lp.copyFrom(utilityDialog.window!!.attributes)
 
         lp.width = (Utils.screenWidth * 0.9).toInt()
-       // lp.height = (Utils.screenHeight * 0.5).toInt()
+        // lp.height = (Utils.screenHeight * 0.5).toInt()
         // lp.height =LinearLayout.LayoutParams.MATCH_PARENT
-         lp.height =LinearLayout.LayoutParams.WRAP_CONTENT
+        lp.height =LinearLayout.LayoutParams.WRAP_CONTENT
         lp.gravity = Gravity.CENTER
         utilityDialog.window!!.attributes = lp
         // batchInformationDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.BLACK))
@@ -437,7 +519,7 @@ class HomeScreenFragment : Fragment() {
     }
 
 
-    private fun populateTopImageSliderData(body: List<ImageSource>) {
+    private fun populateTopImageSliderData(body: ArrayList<ImageSource>) {
 
         if (body.isNotEmpty()) {
             val homeTopViewPagerAdapter = HomeTopViewPagerAdapter(requireContext(), body)

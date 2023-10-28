@@ -205,6 +205,7 @@
                             android:layout_toLeftOf="@+id/time"
                             android:gravity="right"
                             android:text="Admin"
+                            android:visibility="gone"
                             android:textColor="@color/black"
                             android:textSize="11sp">
 
@@ -212,6 +213,7 @@
 
                         <TextView
                             android:id="@+id/time"
+                            android:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="17dp"

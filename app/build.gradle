@@ -13,12 +13,10 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
         }
-
         buildFeatures {
             viewBinding true
         }
@@ -77,11 +75,11 @@ dependencies {
     //RETROFIT
     api "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:2.6.0"
-
     // Check Debug retrofit
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
     // glide
     implementation 'com.github.bumptech.glide:glide:4.15.1'
     implementation 'javax.mail:mail:1.4.7'
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 }

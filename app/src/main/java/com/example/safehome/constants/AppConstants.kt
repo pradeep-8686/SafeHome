@@ -47,7 +47,9 @@ class AppConstants {
         const val getAllFacilities= "facility/GetAllFacilities"
         const val getAllBookedFacilities= "facility/GetAllBookeFacilities"
         const val bookFacility= "facility/BookFacility"
+        const val updateBookFacility = "facility/UpdateBookFacility"
         const val deleteFacility= "facility/DeleteBookFacility"
+        const val updatePaymentForBookFacility = "facility/UpdatePaymentForBookFacility"
         const val GetServiceTypeswithServiceCount = "services/GetServiceTypeswithServiceCount"
         const val GetServiceDataByServiceType = "services/GetServiceDataByServiceType"
         const val getServiceProvidedByServiceType= "masters/GetServiceProvidedByServiceType"
@@ -64,6 +66,7 @@ class AppConstants {
         const val addStaffBooking= "services/AddStaffBooking"
         const val updateStaffBooking = "services/UpdateStaffBooking"
         const val deleteBookStaff= "services/DeleteBookStaff?"
+        const val updateStaffBookingPayment = "services/UpdateStaffBookingPayment"
 
         const val dailyHelpHistory= "services/GetStaffPaymentHistory"
         const val yearList= "masters/GetYearsforDropDown"
@@ -72,5 +75,25 @@ class AppConstants {
         const val updateNoticeRead= "notice/UpdateNoticeRead?"
         const val getPersonalComplaints= "notice/GetallNoticesStatus"
 
+        const val getAllUpcomingMeetings= "meeting/GetAllUpcomingMeetings"
+        const val getAllCompletedMeetings= "meeting/GetAllCompletedMeetings"
+        const val getAllResponseStatusMaster = "meeting/GetAllResponseStatusMaster"
+        const val updateAttendingResponseStatus = "meeting/UpdateAttendingResponseStatus"
+
+        const val getAllPollDetails= "notice/GetAllPollDetails"
+        const val getPollResults= "notice/GetPollResults"
+        const val addPoll= "notice/AddPollDetails"
+        const val updatePoll= "notice/UpdatePollDetails"
+        const val getKeepForDropDown= "masters/GetKeepForDropDown"
+        const val getAllPostedToDropDown = "masters/GetAllPostedToDropDown"
+        const val deletePollDetails= "notice/DeletePollDetails?"
+
+
+        const val getAllForumDetails= "notice/GetAllUserForumDetails"
+        const val addForum= "notice/AddForumDetails"
+        const val updateForum= "notice/UpdateForumDetails"
+        const val deleteForumDetails= "notice/DeleteForumDetailsById?"
+        const val getAllCommentDetailsByForumId= "notice/GetAllCommentDetailsByForumId?ForumId=27"
+        const val addForumCommentDetails = "notice/AddForumCommentDetails"
     }
 }

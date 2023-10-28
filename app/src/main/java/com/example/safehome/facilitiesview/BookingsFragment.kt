@@ -1,12 +1,14 @@
 package com.example.safehome.facilitiesview
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -19,20 +21,21 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.findFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.safehome.R
 import com.example.safehome.Utils
 import com.example.safehome.adapter.FaciBookingsAdapter
 import com.example.safehome.custom.CustomProgressDialog
 import com.example.safehome.databinding.FragmentBookingsBinding
-import com.example.safehome.model.AllFacilitiesModel
+import com.example.safehome.model.AddServiceBookingList
 import com.example.safehome.model.DeleteFacilityModel
 import com.example.safehome.model.FaciBookings
-import com.example.safehome.model.GetAllHistoryServiceTypes
 import com.example.safehome.repository.APIClient
 import com.example.safehome.repository.APIInterface
 import retrofit2.Call
@@ -45,6 +48,10 @@ import java.util.Locale
 
 class BookingsFragment : Fragment() {
 
+    private var fileName: String?= null
+    private val REQUEST_CODE: Int = 1000
+    private lateinit var uploadDocumentName: TextView
+    private lateinit var updatePaymentForBookFacilityCall: Call<AddServiceBookingList>
     private var paid_on_date_txt: TextView?= null
     private var paymentModeOther: Dialog? =null
     private var payUsingOther: Dialog?= null
@@ -57,7 +64,7 @@ class BookingsFragment : Fragment() {
 
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var apiInterface: APIInterface
-    var User_Id: String? = ""
+    var residentId: String? = ""
     var Auth_Token: String? = ""
 
     private lateinit var facilitiesModel : Call<FaciBookings>
@@ -77,7 +84,7 @@ class BookingsFragment : Fragment() {
 
         customProgressDialog = CustomProgressDialog()
         apiInterface = APIClient.getClient(requireContext())
-        User_Id = Utils.getStringPref(requireContext(), "residentId", "")
+        residentId = Utils.getStringPref(requireContext(), "residentId", "")
         Auth_Token = Utils.getStringPref(requireContext(), "Token", "")
 
 
@@ -174,7 +181,7 @@ class BookingsFragment : Fragment() {
         }
 
         yes.setOnClickListener {
-             deleteTenantServiceCall(bookFacilityId)
+            deleteTenantServiceCall(bookFacilityId)
             if (deleteMemberDialog!!.isShowing) {
                 deleteMemberDialog!!.dismiss()
             }
@@ -237,10 +244,11 @@ class BookingsFragment : Fragment() {
 
     }
 
-    fun clickOnPaymentStatus(paymentStatus: String) {
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun clickOnPaymentStatus(paymentStatus: FaciBookings.Data.Facilility) {
         if (paymentStatus!= null){
-            if (paymentStatus == "UnPaid"){
-                showMakePaymentDialog()
+            if (paymentStatus.paymentStatusName == "UnPaid"){
+                showMakePaymentDialog(paymentStatus)
             }else{
                 showEscalateApprovalDialog()
             }
@@ -280,7 +288,8 @@ class BookingsFragment : Fragment() {
         escalateApprovalDialog!!.show()
     }
 
-    private fun showMakePaymentDialog() {
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun showMakePaymentDialog(paymentStatus: FaciBookings.Data.Facilility) {
         val layoutInflater: LayoutInflater =
             requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = layoutInflater.inflate(R.layout.pay_using_in_daily_help_dialog, null)
@@ -320,7 +329,7 @@ class BookingsFragment : Fragment() {
                 }
 //                Toast.makeText(requireContext(),radioButton?.text.toString(),Toast.LENGTH_LONG).show()
 //                if (radioButton?.text.toString().equals("Other")) {
-                selectedBookingPayNow()
+                selectedBookingPayNow(paymentStatus)
 //                } else {
 //                    if (payUsingOther!!.isShowing) {
 //                        payUsingOther!!.dismiss()
@@ -336,7 +345,8 @@ class BookingsFragment : Fragment() {
         }
         payUsingOther!!.show()    }
 
-    fun selectedBookingPayNow() {
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun selectedBookingPayNow(paymentStatus: FaciBookings.Data.Facilility) {
         val layoutInflater: LayoutInflater =
             requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = layoutInflater.inflate(R.layout.payment_mode_booking_in_daily_help_dialog, null)
@@ -361,7 +371,15 @@ class BookingsFragment : Fragment() {
         val comments_et: EditText = view.findViewById(R.id.comments_et)
         comments_et.setBackgroundResource(android.R.color.transparent)
         val saveBtn = view.findViewById<TextView>(R.id.save_btn)
-
+        val rdGroup = view.findViewById<RadioGroup>(R.id.rdGroup)
+        val thirdPartyNameRBtn = view.findViewById<RadioButton>(R.id.third_party_name)
+        val eftRBtn = view.findViewById<RadioButton>(R.id.eft)
+        val UpiRBtn = view.findViewById<RadioButton>(R.id.Upi)
+        val chequeRBtn = view.findViewById<RadioButton>(R.id.cheque)
+        val cash = view.findViewById<RadioButton>(R.id.cash)
+        val selectedId: Int = rdGroup.checkedRadioButtonId
+        val documentLayout = view.findViewById<RelativeLayout>(R.id.upload_doc_rl)
+        uploadDocumentName = view.findViewById<TextView>(R.id.upload_docname_txt)
         paid_on_date_txt?.setOnClickListener {
             val datePickerDialog = DatePickerDialog(
                 requireContext(),
@@ -388,11 +406,83 @@ class BookingsFragment : Fragment() {
         }
 
         saveBtn.setOnClickListener {
-            if (paymentModeOther!!.isShowing) {
-                paymentModeOther!!.dismiss()
+            if (rdGroup?.checkedRadioButtonId == -1) {
+                Toast.makeText(requireContext(), "Please select option", Toast.LENGTH_LONG).show()
+            } else {
+                if (paymentModeOther!!.isShowing) {
+                    paymentModeOther!!.dismiss()
+                }
+                updatePaymentForBookFacilityNetworkCall(paymentStatus)
             }
+
+        }
+
+        documentLayout.setOnClickListener {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            intent.type = "*/*" // This sets the MIME type to all file types, you can restrict it to specific types if needed
+            startActivityForResult(intent, REQUEST_CODE)
         }
         paymentModeOther!!.show()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val selectedFileUri = data?.data
+            // Handle the selected file URI here
+            val cursor = requireContext().contentResolver.query(selectedFileUri!!, null, null, null, null)
+            cursor?.use {
+                val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                it.moveToFirst()
+                fileName = it.getString(nameIndex)
+                // Now `fileName` contains the name of the selected file.
+                uploadDocumentName.text = fileName.toString()
+
+            }
+            //   selectedDocumentUri(selectedFileUri)
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun updatePaymentForBookFacilityNetworkCall(paymentStatus: FaciBookings.Data.Facilility) {
+        customProgressDialog.progressDialogShow(requireContext(), this.getString(R.string.loading))
+
+        updatePaymentForBookFacilityCall = apiInterface.updatePaymentForBookFacility(Auth_Token!!, paymentStatus.bookFacilityId,
+            100, "UPI", "", "Success", "", "", "")
+        updatePaymentForBookFacilityCall.enqueue(object: Callback<AddServiceBookingList> {
+            override fun onResponse(
+                call: Call<AddServiceBookingList>,
+                response: Response<AddServiceBookingList>
+            ) {
+                if (response.isSuccessful && response.body()!= null){
+                    customProgressDialog.progressDialogDismiss()
+                    if (response.body()!!.statusCode!= null){
+                        when(response.body()!!.statusCode){
+                            1 -> {
+                                if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
+                                    Utils.showToast(requireContext(), response.body()!!.message.toString())
+                                }
+                            }
+                            else -> {
+                                if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
+                                    Utils.showToast(requireContext(), response.body()!!.message.toString())
+                                }
+                            }
+                        }
+                    }
+                }else{
+                    customProgressDialog.progressDialogDismiss()
+                }
+            }
+
+            override fun onFailure(call: Call<AddServiceBookingList>, t: Throwable) {
+                customProgressDialog.progressDialogDismiss()
+                Utils.showToast(requireContext(), t.message.toString())
+            }
+
+        })
     }
 
     fun editBookingRequest(faciBookings: FaciBookings.Data.Facilility) {
@@ -400,7 +490,8 @@ class BookingsFragment : Fragment() {
             val fIntent = Intent(requireContext(), ListBookNowActivity::class.java)
             fIntent.putExtra("bookType", faciBookings.name)
             fIntent.putExtra("facilityId", faciBookings.facilityId)
-
+            fIntent.putExtra("bookFacilityId", faciBookings.bookFacilityId)
+            fIntent.putExtra("from", "bookings")
             fIntent.putExtra("bookByHour", 1.00)
             fIntent.putExtra("bookByTime", 1.00)
             fIntent.flags =

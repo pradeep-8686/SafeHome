@@ -103,7 +103,7 @@ class NoticeActivity: Activity() {
         // populateData()
         addYearList()
         addNoticeViewList()
-        getAllnoticeApiCall(false,"2023")
+        getAllnoticeApiCall("","2023")
         clickEvents()
     }
 
@@ -111,6 +111,8 @@ class NoticeActivity: Activity() {
         noticeViewList.add("All")
         noticeViewList.add("Read")
         noticeViewList.add("Unread")
+
+
     }
 
     private fun clickEvents() {
@@ -207,10 +209,18 @@ class NoticeActivity: Activity() {
             noticeBinding.selectNoticeTxt.text = selectedDropdownTxt
         }
         noticePopupWindow!!.dismiss()
-        var readStatus: Boolean
-
-        readStatus = selectedDropdownTxt.equals("Read")
-
+        var readStatus: String?= ""
+        when(selectedDropdownTxt){
+            "Read" ->{
+                readStatus = "true"
+            }
+            "Unread" ->{
+                readStatus = "false"
+            }
+            "All" ->{
+                readStatus = ""
+            }
+        }
         //   showNoticePopupWindow()
         // populateData()
         getAllnoticeApiCall(readStatus, "2023")
@@ -259,10 +269,11 @@ class NoticeActivity: Activity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    fun getAllnoticeApiCall(noticeView: Boolean, year: String) {
+    fun getAllnoticeApiCall(noticeView: String?, year: String) {
         Log.e("Token", Auth_Token.toString())
         customProgressDialog.progressDialogShow(this@NoticeActivity, this.getString(R.string.loading))
-        getAllNoticeCall = apiInterface.getallNoticesStatus("bearer " + Auth_Token,20,1,noticeView,year)
+
+        getAllNoticeCall = apiInterface.getallNoticesStatus("bearer " + Auth_Token,10,1,noticeView,year)
         getAllNoticeCall.enqueue(object : Callback<GetAllNoticeStatus> {
             override fun onResponse(
                 call: Call<GetAllNoticeStatus>,
@@ -325,7 +336,7 @@ class NoticeActivity: Activity() {
                         }
                         val facilitiesModel = response.body() as YearModel
                         yearList = facilitiesModel.data as ArrayList<YearModel.Data>
-
+                        noticeBinding.yearTxt.text = yearList[0].year.toString()
                     } else {
                     }
                 } else {
@@ -373,7 +384,7 @@ class NoticeActivity: Activity() {
         }
         if(year!= null){
             noticeBinding.yearTxt.text = year
-            getAllnoticeApiCall(false, year)
+            getAllnoticeApiCall("", year)
         }
     }
 
@@ -391,6 +402,21 @@ class NoticeActivity: Activity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (noticePopupWindow != null) {
+            if (noticePopupWindow!!.isShowing) {
+                noticePopupWindow!!.dismiss()
+            }
+        }
+        if (yearPopupWindow != null) {
+            if (yearPopupWindow!!.isShowing) {
+                yearPopupWindow!!.dismiss()
+            }
+        }
+
+    }
 
     override fun onBackPressed() {
         val intent = Intent(this, HomeActivity::class.java)

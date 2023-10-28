@@ -44,6 +44,7 @@ class FacilitiesHistoryFragment : Fragment() {
     private lateinit var apiInterface: APIInterface
     var User_Id: String? = ""
     var Auth_Token: String? = ""
+    private var selectedYear: String? = null
 
     private lateinit var facilitiesModel : Call<FaciBookings>
 
@@ -64,8 +65,8 @@ class FacilitiesHistoryFragment : Fragment() {
         Auth_Token = Utils.getStringPref(requireContext(), "Token", "")
 
 
-        getAllBookedFacilities()
         addYearList()
+
         binding.yearCl.setOnClickListener{
             if (yearPopupWindow != null) {
                 if (yearPopupWindow!!.isShowing) {
@@ -136,7 +137,7 @@ class FacilitiesHistoryFragment : Fragment() {
 
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private fun getAllBookedFacilities() {
+    private fun getAllBookedFacilities( year: String? = null) {
         //progressbar
         customProgressDialog.progressDialogShow(
             requireContext(),
@@ -145,7 +146,7 @@ class FacilitiesHistoryFragment : Fragment() {
 
         // here sign up service call
         facilitiesModel = apiInterface.getAllBookedFacilities(
-            "Bearer " + Auth_Token
+            "Bearer " + Auth_Token, year.toString()
         )
         facilitiesModel.enqueue(object : Callback<FaciBookings> {
             override fun onResponse(
@@ -156,15 +157,18 @@ class FacilitiesHistoryFragment : Fragment() {
                 // here successfully response
                 if (response.isSuccessful && response.body() != null) {
                     if (response.body()?.data != null && response.body()!!.data.facililities.isNotEmpty()) {
-                        if (bookingListMain.isNotEmpty()) {
-                            bookingListMain.clear()
+                        if (bookingList.isNotEmpty()) {
+                            bookingList.clear()
                         }
                         val facilitiesModel = response.body() as FaciBookings
                         bookingListMain = facilitiesModel.data.facililities as ArrayList<FaciBookings.Data.Facilility>
-                        bookingList = bookingListMain.filter { it.paymentStatusId == 3 } as ArrayList<FaciBookings.Data.Facilility>
+                        bookingList = bookingListMain.filter { it.paymentStatusId == 1 } as ArrayList<FaciBookings.Data.Facilility>
 
                     } else {
                         // vehilceModelDropDown()
+                        if (bookingList.isNotEmpty()) {
+                            bookingList.clear()
+                        }
                     }
                     populateData()
 
@@ -180,14 +184,24 @@ class FacilitiesHistoryFragment : Fragment() {
         })
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun addYearList() {
         yearList.add("2023")
         yearList.add("2022")
         yearList.add("2021")
         yearList.add("2020")
+
+        binding.yearTxt.text =  yearList[0]
+        selectedYear = yearList[0]
+
+        getAllBookedFacilities(selectedYear)
+
     }
 
     private fun populateData() {
+
+
+
         if (bookingList.size == 0){
             binding.emptyBookingFacilitiesTxt.visibility = View.VISIBLE
         }else {
@@ -200,6 +214,7 @@ class FacilitiesHistoryFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun yearDropDown() {
         val layoutInflater: LayoutInflater =
             requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -219,11 +234,14 @@ class FacilitiesHistoryFragment : Fragment() {
 
             dropDownRecyclerView.adapter = yearAdapter
             yearAdapter.setCallbackFacilitiesHistoryFrag(this@FacilitiesHistoryFragment)
+
+
         }
         yearPopupWindow!!.elevation = 10F
         yearPopupWindow!!.showAsDropDown(binding.yearTxt, 0, 0, Gravity.CENTER)
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     fun selectYear(year: String) {
         if (yearPopupWindow != null) {
             if (yearPopupWindow!!.isShowing) {
@@ -232,6 +250,11 @@ class FacilitiesHistoryFragment : Fragment() {
         }
         if(year!= null){
             binding.yearTxt.text = year
+
+            selectedYear = year
+
+            getAllBookedFacilities(selectedYear)
+
         }
     }
 

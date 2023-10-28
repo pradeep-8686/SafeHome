@@ -74,7 +74,7 @@ class PersonalFragment : Fragment() {
     private var viewComplaints: PopupWindow? = null
     private var viewComplaintsDialog: Dialog? = null
 
-    private var selectedCategoryId: String? =  null
+    private var selectedCategoryId: String? = null
     private var selectedYear: String? = null
 
     override fun onCreateView(
@@ -90,11 +90,10 @@ class PersonalFragment : Fragment() {
         Auth_Token = Utils.getStringPref(requireContext(), "Token", "")
 
 //        getAllUpcomingEventsApiCall()
-         addData()
-         populateData(personalComplaintsModelList)
+        addData()
         addYearList()
         addCategoryList()
-
+//        binding.yearTxt.text = yearList[0]
         binding.yearCl.setOnClickListener {
             if (categoryPopupWindow != null) {
                 if (categoryPopupWindow!!.isShowing) {
@@ -147,7 +146,7 @@ class PersonalFragment : Fragment() {
 
         binding.sampleEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                if (personalComplaintsModelList.isNotEmpty()){
+                if (personalComplaintsModelList.isNotEmpty()) {
 
                     filter(p0.toString())
                 }
@@ -174,7 +173,8 @@ class PersonalFragment : Fragment() {
         customProgressDialog.progressDialogShow(requireContext(), this.getString(R.string.loading))
 
         // here sign up service call
-        callPersonalComplaintsModel = apiInterface.getPersonalComplaints("bearer " + Auth_Token, complaintStatus, year)
+        callPersonalComplaintsModel =
+            apiInterface.getPersonalComplaints("bearer " + Auth_Token, complaintStatus, year)
         callPersonalComplaintsModel.enqueue(object : Callback<PersonalComplaintsModel> {
             override fun onResponse(
                 call: Call<PersonalComplaintsModel>,
@@ -198,39 +198,92 @@ class PersonalFragment : Fragment() {
     }
 
     private fun addData() {
-        val attachPhoto =  ArrayList<Int>()
+
+        personalComplaintsModelList.clear()
+        val attachPhoto = ArrayList<Int>()
         attachPhoto.add(R.drawable.com_img_1)
         attachPhoto.add(R.drawable.com_img_2)
+        val c1 = PersonalComplaintsModel(
+            "Pending",
+            "Resident Level",
+            "Plumbing Issue",
+            "High",
+            "Admin",
+            "Yes",
+            "Water pipe is broken. Need immediate action",
+            "2 Days Ago",
+            R.drawable.pending_new,
 
-        val c1 = PersonalComplaintsModel("Pending", "Resident Level", "Plumbing Issue", "High", "Admin", "Yes", "Water pipe is broken. Need immediate action","2 Days Ago",  attachPhoto)
+            attachPhoto
+        )
         personalComplaintsModelList.add(c1)
-        val attachPhoto2 =  ArrayList<Int>()
+
+        val attachPhoto2 = ArrayList<Int>()
         attachPhoto2.add(R.drawable.com_img_3)
         attachPhoto2.add(R.drawable.com_img_4)
         attachPhoto2.add(R.drawable.com_img_5)
 //In-Progress
-        val c2 = PersonalComplaintsModel("Pending", "Resident Level", "Plumbing Issue", "Medium", "Admin", "Yes", "Water pipe is broken. Need immediate action","2 Days Ago", attachPhoto2)
+        val c2 = PersonalComplaintsModel(
+            "In-Progress",
+            "Resident Level",
+            "Plumbing Issue",
+            "Medium",
+            "Admin",
+            "Yes",
+            "Water pipe is broken. Need immediate action",
+            "2 Days Ago",
+            R.drawable.in_progress_new,
+            attachPhoto2
+        )
         personalComplaintsModelList.add(c2)
 
-        val attachPhoto3 =  ArrayList<Int>()
+        val attachPhoto3 = ArrayList<Int>()
         attachPhoto3.add(R.drawable.com_img_6)
         attachPhoto3.add(R.drawable.com_img_7)
 
-        val c3 = PersonalComplaintsModel("Resolved", "Resident Level", "Plumbing Issue", "Low", "Admin", "Yes", "Water pipe is broken. Need immediate action","3 Days Ago",attachPhoto3)
+        val c3 = PersonalComplaintsModel(
+            "Resolved",
+            "Resident Level",
+            "Plumbing Issue",
+            "Low",
+            "Admin",
+            "Yes",
+            "Water pipe is broken. Need immediate action",
+            "3 Days Ago",
+
+            R.drawable.completed_new,
+            attachPhoto3
+        )
         personalComplaintsModelList.add(c3)
 
-        val attachPhoto4 =  ArrayList<Int>()
-        val c4 = PersonalComplaintsModel("Reinitiate", "Resident Level", "Plumbing Issue", "High", "Admin", "Yes", "Water pipe is broken. Need immediate action","4 Days Ago",attachPhoto4)
+        val attachPhoto4 = ArrayList<Int>()
+        val c4 = PersonalComplaintsModel(
+            "Reinitiate",
+            "Resident Level",
+            "Plumbing Issue",
+            "High",
+            "Admin",
+            "Yes",
+            "Water pipe is broken. Need immediate action",
+            "4 Days Ago",
+            R.drawable.c_re_initiate,
+            attachPhoto4
+        )
         personalComplaintsModelList.add(c4)
+
+        populateData(personalComplaintsModelList)
+
+
     }
 
     private fun populateData(personalComplaintsModelList: ArrayList<PersonalComplaintsModel>) {
-        if (personalComplaintsModelList.size == 0){
+        if (personalComplaintsModelList.size == 0) {
             binding.emptyEventsTxt.visibility = View.VISIBLE
-        }else {
+        } else {
             binding.emptyEventsTxt.visibility = View.GONE
             binding.personalRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-            personalComplaintsAdapter = PersonalComplaintsAdapter(requireContext(), personalComplaintsModelList)
+            personalComplaintsAdapter =
+                PersonalComplaintsAdapter(requireContext(), personalComplaintsModelList)
             binding.personalRecyclerView.adapter = personalComplaintsAdapter
             personalComplaintsAdapter.setCallback(this@PersonalFragment)
             personalComplaintsAdapter.notifyDataSetChanged()
@@ -240,6 +293,9 @@ class PersonalFragment : Fragment() {
     private fun addYearList() {
         yearList.add("2023")
         yearList.add("2022")
+
+        binding.yearTxt.text =  yearList[0]
+        selectedYear = yearList[0]
     }
 
     private fun addCategoryList() {
@@ -331,6 +387,7 @@ class PersonalFragment : Fragment() {
             }
         }
     }
+
     fun filter(text: String) {
         val myDuesList = ArrayList<PersonalComplaintsModel>()
         val courseAry: ArrayList<PersonalComplaintsModel> = personalComplaintsModelList
@@ -339,7 +396,8 @@ class PersonalFragment : Fragment() {
 
             if (
                 !eachCourse.complaintType.isNullOrBlank() && eachCourse.complaintType.lowercase(
-                    Locale.getDefault()).contains(text.lowercase(Locale.getDefault()))
+                    Locale.getDefault()
+                ).contains(text.lowercase(Locale.getDefault()))
 
             ) {
                 myDuesList.add(eachCourse)
@@ -350,7 +408,7 @@ class PersonalFragment : Fragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    fun clickAction(personalComplaintsModel: PersonalComplaintsModel){
+    fun clickAction(personalComplaintsModel: PersonalComplaintsModel) {
 
 
         val intent = Intent(requireContext(), ComplaintStatusActivity::class.java)
@@ -388,7 +446,7 @@ class PersonalFragment : Fragment() {
         viewComplaintsDialog!!.window!!.attributes = lp
 
         val resolved = "Is Your Complaint Resolved?"
-        val  delayed= "Is the Action getting delayed?"
+        val delayed = "Is the Action getting delayed?"
 
         val close = view.findViewById<ImageView>(R.id.close)
         val yes_btn: TextView = view.findViewById(R.id.yes_btn)
@@ -410,13 +468,13 @@ class PersonalFragment : Fragment() {
         radio_group_re_initiate.visibility = View.GONE
         tv_escalate_to.visibility = View.GONE
         escalate_to_cl.visibility = View.GONE
-        if (personalComplaintsModel.status == "Pending"){
+        if (personalComplaintsModel.status == "Pending") {
             tv_delayed.text = delayed
 
-        }else if (personalComplaintsModel.status == "Resolved"){
+        } else if (personalComplaintsModel.status == "Resolved") {
             tv_delayed.text = resolved
 
-        }else{
+        } else {
             tv_delayed.text = delayed
 
         }
@@ -427,10 +485,10 @@ class PersonalFragment : Fragment() {
             // Check which radio button is selected
             when (selectedRadioButton) {
                 radioButtonYes -> {
-                    if (tv_delayed.text == delayed){
+                    if (tv_delayed.text == delayed) {
                         tv_escalate_to.visibility = View.VISIBLE
                         escalate_to_cl.visibility = View.VISIBLE
-                    }else{
+                    } else {
                         img_attach_photo.visibility = View.VISIBLE
                         tv_attach_photo.visibility = View.VISIBLE
                         tv_re_initiate.visibility = View.GONE
@@ -439,12 +497,13 @@ class PersonalFragment : Fragment() {
 
 
                 }
+
                 radioButtonNo -> {
 
-                    if (tv_delayed.text == delayed){
+                    if (tv_delayed.text == delayed) {
                         tv_escalate_to.visibility = View.GONE
                         escalate_to_cl.visibility = View.GONE
-                    }else{
+                    } else {
                         img_attach_photo.visibility = View.GONE
                         tv_attach_photo.visibility = View.GONE
 
@@ -461,21 +520,22 @@ class PersonalFragment : Fragment() {
             // Check which radio button is selected
             when (selectedRadioButton) {
                 re_initiate_yes -> {
-                        tv_escalate_to.visibility = View.VISIBLE
-                        escalate_to_cl.visibility = View.VISIBLE
+                    tv_escalate_to.visibility = View.VISIBLE
+                    escalate_to_cl.visibility = View.VISIBLE
                     tv_escalate_to.text = "Assigned To"
 
                 }
+
                 re_initiate_no -> {
 
-                        tv_escalate_to.visibility = View.GONE
-                        escalate_to_cl.visibility = View.GONE
+                    tv_escalate_to.visibility = View.GONE
+                    escalate_to_cl.visibility = View.GONE
 
                 }
             }
         }
 
-        yes_btn.setOnClickListener{
+        yes_btn.setOnClickListener {
             if (viewComplaintsDialog!!.isShowing) {
                 viewComplaintsDialog!!.dismiss()
             }

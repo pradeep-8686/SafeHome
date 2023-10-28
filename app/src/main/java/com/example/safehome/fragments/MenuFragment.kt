@@ -21,9 +21,11 @@ import com.example.safehome.dailyhelp.DailyHelpActivity
 import com.example.safehome.databinding.FragmentMenuBinding
 import com.example.safehome.eventsview.EventsActivity
 import com.example.safehome.facilitiesview.FacilitiesActivity
+import com.example.safehome.forums.ForumsListActivity
 import com.example.safehome.maintenance.MaintenanceActivity
 import com.example.safehome.meetings.MeetingsActivity
 import com.example.safehome.notice.NoticeActivity
+import com.example.safehome.polls.PollsActivity
 import com.example.safehome.services.ServicesActivity
 
 
@@ -152,6 +154,36 @@ class MenuFragment : Fragment() {
         binding.complaintsMenuLayout.setOnClickListener {
             try {
                 val eIntent = Intent(requireContext(), ComplaintsActivity::class.java)
+                eIntent.flags =
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                eIntent.putExtra("ScreenFrom", "MenuScreenFrag")
+                getActivity()?.overridePendingTransition(
+                    android.R.anim.fade_in,
+                    android.R.anim.fade_out
+                );
+                requireContext().startActivity(eIntent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        binding.pollsMenuLayout.setOnClickListener {
+            try {
+                val eIntent = Intent(requireContext(), PollsActivity::class.java)
+                eIntent.flags =
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                eIntent.putExtra("ScreenFrom", "MenuScreenFrag")
+                getActivity()?.overridePendingTransition(
+                    android.R.anim.fade_in,
+                    android.R.anim.fade_out
+                );
+                requireContext().startActivity(eIntent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        binding.forumMenuLayout.setOnClickListener {
+            try {
+                val eIntent = Intent(requireContext(), ForumsListActivity::class.java)
                 eIntent.flags =
                     Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 eIntent.putExtra("ScreenFrom", "MenuScreenFrag")

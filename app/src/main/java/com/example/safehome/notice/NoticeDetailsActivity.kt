@@ -93,7 +93,7 @@ class NoticeDetailsActivity : AppCompatActivity() {
         Auth_Token = Utils.getStringPref(this, "Token", "")
         residentId = Utils.getStringPref(this, "residentId", "")!!
 
-        noticeBinding.noticeTypeTxt.text = noticeData?.noticeType
+        noticeBinding.noticeTypeTxt.text = noticeData?.noticeTypeName
         noticeBinding.noticesDescriptionTxt.text = noticeData?.description
         noticeBinding.noticePostedTimeTxt.text = noticeData?.createdOn
         noticeBinding.postedby.text = noticeData?.postedBy

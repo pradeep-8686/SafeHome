@@ -9,5 +9,6 @@ data class PersonalComplaintsModel(
     val discloseDetails: String,
     val description: String,
     val createdAt: String,
+    val icon : Int,
     val attachPhoto: ArrayList<Int>
 )

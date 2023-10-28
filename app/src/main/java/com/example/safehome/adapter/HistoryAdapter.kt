@@ -13,7 +13,7 @@ import com.example.safehome.R
 import com.example.safehome.Utils
 import com.example.safehome.model.MaintenanceHistoryModel
 
-class HistoryAdapter (
+class HistoryAdapter(
     var context: Context,
     private var myDuesList: ArrayList<MaintenanceHistoryModel.Data>
 ) :
@@ -37,44 +37,64 @@ class HistoryAdapter (
         if (myDues.paymentStatus != null && myDues.paymentStatus.isNotEmpty()) {
             holder.payment_mode_text_tv.text = ""
         }
-        if (myDues.paidAmount != null ) {
-            "${context.getString(R.string.rupee)}${myDues.paidAmount}/-".also { holder.total_invoice_amount_tv.text = it }
+        if (myDues.paidAmount != null) {
+            "${context.getString(R.string.rupee)}${myDues.paidAmount}/-".also {
+                holder.total_invoice_amount_tv.text = it
+            }
         }
-        var invoiceDate: String?= null
-        if (myDues.invoiceDate.isNotEmpty()){
-            val invoiceDates = myDues.invoiceDate.split("T")
-             invoiceDate = Utils.changeDateFormat(invoiceDates[0])
+//        var invoiceDate: S    tring?= null
+//        if (myDues.invoiceDate.isNotEmpty()){
+//            val invoiceDates = myDues.invoiceDate.split("T")
+//             invoiceDate = Utils.changeDateFormat(invoiceDates[0])
+//
+//            holder.paid_on_txt_tv.text = invoiceDate!!.replace("-", "/")
+//            val monthYear = Utils.formatDateToMonth(invoiceDate)
+//            holder.invoice_period_text_tv.text = monthYear
+//
+//
+//
+//        }
+        if (myDues.invoiceFromDate != null && myDues.invoiceToDate != null) {
 
-            holder.paid_on_txt_tv.text = invoiceDate!!.replace("-", "/")
-            val monthYear = Utils.formatDateToMonth(invoiceDate)
-            holder.invoice_period_text_tv.text = monthYear
+            var invoiceFromdate = ""
+            var invoiceTodate = ""
 
-/*
-            var startDate = ""
+            if (myDues.invoiceFromDate!!.contains("T")) {
+                invoiceFromdate = "${Utils.dateToMonthYear(myDues.invoiceFromDate)} "
 
-            if (myDues.invoiceDate!!.contains("T")) {
-                startDate = Utils.changeDateFormat(myDues?.invoiceDate!!.split("T")[0])
-                    .replace("-", "/")
-            } else {
-                startDate = myDues?.invoiceDate!!.replace("-", "/")
+            }else{
+                invoiceFromdate =myDues.invoiceFromDate
+
+            }
+            if (myDues.invoiceToDate!!.contains("T")) {
+                invoiceTodate = "${Utils.dateToMonthYear(myDues.invoiceToDate)} "
+
+            }else{
+                invoiceTodate =myDues.invoiceToDate
+
             }
 
-            myDues.invoiceDate = startDate
-            myDues.invoiceDate = startDate
 
-            holder.booking_date_tv.text = "$startDate"
-*/
+            myDues.invoiceFromDate = invoiceFromdate
+            myDues.invoiceToDate = invoiceTodate
+            if (invoiceFromdate == invoiceTodate) {
+                holder.invoice_period_text_tv.text = "$invoiceFromdate"
+            } else {
+                holder.invoice_period_text_tv.text = "$invoiceFromdate, $invoiceTodate"
 
-
+            }
         }
+
         holder.due_type_image_view.setImageResource(R.drawable.common_area_maintainance_icon)
     }
+
     override fun getItemCount(): Int {
         if (myDuesList.isNotEmpty()) {
             return myDuesList.size
         }
         return 0
     }
+
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val History_type_tv: TextView = itemView.findViewById(R.id.History_type_tv)
         val payment_mode_text_tv: TextView = itemView.findViewById(R.id.payment_mode_text_tv)

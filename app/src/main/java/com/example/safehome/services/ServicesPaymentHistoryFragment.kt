@@ -133,7 +133,6 @@ class ServicesPaymentHistoryFragment : Fragment() {
 //        populateData()
         addYearList()
         addServiceTypeList()
-        getServicesHistoryNetworkCall()
         binding.yearCl.setOnClickListener {
             if (serviceTypePopupWindow != null) {
                 if (serviceTypePopupWindow!!.isShowing) {
@@ -193,17 +192,14 @@ class ServicesPaymentHistoryFragment : Fragment() {
                             servicesStaffHistoryList.clear()
                         }
                         servicesStaffHistoryList = response.body()!!.data as ArrayList<ServicesStaffHistoryList.Data>
-
                     } else {
                         // vehilceModelDropDown()
                     }
                     populateData()
-
                 } else {
                     //  vehilceModelDropDown()
                 }
             }
-
             override fun onFailure(call: Call<ServicesStaffHistoryList>, t: Throwable) {
                 customProgressDialog.progressDialogDismiss()
                 Utils.showToast(requireContext(), t.message.toString())
@@ -216,11 +212,11 @@ class ServicesPaymentHistoryFragment : Fragment() {
         yearList.add("2022")
         yearList.add("2021")
         yearList.add("2020")*/
-
         yearModel = apiInterface.yearList(
             "Bearer " + Auth_Token
         )
         yearModel.enqueue(object : Callback<YearModel> {
+            @RequiresApi(Build.VERSION_CODES.Q)
             override fun onResponse(
                 call: Call<YearModel>,
                 response: Response<YearModel>
@@ -235,6 +231,11 @@ class ServicesPaymentHistoryFragment : Fragment() {
                         val facilitiesModel = response.body() as YearModel
                         yearList = facilitiesModel.data as ArrayList<YearModel.Data>
 
+                        binding.yearTxt.text = yearList[0].year.toString()
+                        selectedYear = yearList[0].year.toString()
+
+                        getServicesHistoryNetworkCall(year = selectedYear)
+
                     } else {
                         // vehilceModelDropDown()
                     }
@@ -242,13 +243,11 @@ class ServicesPaymentHistoryFragment : Fragment() {
                     //  vehilceModelDropDown()
                 }
             }
-
             override fun onFailure(call: Call<YearModel>, t: Throwable) {
 //                customProgressDialog.progressDialogDismiss()
                 Utils.showToast(requireContext(), t.message.toString())
             }
         })
-
     }
 
 
@@ -256,14 +255,13 @@ class ServicesPaymentHistoryFragment : Fragment() {
         /*serviceTypeList.add("AC Services & Repair")
         serviceTypeList.add("Maid")
 */
-        customProgressDialog = CustomProgressDialog()
         serviceHistoryTypesCall = apiInterface.getAllServiceTypes("bearer "+Auth_Token)
         serviceHistoryTypesCall.enqueue(object : Callback<GetAllHistoryServiceTypes>{
             override fun onResponse(
                 call: Call<GetAllHistoryServiceTypes>,
                 response: Response<GetAllHistoryServiceTypes>
             ) {
-                customProgressDialog.progressDialogDismiss()
+            //    customProgressDialog.progressDialogDismiss()
                 // here successfully response
                 if (response.isSuccessful && response.body() != null) {
 
@@ -446,5 +444,4 @@ class ServicesPaymentHistoryFragment : Fragment() {
 
         }
     }
-
 }

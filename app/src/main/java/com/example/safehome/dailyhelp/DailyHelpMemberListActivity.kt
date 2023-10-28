@@ -115,7 +115,6 @@ class DailyHelpMemberListActivity : AppCompatActivity() {
     fun filter(text: String) {
 
         val myDuesList = ArrayList<DailyHelpStaffModel.Data>()
-
         val courseAry: ArrayList<DailyHelpStaffModel.Data> = dailyHelpMembersList
 
         for (eachCourse in courseAry) {
@@ -160,6 +159,9 @@ class DailyHelpMemberListActivity : AppCompatActivity() {
 
                     } else {
                         // vehilceModelDropDown()
+                        if (dailyHelpMembersList.isNotEmpty()) {
+                            dailyHelpMembersList.clear()
+                        }
                     }
                     populateData()
 
@@ -251,6 +253,12 @@ class DailyHelpMemberListActivity : AppCompatActivity() {
         }
 
         binding.availableTimeCl.setOnClickListener {
+            if (availabilityOnPopupWindow != null) {
+                if (availabilityOnPopupWindow!!.isShowing) {
+                    availabilityOnPopupWindow!!.dismiss()
+                }
+            }
+
             if (availabilityTimePopWindow != null) {
                 if (availabilityTimePopWindow!!.isShowing) {
                     availabilityTimePopWindow!!.dismiss()
@@ -292,7 +300,7 @@ class DailyHelpMemberListActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = view.findViewById(R.id.rv_available_time)
         val availabilityTimeList =  availabiltyTimeList
 
-        val adapter = AvailabilityTimeAdapter(this, availabilityTimeList)
+        val adapter = AvailabilityTimeAdapter(this, availabilityTimeList, selectedItems!!)
         recyclerView.layoutManager = GridLayoutManager(this, 3)
         recyclerView.adapter = adapter
 
@@ -394,14 +402,12 @@ class DailyHelpMemberListActivity : AppCompatActivity() {
             binding.dailyHelpMemberListRecyclerView.adapter = dailyHelpMemberListAdapter
             dailyHelpMemberListAdapter.setCallback(this@DailyHelpMemberListActivity)
         }
-
-
     }
 
     fun selectedMember(dailyHelpStaffModel: DailyHelpStaffModel.Data) {
         val eIntent = Intent(this, SelectedMemberInfoActivity::class.java)
         eIntent.putExtra("dailyHelpStaffModel", dailyHelpStaffModel)
-        eIntent.putExtra("MemberRoleName", dailyHelpStaffModel.staffName)
+        eIntent.putExtra("MemberRoleName", dailyHelpStaffModel.staffTypeName)
         eIntent.putExtra("MemeberRole", MemeberRole)
         eIntent.putExtra("availableOn", seleteAvailableOn)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

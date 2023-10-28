@@ -19,6 +19,22 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".polls.UpdatePollActivity"
+            android:exported="false" />
+        <activity
+            android:name=".polls.RaisePollActivity"
+            android:exported="false" />
+        <activity
+            android:name=".polls.PollsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".forums.ForumsListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".forums.RaiseForumActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".complaints.ComplaintStatusActivity"
             android:exported="false" />
         <activity

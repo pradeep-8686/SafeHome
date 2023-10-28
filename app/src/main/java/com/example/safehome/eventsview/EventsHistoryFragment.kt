@@ -47,6 +47,7 @@ class EventsHistoryFragment : Fragment() {
     var User_Id: String? = ""
     var Auth_Token: String? = ""
     private lateinit var callEventsHistory: Call<UpcomingEventsModel>
+    private var selectedYear: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +66,6 @@ class EventsHistoryFragment : Fragment() {
         Auth_Token = Utils.getStringPref(requireContext(), "Token", "")
 
         addYearList()
-        getAllUpcomingEventsApiCall(yearList[0])
         binding.yearCl.setOnClickListener{
             if (yearPopupWindow != null) {
                 if (yearPopupWindow!!.isShowing) {
@@ -132,11 +132,18 @@ class EventsHistoryFragment : Fragment() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun addYearList() {
         yearList.add("2023")
         yearList.add("2022")
         yearList.add("2021")
         yearList.add("2020")
+
+        binding.yearTxt.text =  yearList[0]
+        selectedYear = yearList[0]
+
+        getAllUpcomingEventsApiCall(yearList[0])
+
     }
 
     private fun yearDropDown() {
@@ -172,7 +179,9 @@ class EventsHistoryFragment : Fragment() {
         }
         if(year!= null){
             binding.yearTxt.text = year
-            getAllUpcomingEventsApiCall(year)
+            selectedYear = year
+
+            getAllUpcomingEventsApiCall(selectedYear)
         }
     }
 

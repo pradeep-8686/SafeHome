@@ -18,6 +18,8 @@ data class DailyHelpStaffModel(
         val staffId: Int,
         val staffMode: String,
         val staffName: String,
+        val staffTypeName: String,
+        val staffTypeId: Int,
         val staffworkingDetails: List<StaffworkingDetail>
     ):Serializable {
         data class StaffAvilableTime(

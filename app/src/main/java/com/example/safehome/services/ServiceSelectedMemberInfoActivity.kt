@@ -78,24 +78,44 @@ class ServiceSelectedMemberInfoActivity : AppCompatActivity() {
         serviceTypeId = intent.getStringExtra("serviceTypeId")
         try {
             servicesdataMemberList = intent.getSerializableExtra("servicesMemberList") as ServiceDataList.Data?
-            servicesBookingsList = intent.getSerializableExtra("servicesBookingsList") as ServicesBookingsList.Data?
             from = intent.getStringExtra("from")
-
+            servicesBookingsList = intent.getSerializableExtra("servicesBookingsList") as ServicesBookingsList.Data?
         } catch (ex: Exception) {
         }
 
-        binding.memberName.setText(servicesdataMemberList?.personName)
-        binding.memberMobileNumber.setText(servicesdataMemberList?.mobileNo)
-      //  binding.serviceFromSelectedSpinner.setText(ServiceSelectedSpinner)
-        if(availabilityOn!!.isNotEmpty()){
-        binding.availabileOnText.setText(availabilityOn)
-        }else{
-            binding.availabileOnText.setText("Weekdays")
 
+        try {
+            if(from!= null){
+                if (from == "update") {
+                    if (servicesBookingsList!!.serviceTypeName.isNotEmpty()) {
+                        binding.tittleTxt.text = servicesBookingsList!!.serviceTypeName
+                    }
+                    if (servicesBookingsList!!.personName.isNotEmpty()){
+                        binding.memberName.text = servicesBookingsList!!.personName
+                    }
+                    serviceTypeId = servicesBookingsList!!.serviceTypeId.toString()
+                }else{
+                    binding.memberName.text = servicesdataMemberList!!.personName
+                    binding.tittleTxt.text = serviceTypeName
+                }
+            }
+
+        }catch (e: Exception){
+            binding.memberName.text = servicesdataMemberList?.personName
+            binding.tittleTxt.text = serviceTypeName
+        }
+
+        binding.memberMobileNumber.text = servicesdataMemberList?.mobileNo
+      //  binding.serviceFromSelectedSpinner.setText(ServiceSelectedSpinner)
+        if(availabilityOn!= null) {
+            if (availabilityOn!!.isNotEmpty()) {
+                binding.availabileOnText.text = availabilityOn
+            } else {
+                binding.availabileOnText.text = "Weekdays"
+            }
         }
        // binding.selectServiveProvideTv.setText(ServiceSelectedSpinner)
         inIt()
-        binding.tittleTxt.setText(serviceTypeName)
 
         binding.clServiceProvider.setOnClickListener {
             if (selectProvidedTypesPopWindow!= null) {
@@ -270,13 +290,12 @@ fun Booking() {
 
         yes.setOnClickListener {
             // deleteTenantServiceCall(tenant)
-            /*if (from.equals("update")){
+            if (from.equals("update")){
                 updateServiceBookingListServiceCall(servicesBookingsList!!.serviceId, servicesBookingsList!!.serviceBookingId)
             }else {
                 addServiceBookingNetworkCall()
             }
-            */
-            addServiceBookingNetworkCall()
+         //   addServiceBookingNetworkCall()
 
             if (bookingConfirmDialog!!.isShowing) {
                 bookingConfirmDialog!!.dismiss()
@@ -295,7 +314,9 @@ fun Booking() {
     private fun addServiceBookingNetworkCall() {
         customProgressDialog.progressDialogShow(this@ServiceSelectedMemberInfoActivity, this.getString(R.string.loading))
         var date = binding.startDateTxt.text.toString()
-        date = Utils.changeDateFormatToMMDDYYYY(date)
+        if(!date.contains("DD/MM/YYYY")){
+            date = Utils.changeDateFormatToMMDDYYYY(date)
+        }
         var time : String = binding.startTimeText.text.toString().replace(":", "-")
         val jsonObject = JsonObject()
         jsonObject.addProperty("ServiceId", servicesdataMemberList!!.serviceId)
@@ -328,7 +349,7 @@ fun Booking() {
                         moveToServiesActivity()
                     }
                 }else{
-                    Utils.showToast(this@ServiceSelectedMemberInfoActivity, response.body()!!.message.toString())
+               //     Utils.showToast(this@ServiceSelectedMemberInfoActivity, response.body()!!.message.toString())
                     customProgressDialog.progressDialogDismiss()
                     moveToServiesActivity()
                 }
@@ -424,7 +445,9 @@ fun Booking() {
     private fun updateServiceBookingListServiceCall(serviceId: Int, serviceBookingId: Int) {
         customProgressDialog.progressDialogShow(this@ServiceSelectedMemberInfoActivity, this.getString(R.string.loading))
         var date = binding.startDateTxt!!.text.toString()
+        if(!date.contains("DD/MM/YYYY")){
             date = Utils.changeDateFormatToMMDDYYYY(date)
+        }
         var time : String = binding.startTimeText!!.text.toString().replace(":", "-")
         val jsonObject = JsonObject()
         jsonObject.addProperty("ServiceBookingId",serviceBookingId)
@@ -455,13 +478,18 @@ fun Booking() {
                             }
                         }
                     }
+                    moveToServiesActivity()
+
                 }else{
                     customProgressDialog.progressDialogDismiss()
+                    moveToServiesActivity()
+
                 }
             }
 
             override fun onFailure(call: Call<AddServiceBookingList>, t: Throwable) {
                 customProgressDialog.progressDialogDismiss()
+                moveToServiesActivity()
                 Utils.showToast(this@ServiceSelectedMemberInfoActivity, t.message.toString())
             }
 

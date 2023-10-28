@@ -49,20 +49,20 @@ class CommunityComplaintsAdapter(
             if(complaint.status == "Pending"){
 
                 Glide.with(context)
-                    .load(R.drawable.c_pending)
+                    .load(R.drawable.pending_new)
                     .fitCenter()
                     .into(holder.iv_status_image)
 
-            }else if (complaint.status == "In -  Progress"){
+            }else if (complaint.status == "In-Progress"){
                 Glide.with(context)
-                    .load(R.drawable.c_in_progress)
+                    .load(R.drawable.in_progress_new)
                     .fitCenter()
                     .into(holder.iv_status_image)
 
             }else if (complaint.status == "Resolved"){
 
                 Glide.with(context)
-                    .load(R.drawable.c_completed)
+                    .load(R.drawable.completed_new)
                     .fitCenter()
                     .into(holder.iv_status_image)
             }else{
@@ -80,7 +80,7 @@ class CommunityComplaintsAdapter(
             holder.tv_description.text = complaint.description
         }
         if (complaint.assignTo != null) {
-            holder.tv_assigned_to.text = "To : ${complaint.assignTo}"
+            holder.tv_assigned_to.text = "Raised : ${complaint.assignTo}"
         }
 
         if (complaint.createdAt != null) {

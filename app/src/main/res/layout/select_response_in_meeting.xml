@@ -46,17 +46,17 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
 
-
     <RadioGroup
+        android:id="@+id/rdGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
         android:orientation="vertical"
-        android:id="@+id/rdGroup"
-        android:gravity="center"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/paid_on_header" >
-
+        app:layout_constraintTop_toBottomOf="@+id/paid_on_header" />
+        <!--
         <RadioButton
             android:id="@+id/yes"
             android:layout_width="match_parent"
@@ -85,9 +85,18 @@
             android:textColor="@color/black"
             android:layout_marginLeft="20dp"
             android:text="May be later">
-        </RadioButton>
+        </RadioButton>-->
 
-    </RadioGroup>
+<!--        <LinearLayout-->
+<!--            android:id="@+id/radioBtnLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="@dimen/_20dp"-->
+<!--            android:layout_marginTop="@dimen/_5dp"-->
+<!--            android:orientation="vertical">-->
+
+<!--        </LinearLayout>-->
+
 
 
 

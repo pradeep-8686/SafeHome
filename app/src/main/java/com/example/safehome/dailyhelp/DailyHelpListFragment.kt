@@ -35,7 +35,6 @@ class DailyHelpListFragment : BaseFragment() {
     private lateinit var apiInterface: APIInterface
     private lateinit var allDailyHelpModel : Call<DailyHelpRoles>
 
-
     var User_Id: String? = ""
     var Auth_Token: String? = ""
 
@@ -120,7 +119,12 @@ class DailyHelpListFragment : BaseFragment() {
                             dailyHelpRolesList.clear()
                         }
                         val  dailyHelpRoles = response.body() as DailyHelpRoles
-                        dailyHelpRolesList = dailyHelpRoles.data as ArrayList<DailyHelpRoles.Data>
+                        val dailyHelpRolesListTotal = dailyHelpRoles.data as ArrayList<DailyHelpRoles.Data>
+                        for(i in dailyHelpRolesListTotal){
+                            if(i.serviceTo.equals("Individual Resident")){
+                                dailyHelpRolesList.add(i)
+                            }
+                        }
 
 
                     } else {

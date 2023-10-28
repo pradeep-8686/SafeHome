@@ -73,6 +73,7 @@
     <string name="add_member">Add Member</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="reset">Reset</string>
     <string name="select_age_group">Select Age Group</string>
     <string name="age_group">Age Group</string>
     <string name="please_select_age_group">Please Select Age Group</string>

@@ -43,6 +43,7 @@ class ListBookNowActivity: BaseActivity() {
     private var Auth_token: String? = null
     private var facilityId: Int?= null
     private lateinit var addBookingServiceCall: Call<AddServiceBookingList>
+    private lateinit var updateBookingServiceCall: Call<AddServiceBookingList>
     private lateinit var customProgressDialog: CustomProgressDialog
     private var timeCount = 1
     private var dateCount = 1
@@ -56,6 +57,8 @@ class ListBookNowActivity: BaseActivity() {
     private var bookByHour : Double = 0.0
     private var bookByDay : Double = 0.0
     private var time: String?= null
+    private var bookFacilityId: String?= null
+    private var from: String?= null
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,7 +72,10 @@ class ListBookNowActivity: BaseActivity() {
             bookByHour = intent.getDoubleExtra("bookByHour", 1.00)
             Log.e("facilityId",""+facilityId)
             bookNowDialogBinding.totalChargeEt.text = bookByHour.toString()
-
+            from = intent.getStringExtra("from")
+            if (from!! == "bookings") {
+                bookFacilityId = intent.getStringExtra("bookFacilityId")
+            }
         }
 
         bookNowDialogBinding.purposeEt.setBackgroundResource(android.R.color.transparent)
@@ -277,14 +283,13 @@ class ListBookNowActivity: BaseActivity() {
     private fun addBookFacilityNetworkCall() {
         customProgressDialog.progressDialogShow(this@ListBookNowActivity, this.getString(R.string.loading))
         var startDate = bookNowDialogBinding.startDateTxt.text.toString()
-       /* if(startDate!= null && startDate.isNotEmpty()){
+        if(!startDate.contains("DD/MM/YYYY")){
             startDate = Utils.changeDateFormatToMMDDYYYY(startDate)
         }
-       */ var endDate = bookNowDialogBinding.endDateTxt.text.toString()
-        /*if(endDate!= null && endDate.isNotEmpty()){
+        var endDate = bookNowDialogBinding.endDateTxt.text.toString()
+        if(!endDate.contains("DD/MM/YYYY")){
             endDate = Utils.changeDateFormatToMMDDYYYY(endDate)
         }
-*/
         var startTime = bookNowDialogBinding.startTimeText.text.toString().replace(":", "-")
         var endTime = bookNowDialogBinding.endTime.text.toString().replace(":", "-")
         addBookingServiceCall = apiInterface.BookFacility("bearer "+Auth_token, residentId!!.toInt(), facilityId!!, "function",
@@ -298,8 +303,8 @@ class ListBookNowActivity: BaseActivity() {
                 response: Response<AddServiceBookingList>
             ) {
                 if (response.isSuccessful && response.body()!= null){
-                    moveToFacilityActivity()
                     customProgressDialog.progressDialogDismiss()
+                    confirmationDialog!!.show()
                     if (response.body()!!.statusCode!= null){
                         when(response.body()!!.statusCode){
                             1 -> {
@@ -316,21 +321,21 @@ class ListBookNowActivity: BaseActivity() {
                     }
                 }else{
                     customProgressDialog.progressDialogDismiss()
+                   // Utils.showToast(this@ListBookNowActivity, "your booking is not successful")
                     moveToFacilityActivity()
                 }
             }
-
             override fun onFailure(call: Call<AddServiceBookingList>, t: Throwable) {
                 customProgressDialog.progressDialogDismiss()
-                moveToFacilityActivity()
+       //         moveToFacilityActivity()
                 Utils.showToast(this@ListBookNowActivity, t.message.toString())
             }
-
         })
     }
 
     private fun moveToFacilityActivity() {
         val intent = Intent(this@ListBookNowActivity, FacilitiesActivity::class.java)
+        intent.putExtra("from", "bookingsPage")
         startActivity(intent)
         finish()
     }
@@ -445,5 +450,59 @@ class ListBookNowActivity: BaseActivity() {
 
         } catch (ex: Exception) {
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun updateBookFacility(){
+        customProgressDialog.progressDialogShow(this@ListBookNowActivity, this.getString(R.string.loading))
+        var startDate = bookNowDialogBinding.startDateTxt.text.toString()
+        if(!startDate.contains("DD/MM/YYYY")){
+            startDate = Utils.changeDateFormatToMMDDYYYY(startDate)
+        }
+        var endDate = bookNowDialogBinding.endDateTxt.text.toString()
+        if(!endDate.contains("DD/MM/YYYY")){
+            endDate = Utils.changeDateFormatToMMDDYYYY(endDate)
+        }
+        var startTime = bookNowDialogBinding.startTimeText.text.toString().replace(":", "-")
+        var endTime = bookNowDialogBinding.endTime.text.toString().replace(":", "-")
+        updateBookingServiceCall = apiInterface.updateBookFacility("bearer "+Auth_token, bookFacilityId!!.toInt(),residentId!!.toInt(), facilityId!!, "function",
+            bookNowDialogBinding.numberOfDaysTxt.text.toString().toInt(),
+            startDate, endDate,
+            bookNowDialogBinding.numberOfHoursTxt.text.toString().toInt(),
+            startTime, endTime, "Comments")
+        updateBookingServiceCall.enqueue(object: Callback<AddServiceBookingList> {
+            override fun onResponse(
+                call: Call<AddServiceBookingList>,
+                response: Response<AddServiceBookingList>
+            ) {
+                if (response.isSuccessful && response.body()!= null){
+                    customProgressDialog.progressDialogDismiss()
+                    if (response.body()!!.statusCode!= null){
+                        when(response.body()!!.statusCode){
+                            1 -> {
+                                if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
+                                    Utils.showToast(this@ListBookNowActivity, response.body()!!.message.toString())
+                                }
+                            }
+                            else -> {
+                                if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
+                                    Utils.showToast(this@ListBookNowActivity, response.body()!!.message.toString())
+                                }
+                            }
+                        }
+                    }
+                }else{
+                    customProgressDialog.progressDialogDismiss()
+                    moveToFacilityActivity()
+                }
+            }
+
+            override fun onFailure(call: Call<AddServiceBookingList>, t: Throwable) {
+                customProgressDialog.progressDialogDismiss()
+                moveToFacilityActivity()
+                Utils.showToast(this@ListBookNowActivity, t.message.toString())
+            }
+
+        })
     }
 }

@@ -9,11 +9,12 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.safehome.R
-import com.example.safehome.model.MeetingUpcomingModel
+import com.example.safehome.Utils
+import com.example.safehome.model.UpcomingMeetingsModel
 
 class MeetingUpcomingAdapter(
     var context: Context,
-    private var personalComplaintsList : ArrayList<MeetingUpcomingModel>
+    private var personalComplaintsList: ArrayList<UpcomingMeetingsModel.Data.MeetingData>
 ) :
     RecyclerView.Adapter<MeetingUpcomingAdapter.MyViewHolder>() {
     private lateinit var personalFragment: MeetingsUpcomingFragment
@@ -32,24 +33,24 @@ class MeetingUpcomingAdapter(
         val meeting = personalComplaintsList[position]
         holder.selectResponse.tag = meeting
 
-        if (meeting.meetingName != null) {
-            holder.tvMeetingName.text = meeting.meetingName
+        if (meeting.topicName != null) {
+            holder.tvMeetingName.text = meeting.topicName
         }
 
-         if (meeting.location != null) {
-            holder.tvLocation.text = meeting.location
+        if (meeting.facilityName != null) {
+            holder.tvLocation.text = meeting.facilityName
         }
 
-         if (meeting.organisedBy != null) {
+        if (meeting.organisedBy != null) {
             holder.tvOrganisedBy.text = "Organised By : ${meeting.organisedBy}"
         }
 
-         if (meeting.meetingDate != null) {
-            holder.tvMeetingDate.text = "Meeting Date : ${meeting.meetingDate}"
+        if (meeting.meetingDate != null) {
+            holder.tvMeetingDate.text = "Meeting Date : ${Utils.formatDateMonthYear(meeting.meetingDate)}"
         }
 
-         if (meeting.time != null) {
-            holder.tvTime.text = "Time : ${meeting.time}"
+        if (meeting.startTime != null && meeting.endTime!= null) {
+            holder.tvTime.text = "Time : ${meeting.startTime} - ${meeting.endTime}"
         }
 
         holder.btnViewAgenda.setOnClickListener {
@@ -57,11 +58,11 @@ class MeetingUpcomingAdapter(
         }
 
         holder.selectResponse.setOnClickListener {
-            personalFragment.selectResponse(it.tag as MeetingUpcomingModel)
+            personalFragment.selectResponse(it.tag as UpcomingMeetingsModel.Data.MeetingData)
         }
 
         holder.itemView.setOnClickListener {
-//            personalFragment.clickAction(meeting)
+            //     personalFragment.clickAction(meeting)
         }
 
     }
@@ -88,7 +89,7 @@ class MeetingUpcomingAdapter(
     }
 
 
-    fun filterList(upcomingList: ArrayList<MeetingUpcomingModel>) {
+    fun filterList(upcomingList: ArrayList<UpcomingMeetingsModel.Data.MeetingData>) {
         this.personalComplaintsList = upcomingList;
         notifyDataSetChanged();
     }

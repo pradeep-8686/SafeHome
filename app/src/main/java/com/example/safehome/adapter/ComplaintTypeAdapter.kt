@@ -24,6 +24,8 @@ import com.example.safehome.maintenance.MaintenanceActivity
 import com.example.safehome.meetings.MeetingsActivity
 import com.example.safehome.meetings.MeetingsCompletedFragment
 import com.example.safehome.notice.NoticeActivity
+import com.example.safehome.polls.RaisePollActivity
+import com.example.safehome.polls.UpdatePollActivity
 import com.example.safehome.services.ServicesActivity
 import com.example.safehome.services.ServicesMemberListActivity
 import com.example.safehome.services.ServicesPaymentHistoryFragment
@@ -31,6 +33,8 @@ import com.example.safehome.services.ServicesPaymentHistoryFragment
 class ComplaintTypeAdapter(var context: Context, private var statesList: List<String>) :
     RecyclerView.Adapter<ComplaintTypeAdapter.MyViewHolder>() {
     private lateinit var raiseComplaintActivity: RaiseComplaintActivity
+    private lateinit var raisePollActivity:RaisePollActivity
+    private lateinit var updatePollActivity:UpdatePollActivity
 
 
     override fun onCreateViewHolder(
@@ -51,10 +55,13 @@ class ComplaintTypeAdapter(var context: Context, private var statesList: List<St
         }
 
         holder.ageGroupTv.setOnClickListener {
-          if( context is RaiseComplaintActivity) {
-              raiseComplaintActivity.setCallbackComplaintType(it.tag as String)
-            } else {
-              //  facilitiesHistoryFragment.selectYear(it.tag as String)
+            if( context is RaiseComplaintActivity) {
+                raiseComplaintActivity.setCallbackComplaintType(it.tag as String)
+            } else if (context is RaisePollActivity){
+//                raisePollActivity.setCallbackComplaintType(it.tag as String)
+            }else{
+                updatePollActivity.setCallbackComplaintType(it.tag as String)
+
             }
         }
     }
@@ -68,6 +75,14 @@ class ComplaintTypeAdapter(var context: Context, private var statesList: List<St
 
     fun setCallbackComplaintType(raiseComplaintActivity: RaiseComplaintActivity) {
         this.raiseComplaintActivity = raiseComplaintActivity
+    }
+
+    fun setCallbackComplaintType(raisePollActivity: RaisePollActivity) {
+        this.raisePollActivity = raisePollActivity
+    }
+
+    fun setCallbackComplaintType(updatePollActivity: UpdatePollActivity) {
+        this.updatePollActivity = updatePollActivity
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

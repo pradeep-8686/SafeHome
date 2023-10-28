@@ -252,6 +252,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/time_llayout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -263,7 +265,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:orientation="horizontal"
                     android:weightSum="2">
 

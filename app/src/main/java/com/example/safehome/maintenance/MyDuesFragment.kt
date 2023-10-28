@@ -4,10 +4,15 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.ContentResolver
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
 import android.view.Gravity
@@ -16,6 +21,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import android.webkit.MimeTypeMap
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.ImageView
@@ -43,6 +49,8 @@ import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.InputStream
+import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -50,6 +58,7 @@ import java.util.Locale
 
 class MyDuesFragment : Fragment() {
 
+    private var fileName: String?= null
     private lateinit var  uploadDocumentName: TextView
     private val REQUEST_CODE: Int = 100
     private lateinit var Auth_Token: String
@@ -275,15 +284,15 @@ class MyDuesFragment : Fragment() {
         if (myDuesMaintenanceDetails.invoiceNumber.isNotEmpty()) {
             invoice_number_et.setText(myDuesMaintenanceDetails.invoiceNumber)
         }
-        if (myDuesMaintenanceDetails.invoiceFromDate.isNotEmpty() && myDuesMaintenanceDetails.invoiceToDate.isNotEmpty()) {
-            val invoiceFromDates = myDuesMaintenanceDetails.invoiceFromDate.split("T")
-            val invoiceFromDate = invoiceFromDates[0]
-            val invoiceToDates = myDuesMaintenanceDetails.invoiceToDate.split("T")
-            val invoiceToDate = invoiceToDates[0]
-            val monthYear = Utils.formatDateToMonth(invoiceToDate)
-            invoice_period_et.setText(monthYear)
-            invoice_date_et.text = formatDateMonthYear(invoiceFromDate)
-                due_date_et.text = formatDateMonthYear(invoiceToDate)
+        if (myDuesMaintenanceDetails.invoiceDate.isNotEmpty() && myDuesMaintenanceDetails.invoiceDueDate.isNotEmpty()) {
+           if (myDuesMaintenanceDetails.invoiceToDate.isNotEmpty()) {
+               val invoiceToDates = myDuesMaintenanceDetails.invoiceToDate.split("T")
+               val invoiceToDate = invoiceToDates[0]
+               val monthYear = Utils.formatDateToMonth(invoiceToDate)
+               invoice_period_et.setText(monthYear)
+           }
+            invoice_date_et.text = formatDateMonthYear(myDuesMaintenanceDetails.invoiceDate)
+                due_date_et.text = formatDateMonthYear(myDuesMaintenanceDetails.invoiceDueDate)
 
         }
         if (myDuesMaintenanceDetails.invoiceAmount != null) {
@@ -388,6 +397,14 @@ class MyDuesFragment : Fragment() {
         val comments_et: EditText = view.findViewById(R.id.comments_et)
         comments_et.setBackgroundResource(android.R.color.transparent)
         val saveBtn = view.findViewById<TextView>(R.id.save_btn)
+        val rdGroup = view.findViewById<RadioGroup>(R.id.rdGroup)
+        val thirdPartyNameRBtn = view.findViewById<RadioButton>(R.id.third_party_name)
+        val eftRBtn = view.findViewById<RadioButton>(R.id.eft)
+        val UpiRBtn = view.findViewById<RadioButton>(R.id.Upi)
+        val chequeRBtn = view.findViewById<RadioButton>(R.id.cheque)
+        val cash = view.findViewById<RadioButton>(R.id.cash)
+        val selectedId: Int = rdGroup.checkedRadioButtonId
+
         val documentLayout = view.findViewById<RelativeLayout>(R.id.upload_doc_rl)
         uploadDocumentName = view.findViewById<TextView>(R.id.upload_doc_text)
         paid_on_date_txt?.setOnClickListener {
@@ -403,7 +420,14 @@ class MyDuesFragment : Fragment() {
             datePickerDialog.show()
         }
         saveBtn.setOnClickListener {
-            updateMaintenancePaymentNetworkCall(myDuesMaintenanceDetails)
+            if (rdGroup?.checkedRadioButtonId == -1) {
+                Toast.makeText(requireContext(), "Please select option", Toast.LENGTH_LONG).show()
+            } else {
+                if (paymentModeOther!!.isShowing) {
+                    paymentModeOther!!.dismiss()
+                }
+                updateMaintenancePaymentNetworkCall(myDuesMaintenanceDetails)
+            }
         }
 
         close.setOnClickListener {
@@ -425,6 +449,7 @@ class MyDuesFragment : Fragment() {
         paymentModeOther!!.show()
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -435,13 +460,51 @@ class MyDuesFragment : Fragment() {
             cursor?.use {
                 val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                 it.moveToFirst()
-                val fileName = it.getString(nameIndex)
+                 fileName = it.getString(nameIndex)
                 // Now `fileName` contains the name of the selected file.
                 uploadDocumentName.text = fileName.toString()
+
             }
+            selectedDocumentUri(selectedFileUri)
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun selectedDocumentUri(selectedFileUri: Uri) {
+        val inputStream: InputStream? = requireContext().contentResolver.openInputStream(selectedFileUri)
+
+        if (inputStream != null) {
+            val contentValues = ContentValues()
+            contentValues.put(MediaStore.Downloads.DISPLAY_NAME,
+                "https://qa.msafehome.com/files/$fileName"
+            )
+            contentValues.put(MediaStore.Downloads.MIME_TYPE, getMimeType(fileName.toString()))
+            contentValues.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+
+            val contentResolver: ContentResolver = requireContext().contentResolver
+            val fileUri = contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+
+            if (fileUri != null) {
+                val outputStream: OutputStream? = contentResolver.openOutputStream(fileUri)
+
+                if (outputStream != null) {
+                    val buffer = ByteArray(1024)
+                    var read: Int
+
+                    while (inputStream.read(buffer).also { read = it } != -1) {
+                        outputStream.write(buffer, 0, read)
+                    }
+
+                    inputStream.close()
+                    outputStream.close()
+                }
+            }
+        }
+    }
+    fun getMimeType(fileName: String): String {
+        val extension = MimeTypeMap.getFileExtensionFromUrl(fileName)
+        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension) ?: "application/octet-stream"
+    }
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun updateMaintenancePaymentNetworkCall(myDuesMaintenanceDetails: MyDuesMaintenanceDetails) {
         val parsedValue: Double = myDuesMaintenanceDetails.invoiceAmount.toDouble()
@@ -469,16 +532,19 @@ class MyDuesFragment : Fragment() {
 
                 if (response.isSuccessful && response.body() != null) {
                     // here save user signup data
+                    if (paymentModeOther!!.isShowing) {
+                        paymentModeOther!!.dismiss()
+                    }
+
                     if (response.body()!!.statusCode != null) {
 
                         when (response.body()!!.statusCode) {
                             1 -> {
                                 if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
-                                   /* Utils.showToast(
+                                    Utils.showToast(
                                         requireContext(),
                                         response.body()!!.message
                                     )
-                             */
                                 }
                             }
 
@@ -494,18 +560,21 @@ class MyDuesFragment : Fragment() {
 
                             3 -> {
                                 if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
-
                                     Utils.showToast(
                                         requireContext(),
                                         response.body()!!.message
                                     )
                                 }
-
                             }
-
                         }
                     }
 
+
+                }else{
+                    if (paymentModeOther!!.isShowing) {
+                        paymentModeOther!!.dismiss()
+                    }
+                    customProgressDialog.progressDialogDismiss()
 
                 }
             }
@@ -514,6 +583,9 @@ class MyDuesFragment : Fragment() {
             override fun onFailure(call: Call<UpdateMaintenanceModel>, t: Throwable) {
                 customProgressDialog.progressDialogDismiss()
                 Utils.showToast(requireContext(), t.message.toString())
+                if (paymentModeOther!!.isShowing) {
+                    paymentModeOther!!.dismiss()
+                }
 
             }
 

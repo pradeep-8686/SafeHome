@@ -77,7 +77,6 @@ class DailyHelpPaymentHistoryFragment : Fragment() {
         User_Id = Utils.getStringPref(requireContext(), "residentId", "")
         Auth_Token = Utils.getStringPref(requireContext(), "Token", "")
 
-        addDailyHelpMemberListData()
 //        populateData()
         addYearList()
         staffList()
@@ -178,6 +177,11 @@ class DailyHelpPaymentHistoryFragment : Fragment() {
                         }
                         val facilitiesModel = response.body() as YearModel
                         yearList = facilitiesModel.data as ArrayList<YearModel.Data>
+
+                        binding.yearTxt.text = yearList[0].year.toString()
+                        selectedYear = yearList[0].year.toString()
+
+                        addDailyHelpMemberListData(year = selectedYear)
 
                     } else {
                         // vehilceModelDropDown()
@@ -292,6 +296,9 @@ class DailyHelpPaymentHistoryFragment : Fragment() {
                         dailyHelpPaymentHistoryList = facilitiesModel.data as ArrayList<DailyHelpHistoryModel.Data>
 
                     } else {
+                        if (dailyHelpPaymentHistoryList.isNotEmpty()) {
+                            dailyHelpPaymentHistoryList.clear()
+                        }
                         // vehilceModelDropDown()
                     }
                     populateData()

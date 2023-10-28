@@ -218,6 +218,7 @@
             android:src="@drawable/upload_icon" />
 
         <TextView
+            android:id="@+id/upload_docname_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

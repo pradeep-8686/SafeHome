@@ -154,15 +154,12 @@ class HistoryFragment : Fragment() {
         val courseAry: ArrayList<MaintenanceHistoryModel.Data> = maintenanceHistoryList
 
         for (eachCourse in courseAry) {
-            var invoiceDate: String?= null
-            if (eachCourse.invoiceDate.isNotEmpty()){
-                val invoiceDates = eachCourse.invoiceDate.split("T")
-                invoiceDate = Utils.changeDateFormat(invoiceDates[0])
-            }
 
             if (
                 !eachCourse.catageroyName.isNullOrBlank() && eachCourse.catageroyName.lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
                 !eachCourse.invoiceAmount.toString().isNullOrBlank() && eachCourse.invoiceAmount.toString().lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
+                !eachCourse.invoiceFromDate.toString().isNullOrBlank() && eachCourse.invoiceFromDate.toString().lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
+                !eachCourse.invoiceToDate.toString().isNullOrBlank() && eachCourse.invoiceToDate.toString().lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
                 !eachCourse.paidAmount.toString().isNullOrBlank() && eachCourse.paidAmount.toString().lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
                 !eachCourse.invoiceDate.isNullOrBlank() && eachCourse.invoiceDate.lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
                 !eachCourse.paymentStatus.isNullOrBlank() && eachCourse.paymentStatus.lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault()))
@@ -177,18 +174,17 @@ class HistoryFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun loadDefaultData(categoryModelList : ArrayList<CategoryModel.Data>) {
-
-        binding.yearTxt.text = "2023"
+        binding.yearTxt.text =  yearList[0]
         selectedYear = yearList[0]
 
         if (categoryModelList.isNotEmpty()) {
-            binding.tvCategory.text = categoryModelList[0].categoryName
-            selectedCategoryId = categoryModelList[0].categoryId.toString()
+           // binding.tvCategory.text = categoryModelList[0].categoryName
+           // selectedCategoryId = categoryModelList[0].categoryId.toString()
+            selectedCategoryId = ""
+            binding.tvCategory.text = ""
         }
         getPaidMaintenanaceDetailsByResident( selectedCategoryId, selectedYear)
         Log.d(TAG, "$selectedCategoryId , $selectedYear")
-
-
     }
 
     private fun addYearList() {
@@ -200,7 +196,6 @@ class HistoryFragment : Fragment() {
 
 
     private fun populateData() {
-
         if (maintenanceHistoryList.size == 0){
             binding.emptyBookingFacilitiesTxt.visibility = View.VISIBLE
         }else {
@@ -256,23 +251,17 @@ class HistoryFragment : Fragment() {
         }
         selectedYear = year
         if (selectedCategoryId != null){
-
             getPaidMaintenanaceDetailsByResident(selectedCategoryId!!, selectedYear!!)
         }else{
             getPaidMaintenanaceDetailsByResident(selectedYear!!)
-
         }
-
         Log.d(TAG, "$selectedCategoryId!! , $selectedYear!!")
-
     }
-
 
     private fun categoryDropDown() {
         val layoutInflater: LayoutInflater =
             requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view: View = layoutInflater.inflate(R.layout.drop_down_layout, null)
-
         categoryPopupWindow = PopupWindow(
             view,
             binding.tvCategory.measuredWidth,

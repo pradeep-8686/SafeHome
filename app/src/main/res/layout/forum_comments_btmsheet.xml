@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/main_ll"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:weightSum="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginLeft="@dimen/_15dp"
+                android:layout_weight="0.8"
+                android:id="@+id/tvPollResult"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                android:text="Comments"
+                android:textColor="#111111"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:layout_marginTop="@dimen/_5dp"
+                android:layout_weight="0.2"
+                android:id="@+id/close"
+                android:layout_width="@dimen/_24dp"
+                android:layout_height="@dimen/_24dp"
+                android:src="@drawable/close"
+                android:padding="5dp"
+                android:layout_gravity="center_vertical"
+                />
+        </LinearLayout>
+
+<!--
+        <RelativeLayout
+            android:id="@+id/comments_rl"
+            android:layout_marginTop="@dimen/_15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/profile_icon"
+                android:layout_marginLeft="@dimen/_15dp"
+                android:layout_width="40dp"
+                android:layout_height="@dimen/_40dp"
+                android:src="@drawable/profile"/>
+
+            <TextView
+                android:id="@+id/forum_commented_user"
+                android:layout_marginLeft="@dimen/_10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="Admin@_123:"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_toRightOf="@id/profile_icon"/>
+
+            <TextView
+                android:id="@+id/forum_comment_text"
+                android:layout_marginLeft="@dimen/_10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Water pipe is broken..."
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_toRightOf="@id/forum_commented_user"/>
+
+            <TextView
+                android:layout_marginLeft="@dimen/_10dp"
+                android:id="@+id/reply_comment_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reply"
+                android:textColor="#3495C1"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_below="@+id/forum_commented_user"
+                android:layout_toRightOf="@+id/profile_icon"
+                />
+
+        </RelativeLayout>
+-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/_10dp"
+            android:id="@+id/comments_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <RelativeLayout
+            android:layout_marginBottom="@dimen/_10dp"
+            android:layout_marginTop="@dimen/_35dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/comment_profile_icon"
+                android:layout_marginLeft="@dimen/_15dp"
+                android:layout_width="40dp"
+                android:layout_height="@dimen/_40dp"
+                android:src="@drawable/profile"/>
+
+            <LinearLayout
+                android:weightSum="1"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="@dimen/_10dp"
+                android:layout_marginRight="@dimen/_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:background="@drawable/editext_bg"
+                android:layout_toRightOf="@id/comment_profile_icon">
+
+                <EditText
+                    android:id="@+id/ed_comment"
+                    android:layout_marginLeft="@dimen/_15dp"
+                    android:layout_weight="0.8"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="Add comments"
+                    android:textColorHint="@color/otp_editext_color"
+                    android:textColor="@color/otp_editext_color"/>
+
+                <ImageView
+                    android:id="@+id/comment_send_img"
+                    android:layout_weight="0.2"
+                    android:layout_width="0dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/profile"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</ScrollView>

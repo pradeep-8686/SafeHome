@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.safehome.R
 import com.example.safehome.complaints.CommunityFragment
+import com.example.safehome.complaints.ComplaintStatusActivity
 import com.example.safehome.complaints.ComplaintsActivity
 import com.example.safehome.complaints.PersonalFragment
 import com.example.safehome.complaints.RaiseComplaintActivity
@@ -31,6 +32,7 @@ import com.example.safehome.services.ServicesPaymentHistoryFragment
 class CategoryRaiseComplaintAdapter(var context: Context, private var statesList: List<String>) :
     RecyclerView.Adapter<CategoryRaiseComplaintAdapter.MyViewHolder>() {
     private lateinit var raiseComplaintActivity: RaiseComplaintActivity
+    private lateinit var complaintStatusActivity: ComplaintStatusActivity
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -52,7 +54,9 @@ class CategoryRaiseComplaintAdapter(var context: Context, private var statesList
         holder.ageGroupTv.setOnClickListener {
           if( context is RaiseComplaintActivity) {
               raiseComplaintActivity.setCallbackCategory(it.tag as String)
-            } else {
+            } else if (context is ComplaintStatusActivity){
+              complaintStatusActivity.setCallbackEscalateTo(it.tag as String)
+            }else {
               //  facilitiesHistoryFragment.selectYear(it.tag as String)
             }
         }
@@ -67,6 +71,9 @@ class CategoryRaiseComplaintAdapter(var context: Context, private var statesList
 
     fun setCallbackCategory(raiseComplaintActivity: RaiseComplaintActivity) {
         this.raiseComplaintActivity = raiseComplaintActivity
+    }
+    fun setCallbackEscalateTo(complaintStatusActivity: ComplaintStatusActivity) {
+        this.complaintStatusActivity = complaintStatusActivity
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

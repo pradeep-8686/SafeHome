@@ -48,7 +48,10 @@ class DailyHelpPaymentHistoryAdapter(
         if (dailyHelpMemberList.paidDate != null && dailyHelpMemberList.paidDate.isNotEmpty()) {
             holder.paid_on_tv.text = "Paid On : "+dailyHelpMemberList.paidDate
         }
-        holder.amount_tv.text = "Amount: "+ context.getString(R.string.Rs)+ "500/-"
+        if (dailyHelpMemberList.amount != null){
+
+            holder.amount_tv.text = "Amount: "+ context.getString(R.string.Rs) + dailyHelpMemberList.amount
+        }
         holder.daily_help_payment_history_layout.setOnClickListener {
           //  dailyHelpPaymentHistoryFragment.selectedPayment(it.tag as DailyHelpMemberList)
         }

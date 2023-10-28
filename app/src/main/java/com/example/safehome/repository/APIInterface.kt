@@ -1,6 +1,9 @@
 package com.example.safehome.repository
 
 import com.example.safehome.constants.AppConstants
+import com.example.safehome.forums.AddUpdateForumResponse
+import com.example.safehome.forums.GetAllForumCommentsModel
+import com.example.safehome.forums.GetAllForumDetailsModel
 import com.example.safehome.model.AddServiceBookingList
 import com.example.safehome.model.AllCommunities
 import com.example.safehome.model.AllFacilitiesModel
@@ -19,12 +22,17 @@ import com.example.safehome.model.FamilyDetail
 import com.example.safehome.model.Flats
 import com.example.safehome.model.GetAllHistoryServiceTypes
 import com.example.safehome.model.GetAllNoticeStatus
+import com.example.safehome.model.GetAllPollDetailsModel
+import com.example.safehome.model.GetPollResultModel
 import com.example.safehome.model.LoginDetialsData
 import com.example.safehome.model.MaintenanceHistoryModel
 import com.example.safehome.model.MeetingCompletedModel
+import com.example.safehome.model.MeetingResponseStatusMaster
 import com.example.safehome.model.MeetingUpcomingModel
 import com.example.safehome.model.MobileSignUp
 import com.example.safehome.model.PersonalComplaintsModel
+import com.example.safehome.model.PollsKeepDropdownModel
+import com.example.safehome.model.PollsPostedDropDownModel
 import com.example.safehome.model.ServiceDataList
 import com.example.safehome.model.ServiceProvidedTypesList
 import com.example.safehome.model.ServiceTypesList
@@ -35,15 +43,20 @@ import com.example.safehome.model.UpdateMaintenanceModel
 import com.example.safehome.model.TenantDetails
 import com.example.safehome.model.TotalDuesMaintenanceList
 import com.example.safehome.model.UpcomingEventsModel
+import com.example.safehome.model.UpcomingMeetingsModel
+import com.example.safehome.model.UpdateAttendStatusMeetingResponse
 import com.example.safehome.model.UserDetail
 import com.example.safehome.model.VehicleDetails
 import com.example.safehome.model.VehicleModel
 import com.example.safehome.model.YearModel
+import com.example.safehome.polls.AddPollResponse
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
+import retrofit2.http.FieldMap
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
@@ -324,6 +337,7 @@ interface APIInterface {
     @GET(AppConstants.RetrofitApis.getAllBookedFacilities)
     fun getAllBookedFacilities(
         @Header("Authorization") authorizationValue: String,
+        @Header("year") year: String? = null,
         @Header("resultsPerPage") resultsPerPage: Int? = 50,
         @Header("pageNumber") pageNumber: Int? = 1
     ): Call<FaciBookings>
@@ -344,6 +358,36 @@ interface APIInterface {
         @Part("Comments") Comments: String
     ): Call<AddServiceBookingList>
 
+    @Multipart
+    @PUT(AppConstants.RetrofitApis.updateBookFacility)
+    fun updateBookFacility(
+        @Header("Authorization") authorizationValue: String,
+        @Part("BookFacilityId") BookFacilityId: Int,
+        @Part("ResidentId") ResidentId: Int,
+        @Part("facilityID") facilityID: Int,
+        @Part("Purpose") Purpose: String,
+        @Part("NoOfDays") NoOfDays: Int,
+        @Part("StartDate") StartDate: String,
+        @Part("EndDate") EndDate: String,
+        @Part("NoOfHours") NoOfHours: Int,
+        @Part("StartTime") StartTime: String,
+        @Part("EndTime") EndTime: String,
+        @Part("Comments") Comments: String
+    ): Call<AddServiceBookingList>
+
+    @Multipart
+    @PUT(AppConstants.RetrofitApis.updatePaymentForBookFacility)
+    fun updatePaymentForBookFacility(
+        @Header("Authorization") authorizationValue: String,
+        @Part("BookFacilityId") BookFacilityId: Int,
+        @Part("TotalAmount") TotalAmount: Int,
+        @Part("PaymentMode") PaymentMode: String,
+        @Part("PayType") PayType: String,
+        @Part("TransactionStatus") TransactionStatus: String,
+        @Part("TransactionNumber") TransactionNumber: String,
+        @Part("TransactionPath") TransactionPath: String,
+        @Part("TransactionComments") TransactionComments: String
+    ): Call<AddServiceBookingList>
 
     @GET(AppConstants.RetrofitApis.getDailyHelpStaff)
     fun getDailyHelpList(
@@ -382,6 +426,20 @@ interface APIInterface {
     fun deleteBookStaff(
         @Header("Authorization") authorizationValue: String,
         @Query("StaffBookingId") StaffBookingId: Int
+    ): Call<AddServiceBookingList>
+
+    @Multipart
+    @PUT(AppConstants.RetrofitApis.updateStaffBookingPayment)
+    fun updateStaffBookingPayment(
+        @Header("Authorization") authorizationValue: String,
+        @Part("StaffBookingId") StaffBookingId : Int,
+        @Part("ResidnetId") ResidnetId : Int,
+        @Part("PayType") PayType : String,
+        @Part("PaymentMode") PaymentMode : String,
+        @Part("TransactionStatus") TransactionStatus : String,
+        @Part("TransactionNumber") TransactionNumber : String,
+        @Part("TransactionPath") TransactionPath : String,
+        @Part("TransactionComments") TransactionComments : String
     ): Call<AddServiceBookingList>
 
 
@@ -486,7 +544,7 @@ interface APIInterface {
         @Header("Authorization") authorizationValue: String,
         @Header("resultsPerPage") resultsPerPage: Int,
         @Header("pageNumber") pageNumber: Int,
-        @Query("Noticeview") Noticeview: Boolean? = false,
+        @Query("Noticeview") Noticeview: String? = "false",
         @Query("year") year: String? = null
     ): Call<GetAllNoticeStatus>
 
@@ -511,20 +569,120 @@ interface APIInterface {
     @Query("year") year: String? = null
     ): Call<CommunityComplaintsModel>
 
-    @GET(AppConstants.RetrofitApis.getPersonalComplaints)
+    @GET(AppConstants.RetrofitApis.getAllUpcomingMeetings)
     fun getMeetingUpcoming(
         @Header("Authorization") authorizationValue: String,
-        @Query("complaintStatus") complaintStatus: String? = null,
-    @Query("year") year: String? = null
-    ): Call<MeetingUpcomingModel>
+        @Header("year") year: String? = null,
+        @Header("pageNumber") pageNumber: Int,
+        @Header("resultsPerPage") resultsPerPage: String
+    ): Call<UpcomingMeetingsModel>
 
-    @GET(AppConstants.RetrofitApis.getPersonalComplaints)
+    @GET(AppConstants.RetrofitApis.getAllCompletedMeetings)
     fun getMeetingCompleted(
         @Header("Authorization") authorizationValue: String,
-        @Query("complaintStatus") complaintStatus: String? = null,
-    @Query("year") year: String? = null
-    ): Call<MeetingCompletedModel>
+        @Header("year") year: String? = null,
+        @Header("pageNumber") pageNumber: Int,
+        @Header("resultsPerPage") resultsPerPage: String
+    ): Call<UpcomingMeetingsModel>
+
+    @GET(AppConstants.RetrofitApis.getAllResponseStatusMaster)
+    fun getAllResponseStatusMaster(
+        @Header("Authorization") authorizationValue: String
+    ): Call<MeetingResponseStatusMaster>
+
+    @PUT(AppConstants.RetrofitApis.updateAttendingResponseStatus)
+    fun updateAttendingResponseStatus(
+        @Header("Authorization") authorizationValue: String,
+        @Body jsonObject: JsonObject
+    ): Call<UpdateAttendStatusMeetingResponse>
+
+    @GET(AppConstants.RetrofitApis.getAllPollDetails)
+    fun getAllPollDetails(
+        @Header("Authorization") authorizationValue: String,
+        @Header("postedTo") postedTo: String,
+        @Header("postedBy") postedBy: String,
+        @Header("endDate") endDate: String,
+        @Header("pageNumber") pageNumber: String,
+        @Header("resultsPerPage") resultsPerPage: String
+        ):Call<GetAllPollDetailsModel>
+
+    @GET(AppConstants.RetrofitApis.getPollResults)
+    fun getPollResults(
+        @Header("Authorization") authorizationValue: String,
+        @Query("pollId") pollId: Int
+        ): Call<GetPollResultModel>
+
+    @FormUrlEncoded
+    @POST(AppConstants.RetrofitApis.addPoll)
+    fun addPoll(
+        @Header("Authorization") authorizationValue: String,
+        @FieldMap pollOptionsMap: MutableMap<String, Any>
+    ): Call<AddPollResponse>
+
+    @FormUrlEncoded
+    @PUT(AppConstants.RetrofitApis.updatePoll)
+    fun updatePoll(
+        @Header("Authorization") authorizationValue: String,
+        @FieldMap pollOptionsMap: MutableMap<String, Any>
+    ): Call<AddPollResponse>
+
+    @GET(AppConstants.RetrofitApis.getKeepForDropDown)
+    fun getKeepForDropDown(
+        @Header("Authorization") authorizationValue: String
+    ): Call<PollsKeepDropdownModel>
+
+    @GET(AppConstants.RetrofitApis.getAllPostedToDropDown)
+    fun getAllPostedToDropDown(
+        @Header("Authorization") authorizationValue: String
+    ) : Call<PollsPostedDropDownModel>
+
+    @DELETE(AppConstants.RetrofitApis.deletePollDetails)
+    fun deletePollDetails(
+        @Header("Authorization") authorizationValue: String,
+        @Query("pollId") pollId : Int
+    ): Call<AddServiceBookingList>
 
 
 
+    @GET(AppConstants.RetrofitApis.getAllForumDetails)
+    fun getAllForumDetails(
+        @Header("Authorization") authorizationValue: String,
+        @Header("startDate") postedTo: String,
+        @Header("postedBy") postedBy: String,
+        @Header("endDate") endDate: String,
+        @Header("pageNumber") pageNumber: String,
+        @Header("resultsPerPage") resultsPerPage: String
+    ):Call<GetAllForumDetailsModel>
+
+    @FormUrlEncoded
+    @POST(AppConstants.RetrofitApis.addForum)
+    fun addForum(
+        @Header("Authorization") authorizationValue: String,
+        @FieldMap forumOptionsMap: MutableMap<String, Any>
+    ): Call<AddUpdateForumResponse>
+
+    @FormUrlEncoded
+    @PUT(AppConstants.RetrofitApis.updateForum)
+    fun updateForum(
+        @Header("Authorization") authorizationValue: String,
+        @FieldMap forumOptionsMap: MutableMap<String, Any>
+    ): Call<AddUpdateForumResponse>
+
+    @DELETE(AppConstants.RetrofitApis.deleteForumDetails)
+    fun deleteForumDetails(
+        @Header("Authorization") authorizationValue: String,
+        @Query("forumId") forumId : Int
+    ): Call<AddUpdateForumResponse>
+
+    @GET(AppConstants.RetrofitApis.getAllCommentDetailsByForumId)
+    fun getAllCommentDetailsByForumId(
+        @Header("Authorization") authorizationValue: String,
+        @Query("forumId") forumId : Int
+    ) : Call<GetAllForumCommentsModel>
+
+    @POST(AppConstants.RetrofitApis.addForumCommentDetails)
+    fun addForumCommentDetails(
+        @Header("Authorization") authorizationValue: String,
+        @Body jsonObject: JsonObject
+        ) : Call<AddServiceBookingList>
 }

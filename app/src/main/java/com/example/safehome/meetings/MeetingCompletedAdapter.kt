@@ -1,8 +1,6 @@
 package com.example.safehome.meetings
 
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -10,25 +8,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.safehome.R
 import com.example.safehome.Utils
-import com.example.safehome.adapter.ImageAdapter
-import com.example.safehome.facilitiesview.BookingsFragment
-import com.example.safehome.model.Events
-import com.example.safehome.model.MaintenanceHistoryModel
-import com.example.safehome.model.MeetingCompletedModel
-import com.example.safehome.model.PersonalComplaintsModel
-import com.example.safehome.model.Upcoming
+import com.example.safehome.model.UpcomingMeetingsModel
 
 class MeetingCompletedAdapter(
     var context: Context,
-    private var personalComplaintsList : ArrayList<MeetingCompletedModel>
+    private var completedMeetingsList: ArrayList<UpcomingMeetingsModel.Data.MeetingData>
 ) :
     RecyclerView.Adapter<MeetingCompletedAdapter.MyViewHolder>() {
-    private lateinit var communityFragment : MeetingsCompletedFragment
+    private lateinit var communityFragment: MeetingsCompletedFragment
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -41,15 +32,15 @@ class MeetingCompletedAdapter(
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val meeting = personalComplaintsList[position]
+        val meeting = completedMeetingsList[position]
 
-        if (meeting.meetingName != null) {
+        if (meeting.topicName != null) {
 
-            holder.tvMeetingName.text = meeting.meetingName
+            holder.tvMeetingName.text = meeting.topicName
         }
-        if (meeting.location != null) {
+        if (meeting.facilityName != null) {
 
-            holder.tvLocation.text = meeting.location
+            holder.tvLocation.text = meeting.facilityName
         }
 
         if (meeting.organisedBy != null) {
@@ -59,28 +50,32 @@ class MeetingCompletedAdapter(
 
         if (meeting.meetingDate != null) {
 
-            holder.tvMeetingDate.text = "Meeting Date : ${meeting.meetingDate}"
+            holder.tvMeetingDate.text =
+                "Meeting Date : ${Utils.formatDateMonthYear(meeting.meetingDate)}"
+
+            if (meeting.meetingDate!!.contains("T")) {
+
+                meeting.meetingDate = "${Utils.formatDateMonthYear(meeting.meetingDate)}"
+            }
+
+        }
+        if (meeting.startTime != null && meeting.endTime != null) {
+            holder.tvTime.text = "Time : ${meeting.startTime} - ${meeting.endTime}"
         }
 
-        if (meeting.time != null) {
 
-            holder.tvTime.text = "Time : ${meeting.time}"
-        }
-
-
-        if (meeting.isAttended){
-
-            holder.meetingAttended.text = "Attended"
+        if (meeting.attendResponseStatus == "No") {
+            holder.meetingAttended.text = "Not Attended"
             Glide.with(context)
-                .load(R.drawable.attendance)
+                .load(R.drawable.not_attendance)
                 .fitCenter()
                 .into(holder.meetingAttendedImage)
 
 
-        }else{
-            holder.meetingAttended.text = "Not Attended"
+        } else {
+            holder.meetingAttended.text = "Attended"
             Glide.with(context)
-                .load(R.drawable.not_attendance)
+                .load(R.drawable.attendance)
                 .fitCenter()
                 .into(holder.meetingAttendedImage)
 
@@ -98,8 +93,8 @@ class MeetingCompletedAdapter(
     }
 
     override fun getItemCount(): Int {
-        if (personalComplaintsList.isNotEmpty()) {
-            return personalComplaintsList.size
+        if (completedMeetingsList.isNotEmpty()) {
+            return completedMeetingsList.size
         }
         return 0
     }
@@ -121,8 +116,8 @@ class MeetingCompletedAdapter(
     }
 
 
-    fun filterList(upcomingList: ArrayList<MeetingCompletedModel>) {
-        this.personalComplaintsList = upcomingList;
+    fun filterList(upcomingList: ArrayList<UpcomingMeetingsModel.Data.MeetingData>) {
+        this.completedMeetingsList = upcomingList;
         notifyDataSetChanged();
     }
 

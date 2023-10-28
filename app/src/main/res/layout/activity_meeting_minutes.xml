@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="6dp"
                 android:fontFamily="@font/poppins_regular"
                 android:paddingEnd="16dp"
                 android:text="Meeting Date : 25/08/2023"
@@ -118,7 +118,7 @@
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+                app:layout_constraintTop_toBottomOf="@+id/share_image" />
 
             <TextView
                 android:id="@+id/pay_now_txt2"
@@ -187,7 +187,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/et_comment" />
 
             <ImageView
-                android:id="@+id/imageView5"
+                android:id="@+id/share_image"
                 android:layout_width="@dimen/_24dp"
                 android:layout_height="20dp"
                 android:layout_marginStart="16dp"

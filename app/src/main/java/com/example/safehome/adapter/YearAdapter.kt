@@ -18,11 +18,13 @@ import com.example.safehome.dailyhelp.DailyHelpPaymentHistoryFragment
 import com.example.safehome.eventsview.EventsActivity
 import com.example.safehome.eventsview.EventsHistoryFragment
 import com.example.safehome.facilitiesview.FacilitiesHistoryFragment
+import com.example.safehome.forums.ForumsListActivity
 import com.example.safehome.maintenance.HistoryFragment
 import com.example.safehome.maintenance.MaintenanceActivity
 import com.example.safehome.meetings.MeetingsActivity
 import com.example.safehome.meetings.MeetingsCompletedFragment
 import com.example.safehome.notice.NoticeActivity
+import com.example.safehome.polls.PollsActivity
 import com.example.safehome.services.ServicesActivity
 import com.example.safehome.services.ServicesMemberListActivity
 import com.example.safehome.services.ServicesPaymentHistoryFragment
@@ -42,6 +44,8 @@ class YearAdapter(var context: Context, private var statesList: List<String>) :
     private lateinit var communityFragment: CommunityFragment
     private lateinit var communityFragment1: CommunityFragment
     private lateinit var meetingsCompletedFragment: MeetingsCompletedFragment
+    private lateinit var pollsActivity: PollsActivity
+    private lateinit var forumsListActivity: ForumsListActivity
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -80,6 +84,12 @@ class YearAdapter(var context: Context, private var statesList: List<String>) :
             }else if( context is MeetingsActivity) {
                 meetingsCompletedFragment.selectComplaintYear(it.tag as String)
             }
+            else if (context is PollsActivity){
+                pollsActivity.selectPollsYear(it.tag as String)
+            }
+            else if (context is ForumsListActivity){
+                forumsListActivity.selectForumsYear(it.tag as String)
+            }
             else {
                 facilitiesHistoryFragment.selectYear(it.tag as String)
             }
@@ -95,6 +105,12 @@ class YearAdapter(var context: Context, private var statesList: List<String>) :
 
     fun setCallback(historyFragment: HistoryFragment) {
         this.historyFragment = historyFragment
+    }
+    fun setPollsCallback(pollsActivity: PollsActivity) {
+        this.pollsActivity = pollsActivity
+    }
+    fun setForumsCallback(forumsListActivity : ForumsListActivity) {
+        this.forumsListActivity = forumsListActivity
     }
 
     fun setCallbackFacilitiesHistoryFrag(facilitiesHistoryFragment: FacilitiesHistoryFragment) {

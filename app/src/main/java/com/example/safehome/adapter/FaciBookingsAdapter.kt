@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.safehome.R
 import com.example.safehome.Utils
+import com.example.safehome.Utils.Companion.formatDateMonthYear
 import com.example.safehome.facilitiesview.BookingsFragment
 import com.example.safehome.model.FaciBookings
 
@@ -19,6 +21,8 @@ class FaciBookingsAdapter(
     private var bookingsList: ArrayList<FaciBookings.Data.Facilility>
 ) :
     RecyclerView.Adapter<FaciBookingsAdapter.MyViewHolder>() {
+    private var startTime: String?= null
+    private var endTime: String?= null
     private var endDate: String? = null
     private var endDates: List<String>?= null
     private var startDate: String?= null
@@ -67,7 +71,7 @@ class FaciBookingsAdapter(
             }
 
             holder.payment_status_tv.setOnClickListener {
-                bookingsFragment.clickOnPaymentStatus(faciBookings.paymentStatusName)
+                bookingsFragment.clickOnPaymentStatus(faciBookings)
             }
 
         }
@@ -77,37 +81,36 @@ class FaciBookingsAdapter(
             }
         }
         if (faciBookings.dateOfBooking != null && faciBookings.dateOfBooking.isNotEmpty()) {
-            var dateOfBookings = "${Utils.formatDateAndMonth(faciBookings.dateOfBooking)} "
+            var dateOfBookings = "${formatDateMonthYear(faciBookings.dateOfBooking)} "
             holder.booking_date_tv.text = dateOfBookings
-//            val dateOfBookings = faciBookings.dateOfBooking.split("T")
-//            val invoiceFromDate = Utils.formatDateAndMonth(dateOfBookings[0])
-//            holder.booking_date_tv.text = invoiceFromDate
-        }
+           }
+
+
 
         if (faciBookings.endDate != null && faciBookings.endDate.isNotEmpty()) {
-            holder.time_tv.visibility = View.GONE
+            holder.timeLayout.visibility = View.GONE
             if (faciBookings.startDate != null && faciBookings.startDate.isNotEmpty()) {
-                 startDates = faciBookings.startDate.split("T")
-                 startDate = Utils.changeDateFormat(startDates!![0])
-                 startDate = startDate!!.replace("-", "/")
-                 endDates = faciBookings.endDate.split("T")
-                 endDate = Utils.changeDateFormat(endDates!![0])
-                endDate = endDate!!.replace("-", "/")
+                startDate = formatDateMonthYear(faciBookings.startDate)
+                endDate = formatDateMonthYear(faciBookings.endDate)
                 if (startDate == endDate){
                     holder.start_date_tv.text = "$startDate"
-                    holder.time_tv.visibility = View.VISIBLE
-                    holder.time_tv.text = "${faciBookings.startTime} - ${faciBookings.endTime}"
+                    holder.timeLayout.visibility = View.VISIBLE
+                    startTime = faciBookings.startTime.replace("-", ":")
+                    endTime = faciBookings.endTime.replace("-", ":")
+                    holder.time_tv.text = "$startTime - $endTime"
                 }else{
                     holder.start_date_tv.text = "$startDate  -  $endDate"
                 }
             }
         }else{
             if (faciBookings.startDate != null && faciBookings.startDate.isNotEmpty()) {
+                startDate = formatDateMonthYear(faciBookings.startDate)
                 holder.start_date_tv.text = startDate
             }
-            holder.time_tv.visibility = View.VISIBLE
-
-            holder.time_tv.text = "${faciBookings.startTime} - ${faciBookings.endTime}"
+            holder.timeLayout.visibility = View.VISIBLE
+            startTime = faciBookings.startTime.replace("-", ":")
+            endTime = faciBookings.endTime.replace("-", ":")
+            holder.time_tv.text = "$startTime - $endTime"
         }
 
         holder.editBookingInfoImageview.setOnClickListener {
@@ -143,7 +146,7 @@ class FaciBookingsAdapter(
 
         val start_date_tv: TextView = itemView.findViewById(R.id.start_date_tv)
         val time_tv: TextView = itemView.findViewById(R.id.time_tv)
-
+        val timeLayout = itemView.findViewById<LinearLayout>(R.id.time_llayout)
         /*   val start_time_tv: TextView = itemView.findViewById(R.id.start_time_tv)
            val end_time_tv: TextView = itemView.findViewById(R.id.end_time_tv)*/
         //   val make_payment_tv: TextView = itemView.findViewById(R.id.make_payment_tv)

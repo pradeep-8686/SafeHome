@@ -109,7 +109,6 @@ class ListFragment : Fragment() {
             galleryImagesList.clear()
         }
         for (model in imageList){
-
             galleryImagesList.add(FacilitiesGalleyImagesModel(model.imagePath))
         }
 
@@ -184,7 +183,7 @@ class ListFragment : Fragment() {
             val fIntent = Intent(requireContext(), ListBookNowActivity::class.java)
             fIntent.putExtra("bookType", myDues.name)
             fIntent.putExtra("facilityId", myDues.facilityId)
-
+            fIntent.putExtra("from", "List")
             fIntent.putExtra("bookByDay", myDues.residentsChargeByDay)
             fIntent.putExtra("bookByHour", myDues.residentsChargeByHour)
             fIntent.flags =
@@ -496,7 +495,6 @@ class ListFragment : Fragment() {
 
     fun showGalleryImages(imageList : List<AllFacilitiesModel.Data.Facility.FacilityImage>) {
         addGalleyImagesData(imageList)
-
         showGalleryPopup()
     }
 
@@ -519,6 +517,9 @@ class ListFragment : Fragment() {
         val cancelImg = view.findViewById<ImageView>(R.id.gallery_dialog_closeImg)
         cancelImg.setOnClickListener{
             showGalleryDetailsDialog!!.dismiss()
+            if (timer!= null){
+                timer.cancel()
+            }
         }
 
         lp.width = (Utils.screenWidth * 0.9).toInt()
@@ -582,6 +583,7 @@ class ListFragment : Fragment() {
         if (!isAdded) return // Fragment not attached to an Activity
         activity?.runOnUiThread(action)
     }
+
     private fun viewPagerAddChangeListener(view: View) {
         //top slider
         galleryViewPager!!.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -628,6 +630,5 @@ class ListFragment : Fragment() {
         /*  if (timer!= null){
               timer.cancel()
           }*/
-
     }
 }

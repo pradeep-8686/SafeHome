@@ -40,17 +40,17 @@ class DailyHelpMemberListAdapter(
         if (dailyHelpMemberList.availableOn != null && dailyHelpMemberList.availableOn.isNotEmpty()) {
             holder.available_on_tv.text = "Availabile On: "+dailyHelpMemberList.availableOn
         }
-
         var sortList = ArrayList<DailyHelpStaffModel.Data.StaffworkingDetail>()
+        var distinctSortedList = ArrayList<DailyHelpStaffModel.Data.StaffworkingDetail>()
+
         for (model in dailyHelpMemberList.staffworkingDetails){
             if (model.residentdetais != null){
-
                 sortList.add(model)
             }
         }
-
+        distinctSortedList = sortList.distinctBy { it.residentdetais!!.flatNo} as ArrayList<DailyHelpStaffModel.Data.StaffworkingDetail>
         if (dailyHelpMemberList.staffworkingDetails != null && dailyHelpMemberList.staffworkingDetails.isNotEmpty()) {
-            holder.work_in_tv.text = "Works In: "+sortList.joinToString(", ") { it1 ->"${it1.residentdetais!!.block} ${it1.residentdetais!!.flatNo}" }
+            holder.work_in_tv.text = "Works In: "+distinctSortedList.joinToString(", ") { it1 ->"${it1.residentdetais!!.block} ${it1.residentdetais!!.flatNo}" }
         }
 
 //        holder.daily_help_booking_item_list_layout.setOnClickListener {

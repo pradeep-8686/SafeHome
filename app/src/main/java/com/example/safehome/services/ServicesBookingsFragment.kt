@@ -284,11 +284,11 @@ class ServicesBookingsFragment : Fragment() {
             if (bookingOtherDialog!!.isShowing) {
                 bookingOtherDialog!!.dismiss()
             }
-            updateBookingDialog(dailyHelpMemberList)
-            /*    val intent = Intent(requireContext(), ServiceSelectedMemberInfoActivity::class.java)
-                intent.putExtra("servicesBookingsList", servicesBookingsList)
+         //   updateBookingDialog(dailyHelpMemberList)
+                val intent = Intent(requireContext(), ServiceSelectedMemberInfoActivity::class.java)
+                intent.putExtra("servicesBookingsList", dailyHelpMemberList)
                 intent.putExtra("from", "update")
-                startActivity(intent)*/
+                startActivity(intent)
         }
 
         close.setOnClickListener {

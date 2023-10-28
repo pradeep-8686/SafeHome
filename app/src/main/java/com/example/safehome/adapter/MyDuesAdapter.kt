@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.safehome.R
 import com.example.safehome.Utils
+import com.example.safehome.Utils.Companion.dateMonthYear
 import com.example.safehome.Utils.Companion.formatDateAndMonth
 import com.example.safehome.Utils.Companion.formatDateToMonth
 import com.example.safehome.Utils.Companion.getMonth
@@ -73,7 +74,7 @@ class MyDuesAdapter(
                 if (myDues.invoiceDueDate != null && myDues.invoiceDueDate.isNotEmpty()) {
 //                    val invoiceDueDates = myDues.invoiceDueDate.split("T")
 //                    val invoiceDueDate = Utils.changeDateFormat(invoiceDueDates[0])
-                    val formattedDate = formatDateAndMonth(myDues.invoiceDueDate)
+                    val formattedDate = dateMonthYear(myDues.invoiceDueDate)
                     holder.due_date_tv.text = formattedDate
                 }
                 if(myDues.paymentStatus.isNotEmpty()){

@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.safehome.R
 import com.example.safehome.model.AvailabilityTime
 
-class AvailabilityTimeAdapter(private val context: Context, private val availabilityTimeList: ArrayList<AvailabilityTime>) :
+class AvailabilityTimeAdapter(
+    private val context: Context,
+    private val availabilityTimeList: ArrayList<AvailabilityTime>,
+    private var sSelectedItems : String) :
     RecyclerView.Adapter<AvailabilityTimeAdapter.ViewHolder>() {
 
     private val selectedItems = HashSet<Int>()
@@ -25,6 +28,15 @@ class AvailabilityTimeAdapter(private val context: Context, private val availabi
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val availabilityTime = availabilityTimeList[position]
         holder.textView.text = availabilityTime.Time
+
+        if (sSelectedItems.isNotEmpty()){
+            for (i in 0 until availabilityTimeList.size) {
+                val item: AvailabilityTime = availabilityTimeList.get(i)
+                if (sSelectedItems.contains(item.Time)) {
+                    selectedItems.add(i)
+                }
+            }
+        }
 
          val selectedDrawable = ContextCompat.getDrawable(context, R.drawable.black_border_bg)
          val deSelectedDrawable = ContextCompat.getDrawable(context, R.drawable.deselect_border_bg)
@@ -42,6 +54,8 @@ class AvailabilityTimeAdapter(private val context: Context, private val availabi
         }
 
         holder.itemView.setOnClickListener {
+            sSelectedItems = ""
+
             if (selectedItems.contains(position)) {
                 selectedItems.remove(position)
             } else {

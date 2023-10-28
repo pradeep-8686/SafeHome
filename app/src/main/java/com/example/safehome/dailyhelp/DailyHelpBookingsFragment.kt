@@ -1,12 +1,15 @@
 package com.example.safehome.dailyhelp
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -20,6 +23,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -43,6 +47,10 @@ import java.util.Locale
 
 
 class DailyHelpBookingsFragment : Fragment() {
+    private var fileName: String?= null
+    private val REQUEST_CODE: Int = 1000
+    private lateinit var uploadDocumentName: TextView
+    private lateinit var updatePaymentForStaffCall: Call<AddServiceBookingList>
     private var time: String?= null
     private lateinit var updateBookingStaffServiceCall: Call<AddServiceBookingList>
     private lateinit var deleteStaffBookingCall: Call<AddServiceBookingList>
@@ -184,13 +192,13 @@ class DailyHelpBookingsFragment : Fragment() {
 
         member_Role.setText(dailyHelpMemberList.staffTypeName)
         dailyHelpMemberListname_text.setText(dailyHelpMemberList.staffName)
-/*
+        /*
 
-        val start_date_txt = view.findViewById<TextView>(R.id.start_date_txt)
-        val end_date_txt = view.findViewById<TextView>(R.id.end_date_txt)
-        val start_time_text = view.findViewById<TextView>(R.id.start_time_text)
-        val end_time_text = view.findViewById<TextView>(R.id.end_time_text)
-*/
+                val start_date_txt = view.findViewById<TextView>(R.id.start_date_txt)
+                val end_date_txt = view.findViewById<TextView>(R.id.end_date_txt)
+                val start_time_text = view.findViewById<TextView>(R.id.start_time_text)
+                val end_time_text = view.findViewById<TextView>(R.id.end_time_text)
+        */
 
         val delete_btn = view.findViewById<TextView>(R.id.delete_btn)
         val edit_btn = view.findViewById<TextView>(R.id.edit_btn)
@@ -391,7 +399,7 @@ class DailyHelpBookingsFragment : Fragment() {
             mTimePicker = TimePickerDialog(
                 requireContext(),
                 { timePicker, selectedHour, selectedMinute ->
-             //       setTime("EndTime", selectedHour, selectedMinute)
+                    //       setTime("EndTime", selectedHour, selectedMinute)
                     end_time_text!!.text = String.format("%02d:%02d %s", selectedHour, selectedMinute,
                         if (selectedHour < 12) "AM" else "PM"
                     )
@@ -407,6 +415,7 @@ class DailyHelpBookingsFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     fun selectedBookingPayUsing(dailyHelpMemberList: DailyHelpBookingListModel.Data) {
         val layoutInflater: LayoutInflater =
             requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -432,7 +441,7 @@ class DailyHelpBookingsFragment : Fragment() {
         val radioGroup = view.findViewById<RadioGroup>(R.id.rdGroup) as RadioGroup
         val third_party_name_radio_option = view.findViewById<RadioButton>(R.id.third_party_name) as RadioButton
         val other_radio_Option = view.findViewById<RadioButton>(R.id.other_rd_option) as RadioButton
-
+        third_party_name_radio_option.text = "Safe Home app"
         // get selected radio button from radioGroup
         val selectedId: Int = radioGroup.getCheckedRadioButtonId()
         // find the radiobutton by returned id
@@ -447,7 +456,7 @@ class DailyHelpBookingsFragment : Fragment() {
                 }
 //                Toast.makeText(requireContext(),radioButton?.text.toString(),Toast.LENGTH_LONG).show()
 //                if (radioButton?.text.toString().equals("Other")) {
-                    selectedBookingPayNow(dailyHelpMemberList)
+                selectedBookingPayNow(dailyHelpMemberList)
 //                } else {
 //                    if (payUsingOther!!.isShowing) {
 //                        payUsingOther!!.dismiss()
@@ -512,7 +521,7 @@ class DailyHelpBookingsFragment : Fragment() {
         }
 
         yes.setOnClickListener {
-             deleteStaffServiceCall(staffBookingId)
+            deleteStaffServiceCall(staffBookingId)
         }
 
         no.setOnClickListener {
@@ -642,7 +651,7 @@ class DailyHelpBookingsFragment : Fragment() {
             }
 
             if (Time == "StartTime") {
-               start_time_text!!.text = time
+                start_time_text!!.text = time
             } else {
                 end_time_text!!.text = time
             }
@@ -651,6 +660,8 @@ class DailyHelpBookingsFragment : Fragment() {
         }
     }
 
+    @SuppressLint("MissingInflatedId")
+    @RequiresApi(Build.VERSION_CODES.Q)
     fun selectedBookingPayNow(dailyHelpMemberList: DailyHelpBookingListModel.Data) {
         val layoutInflater: LayoutInflater =
             requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -673,10 +684,18 @@ class DailyHelpBookingsFragment : Fragment() {
         val close = view.findViewById<ImageView>(R.id.close_btn_click)
         paid_on_date_txt = view.findViewById<TextView>(R.id.paid_on_date_txt)
         val cancel_btn = view.findViewById<TextView>(R.id.cancel_btn)
-
+        val saveBtn = view.findViewById<TextView>(R.id.save_btn)
         val comments_et: EditText = view.findViewById(R.id.comments_et)
         comments_et.setBackgroundResource(android.R.color.transparent)
-
+        val documentLayout = view.findViewById<RelativeLayout>(R.id.upload_doc_rl)
+        uploadDocumentName = view.findViewById<TextView>(R.id.upload_docname_txt)
+        val rdGroup = view.findViewById<RadioGroup>(R.id.rdGroup)
+        val thirdPartyNameRBtn = view.findViewById<RadioButton>(R.id.third_party_name)
+        val eftRBtn = view.findViewById<RadioButton>(R.id.eft)
+        val UpiRBtn = view.findViewById<RadioButton>(R.id.Upi)
+        val chequeRBtn = view.findViewById<RadioButton>(R.id.cheque)
+        val cash = view.findViewById<RadioButton>(R.id.cash)
+        val selectedId: Int = rdGroup.checkedRadioButtonId
         paid_on_date_txt?.setOnClickListener {
             val datePickerDialog = DatePickerDialog(
                 requireContext(),
@@ -702,7 +721,93 @@ class DailyHelpBookingsFragment : Fragment() {
                 paymentModeOther!!.dismiss()
             }
         }
+        saveBtn.setOnClickListener {
+            if (rdGroup?.checkedRadioButtonId == -1) {
+                Toast.makeText(requireContext(), "Please select option", Toast.LENGTH_LONG).show()
+            } else {
+                if (paymentModeOther!!.isShowing) {
+                    paymentModeOther!!.dismiss()
+                }
+                updatePaymentForStaffPaymentCall(dailyHelpMemberList)
+            }
+
+        }
+        documentLayout.setOnClickListener {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            intent.type = "*/*" // This sets the MIME type to all file types, you can restrict it to specific types if needed
+            startActivityForResult(intent, REQUEST_CODE)
+        }
         paymentModeOther!!.show()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val selectedFileUri = data?.data
+            // Handle the selected file URI here
+            val cursor = requireContext().contentResolver.query(selectedFileUri!!, null, null, null, null)
+            cursor?.use {
+                val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                it.moveToFirst()
+                fileName = it.getString(nameIndex)
+                // Now `fileName` contains the name of the selected file.
+                uploadDocumentName.text = fileName.toString()
+
+            }
+         //   selectedDocumentUri(selectedFileUri)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun updatePaymentForStaffPaymentCall(dailyHelpMemberList: DailyHelpBookingListModel.Data) {
+        customProgressDialog.progressDialogShow(requireContext(), this.getString(R.string.loading))
+
+        updatePaymentForStaffCall = apiInterface.updateStaffBookingPayment(Auth_Token!!, dailyHelpMemberList.staffBookingId,
+            residentId!!.toInt(), "Other", "UPI", "Success", "QE2453FGFR67", "", "Comments")
+        updatePaymentForStaffCall.enqueue(object: Callback<AddServiceBookingList> {
+            override fun onResponse(
+                call: Call<AddServiceBookingList>,
+                response: Response<AddServiceBookingList>
+            ) {
+                if (response.isSuccessful && response.body()!= null){
+                    if (paymentModeOther!!.isShowing) {
+                        paymentModeOther!!.dismiss()
+                    }
+                    customProgressDialog.progressDialogDismiss()
+                    if (response.body()!!.statusCode!= null){
+                        when(response.body()!!.statusCode){
+                            1 -> {
+                                if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
+                                    Utils.showToast(requireContext(), response.body()!!.message.toString())
+                                }
+                            }
+                            else -> {
+                                if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
+                                    Utils.showToast(requireContext(), response.body()!!.message.toString())
+                                }
+                            }
+                        }
+                    }
+                }else{
+                    if (paymentModeOther!!.isShowing) {
+                        paymentModeOther!!.dismiss()
+                    }
+                    customProgressDialog.progressDialogDismiss()
+                }
+            }
+
+            override fun onFailure(call: Call<AddServiceBookingList>, t: Throwable) {
+                customProgressDialog.progressDialogDismiss()
+                Utils.showToast(requireContext(), t.message.toString())
+                if (paymentModeOther!!.isShowing) {
+                    paymentModeOther!!.dismiss()
+                }
+            }
+
+        })
     }
 
 }

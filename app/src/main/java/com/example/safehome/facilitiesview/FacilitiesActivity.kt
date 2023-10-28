@@ -21,7 +21,7 @@ class FacilitiesActivity : BaseActivity() {
     var User_Id: String? = ""
     var Auth_Token: String? = ""
     var ScreenFrom: String? = ""
-
+    var from: String? = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFacilitiesBinding.inflate(layoutInflater)
@@ -33,7 +33,15 @@ class FacilitiesActivity : BaseActivity() {
         apiInterface = APIClient.getClient(this)
         User_Id = Utils.getStringPref(this, "User_Id", "")
         Auth_Token = Utils.getStringPref(this, "Token", "")
-
+        from = intent.getStringExtra("from")
+        if (from!= null && from!!.isNotEmpty()) {
+            if (from!! == "bookingsPage") {
+                binding.bookingsBtn.background = getDrawable(R.drawable.rectangler_vrify_bg)
+                binding.listBtn.setBackgroundResource(0)
+                binding.historyBtn.setBackgroundResource(0)
+                replaceFragment(R.id.vehicle_fragment_container, BookingsFragment())
+            }
+        }
         binding.backBtnClick.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             intent.putExtra("ScreenFrom", ScreenFrom)

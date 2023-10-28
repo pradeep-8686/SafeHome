@@ -335,7 +335,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/priority_cl" />
+                app:layout_constraintTop_toBottomOf="@+id/assign_to_cl" />
 
 
             <RadioGroup
@@ -388,11 +388,10 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:background="@drawable/search_layout_bg"
-                android:ems="10"
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="start"
                 android:hint="Enter Comments if any"
-                android:inputType="textImeMultiLine"
+                android:inputType="textMultiLine"
                 android:padding="12dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"

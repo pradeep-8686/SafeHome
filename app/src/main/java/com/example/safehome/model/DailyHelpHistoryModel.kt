@@ -15,6 +15,7 @@ data class DailyHelpHistoryModel(
         val staffId: Int,
         val staffName: String,
         val staffTypeId: Int,
+        val amount: Int,
         val staffTypeName: String
     )
 }

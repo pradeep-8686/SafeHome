@@ -59,7 +59,6 @@ class SelectedMemberInfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySelectedMemberInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         try {
             dailyHelpMemberList = intent.getSerializableExtra("dailyHelpStaffModel") as DailyHelpStaffModel.Data?
             MemberRoleName = intent.getStringExtra("MemberRoleName")
@@ -81,9 +80,11 @@ class SelectedMemberInfoActivity : AppCompatActivity() {
                 sortList.add(model)
             }
         }
+        var distinctSortedList = ArrayList<DailyHelpStaffModel.Data.StaffworkingDetail>()
+        distinctSortedList = sortList.distinctBy { it.residentdetais!!.flatNo } as ArrayList<DailyHelpStaffModel.Data.StaffworkingDetail>
 
         if (dailyHelpMemberList!!.staffworkingDetails != null && dailyHelpMemberList!!.staffworkingDetails.isNotEmpty()) {
-            binding.worksInText.text = "Works In: "+sortList.joinToString(", ") { it1 ->"${it1.residentdetais!!.block} ${it1.residentdetais!!.flatNo}" }
+            binding.worksInText.text = "Works In: "+distinctSortedList.joinToString(", ") { it1 ->"${it1.residentdetais!!.block} ${it1.residentdetais!!.flatNo}" }
         }
 
         inIt()
@@ -173,7 +174,7 @@ class SelectedMemberInfoActivity : AppCompatActivity() {
             mTimePicker = TimePickerDialog(
                 this,
                 { timePicker, selectedHour, selectedMinute ->
-                 //   setTime("EndTime", selectedHour, selectedMinute)
+                    //   setTime("EndTime", selectedHour, selectedMinute)
                     binding.endTime.text = String.format("%02d:%02d %s", selectedHour, selectedMinute,
                         if (selectedHour < 12) "AM" else "PM"
                     )
@@ -189,10 +190,10 @@ class SelectedMemberInfoActivity : AppCompatActivity() {
 
     }
 
-//    @RequiresApi(Build.VERSION_CODES.Q)
+    //    @RequiresApi(Build.VERSION_CODES.Q)
 //    @SuppressLint("MissingInflatedId")
-@RequiresApi(Build.VERSION_CODES.Q)
-fun Booking() {
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun Booking() {
         val layoutInflater: LayoutInflater =
             getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = layoutInflater.inflate(R.layout.delete_tenant_dialog_popup, null)
@@ -223,7 +224,7 @@ fun Booking() {
         }
 
         yes.setOnClickListener {
-             bookingAddStaffNetworkingCall()
+            bookingAddStaffNetworkingCall()
             if (bookingConfirmDialog!!.isShowing) {
                 bookingConfirmDialog!!.dismiss()
             }
@@ -240,9 +241,13 @@ fun Booking() {
     private fun bookingAddStaffNetworkingCall() {
         customProgressDialog.progressDialogShow(this@SelectedMemberInfoActivity, this.getString(R.string.loading))
         var startDate = binding.startDateTxt.text.toString()
-        startDate = Utils.changeDateFormatToMMDDYYYY(startDate)
+        if (!startDate.contains("DD/MM/YYYY")) {
+            startDate = Utils.changeDateFormatToMMDDYYYY(startDate)
+        }
         var endDate = binding.endDateTxt.text.toString()
-        endDate = Utils.changeDateFormatToMMDDYYYY(endDate)
+        if (!endDate.contains("DD/MM/YYYY")) {
+            endDate = Utils.changeDateFormatToMMDDYYYY(endDate)
+        }
         var startTime : String = binding.startTimeText.text.toString().replace(":", "-")
         var endTime : String = binding.endTime.text.toString().replace(":", "-")
         val jsonObject = JsonObject()
@@ -278,7 +283,7 @@ fun Booking() {
                         moveToDailyHelpActivity()
                     }
                 }else{
-                    Utils.showToast(this@SelectedMemberInfoActivity, response.body()!!.message.toString())
+                    //      Utils.showToast(this@SelectedMemberInfoActivity, response.body()!!.message.toString())
                     customProgressDialog.progressDialogDismiss()
                     moveToDailyHelpActivity()
                 }
@@ -338,24 +343,24 @@ fun Booking() {
 
     private fun setTime(Time: String, selectedHour: Int, selectedMinute: Int) {
         try {
-           /* var hour_str: String? = null
-            if (selectedHour < 10) {
-                hour_str = "0" + selectedHour
-            } else {
-                hour_str = selectedHour.toString()
-            }
+            /* var hour_str: String? = null
+             if (selectedHour < 10) {
+                 hour_str = "0" + selectedHour
+             } else {
+                 hour_str = selectedHour.toString()
+             }
 
-            var minute_str: String? = null
-            if (selectedMinute < 10) {
-                minute_str = "0" + selectedMinute
-            } else {
-                minute_str = selectedMinute.toString()
-            }
-            if (Time.equals("StartTime")) {
-                binding.startTimeText?.setText("$hour_str:$minute_str")
-            } else {
-                binding.endTime?.setText("$hour_str:$minute_str")
-            }*/
+             var minute_str: String? = null
+             if (selectedMinute < 10) {
+                 minute_str = "0" + selectedMinute
+             } else {
+                 minute_str = selectedMinute.toString()
+             }
+             if (Time.equals("StartTime")) {
+                 binding.startTimeText?.setText("$hour_str:$minute_str")
+             } else {
+                 binding.endTime?.setText("$hour_str:$minute_str")
+             }*/
             var hour: Int = selectedHour
             if(selectedHour in 0..11){
                 time = "$selectedHour:$selectedMinute AM"

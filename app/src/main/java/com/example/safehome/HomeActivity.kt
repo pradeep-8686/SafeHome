@@ -311,7 +311,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    fun getAllnoticeApiCall(noticeView: Boolean, year: String) {
+    fun getAllnoticeApiCall(noticeView: String, year: String) {
         Log.e("Token", Auth_Token.toString())
        // customProgressDialog.progressDialogShow(this@NoticeActivity, this.getString(R.string.loading))
         getAllNoticeCall = apiInterface.getallNoticesStatus("bearer " + Auth_Token,10,1, noticeView,year)
