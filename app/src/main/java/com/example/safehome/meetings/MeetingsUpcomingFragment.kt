@@ -65,6 +65,7 @@ class MeetingsUpcomingFragment : Fragment() {
         User_Id = Utils.getStringPref(requireContext(), "residentId", "")
         Auth_Token = Utils.getStringPref(requireContext(), "Token", "")
 
+
         getAllUpcomingEventsApiCall()
         addData()
         //    populateData(meetingUpcomingModelList)
@@ -216,11 +217,15 @@ class MeetingsUpcomingFragment : Fragment() {
         val agendaDate = view.findViewById<TextView>(R.id.agenda_date)
         val agendaTime = view.findViewById<TextView>(R.id.agenda_time)
         val agendaLoc = view.findViewById<TextView>(R.id.agenda_location)
+        val tvAganda = view.findViewById<TextView>(R.id.tvAganda)
         if (meetingUpcomingModel.topicName!= null){
             agendaTitle.text = meetingUpcomingModel.topicName
         }
         if (meetingUpcomingModel.meetingDate!= null){
             agendaDate.text = "Date : "+ Utils.formatDateMonthYear(meetingUpcomingModel.meetingDate)
+        }
+        if (meetingUpcomingModel.aganda!= null){
+            tvAganda.text = meetingUpcomingModel.aganda
         }
         agendaTime.text = "Time : ${meetingUpcomingModel.startTime} - ${meetingUpcomingModel.endTime}"
         agendaLoc.text = "Location : "+meetingUpcomingModel.facilityName

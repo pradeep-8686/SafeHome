@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.DisplayMetrics
+import android.util.Log
 import com.example.safehome.activity.PersonalInfoActivity
 import com.example.safehome.activity.SignInActivity
 import com.example.safehome.activity.SignUpActivity
@@ -21,6 +22,10 @@ class SplashActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
 
             if (Utils.getBooleanPref(this@SplashActivity, "IsLoggedIn", false)) {
+
+                val  Mobile_Number = Utils.getStringPref(this, "Mobile_Number", "")
+                Log.d("Mobile_Number", Mobile_Number.toString())
+
                 val login = Intent(this, HomeActivity::class.java)
                 startActivity(login)
                 finish()

@@ -24,6 +24,7 @@ import com.example.safehome.custom.CustomProgressDialog
 import com.example.safehome.databinding.ActivityServicesMemberListBinding
 import com.example.safehome.model.AvailabilityTime
 import com.example.safehome.model.DailyHelpMemberList
+import com.example.safehome.model.DailyHelpStaffModel
 import com.example.safehome.model.MaintenanceHistoryModel
 import com.example.safehome.model.ServiceDataList
 import com.example.safehome.model.ServiceProvidedTypesList
@@ -129,7 +130,6 @@ class ServicesMemberListActivity : AppCompatActivity() {
         val courseAry: ArrayList<ServiceDataList.Data> = servicesDataList
 
         for (eachCourse in courseAry) {
-            var sortList = ArrayList<ServiceDataList.Data.ServiceProvide>()
 /*
             var sortListString : String = ""
             if (eachCourse.serviceProvides != null && eachCourse.serviceProvides.isNotEmpty()) {
@@ -141,11 +141,21 @@ class ServicesMemberListActivity : AppCompatActivity() {
                 sortListString = sortList.joinToString(", ") { it1 -> it1.serviceProvideName }
             }*/
 
+            var sortList = ArrayList<ServiceDataList.Data.ServiceProvide>()
+            var distinctSortedList = ArrayList<ServiceDataList.Data.ServiceProvide>()
+
+            for (model in eachCourse.serviceProvides){
+                if (model.serviceProvideName != null){
+                    sortList.add(model)
+                }
+            }
+            distinctSortedList = sortList.distinctBy { it.serviceProvideName!!} as ArrayList<ServiceDataList.Data.ServiceProvide>
+            val serviceProvideName = distinctSortedList.joinToString(", ") { it1 ->"${it1.serviceProvideName!!}" }
 
             if (!eachCourse.personName.isNullOrEmpty() &&eachCourse.personName.lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
                 !eachCourse.companyName.isNullOrEmpty() &&eachCourse.companyName.lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
-                !eachCourse.availableOn.isNullOrEmpty() &&eachCourse.availableOn.lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault()))
-//                !sortListString.isNullOrEmpty() && sortListString.lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
+                !eachCourse.availableOn.isNullOrEmpty() &&eachCourse.availableOn.lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
+                !serviceProvideName.isNullOrEmpty() && serviceProvideName.lowercase(Locale.getDefault()).contains(text.lowercase(Locale.getDefault()))
             ) {
                 servicesDataMemberList.add(eachCourse)
             }

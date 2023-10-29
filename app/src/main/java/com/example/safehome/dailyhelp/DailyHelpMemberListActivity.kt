@@ -118,9 +118,21 @@ class DailyHelpMemberListActivity : AppCompatActivity() {
         val courseAry: ArrayList<DailyHelpStaffModel.Data> = dailyHelpMembersList
 
         for (eachCourse in courseAry) {
+            var sortList = ArrayList<DailyHelpStaffModel.Data.StaffworkingDetail>()
+            var distinctSortedList = ArrayList<DailyHelpStaffModel.Data.StaffworkingDetail>()
+
+            for (model in eachCourse.staffworkingDetails){
+                if (model.residentdetais != null){
+                    sortList.add(model)
+                }
+            }
+            distinctSortedList = sortList.distinctBy { it.residentdetais!!.flatNo} as ArrayList<DailyHelpStaffModel.Data.StaffworkingDetail>
+            val flatNo = distinctSortedList.joinToString(", ") { it1 ->"${it1.residentdetais!!.block} ${it1.residentdetais!!.flatNo}" }
             if (eachCourse.staffName!!.lowercase(Locale.getDefault())
                     .contains(text.lowercase(Locale.getDefault())) ||
                 eachCourse.availableOn!!.lowercase(Locale.getDefault())
+                    .contains(text.lowercase(Locale.getDefault()))||
+                flatNo!!.lowercase(Locale.getDefault())
                     .contains(text.lowercase(Locale.getDefault()))
             ) {
                 myDuesList.add(eachCourse)

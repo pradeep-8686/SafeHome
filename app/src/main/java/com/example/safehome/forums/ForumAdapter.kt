@@ -1,25 +1,20 @@
 package com.example.safehome.forums
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
-import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.safehome.R
+import com.work.done.utils.setResizableText
 
 class ForumAdapter(
     var context: Context,
@@ -28,7 +23,6 @@ class ForumAdapter(
 ) :
     RecyclerView.Adapter<ForumAdapter.MyViewHolder>() {
     private lateinit var forumsListActivity: ForumsListActivity
-    private var isExpanded = false
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -47,44 +41,50 @@ class ForumAdapter(
             holder.tvRaisedBy.text = "By : ${forumItem.postedBy}"
         }
 
-         if (!forumItem.topic.isNullOrEmpty()) {
+        if (!forumItem.topic.isNullOrEmpty()) {
             holder.tvTopic.text = forumItem.topic
         }
 
-         if (forumItem.attachment != null) {
-             holder.ivForumImage.visibility = View.VISIBLE
+        if (forumItem.attachment != null) {
+            holder.ivForumImage.visibility = View.VISIBLE
 
-             Glide.with(context)
-                 .load( forumItem.attachment)
-                 .fitCenter()
-                 .into(holder.ivForumImage)
+            Glide.with(context)
+                .load( forumItem.attachment)
+                .fitCenter()
+                .into(holder.ivForumImage)
 
-         }else{
+        }else{
 
-             holder.ivForumImage.visibility = View.GONE
-         }
-
-         if (!forumItem.description.isNullOrEmpty()) {
-            holder.tvForumDescription.text = "${forumItem.description}"
+            holder.ivForumImage.visibility = View.GONE
         }
 
-         if (!forumItem.viewCount.toString().isNullOrEmpty()) {
+        if (!forumItem.description.isNullOrEmpty()) {
+            holder.tvForumDescription.text = "${forumItem.description}"
+            holder.tvForumDescription.setResizableText(holder.tvForumDescription.text.toString(),2,true)
+        }
+
+        if (!forumItem.viewCount.toString().isNullOrEmpty()) {
             holder.tvNoOfViews.text = "${forumItem.viewCount}"
         }
 
-
-         if (!forumItem.commentCount.toString().isNullOrEmpty()) {
+        if (!forumItem.commentCount.toString().isNullOrEmpty()) {
             holder.tvForumComment.text = "${forumItem.commentCount}"
         }
 
 
         holder.tvForumComment.setOnClickListener {
-            forumsListActivity.viewComment(it,forumItem)
+            //       forumsListActivity.viewComment(it,forumItem)
         }
 
         holder.ivEdit.setOnClickListener {
             forumsListActivity.editPoll(forumItem)
 
+        }
+
+        holder.forumItemCard.setOnClickListener {
+            val intent = Intent(context, ForumsListDetailActivity::class.java)
+            intent.putExtra("forumItem", forumItem)
+            context.startActivity(intent)
         }
 
         holder.ivDelete.setOnClickListener {
@@ -100,7 +100,6 @@ class ForumAdapter(
             holder.ivEdit.visibility = View.GONE
             holder.ivDelete.visibility = View.GONE
         }
-
 
     }
 
@@ -124,6 +123,8 @@ class ForumAdapter(
         val tvForumComment: TextView = itemView.findViewById(R.id.tvForumComment)
         val ivEdit: ImageView = itemView.findViewById(R.id.ivEdit)
         val ivDelete: ImageView = itemView.findViewById(R.id.ivDelete)
+        val forumItemCard: CardView = itemView.findViewById(R.id.forum_card_layout)
     }
+
 
 }

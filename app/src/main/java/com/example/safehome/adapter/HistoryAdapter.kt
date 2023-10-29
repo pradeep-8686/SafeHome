@@ -74,9 +74,9 @@ class HistoryAdapter(
 
             }
 
-
             myDues.invoiceFromDate = invoiceFromdate
             myDues.invoiceToDate = invoiceTodate
+
             if (invoiceFromdate == invoiceTodate) {
                 holder.invoice_period_text_tv.text = "$invoiceFromdate"
             } else {

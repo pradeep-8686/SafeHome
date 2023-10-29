@@ -51,22 +51,60 @@ class FaciHistoryAdapter (
             }
         }
         if (faciBookings.dateOfBooking != null && faciBookings.dateOfBooking.isNotEmpty()) {
-            val dateOfBookings = faciBookings.dateOfBooking.split("T")
-             dateOfBooking = Utils.formatDateAndMonth(dateOfBookings[0])
+
+            if (faciBookings.dateOfBooking!!.contains("T")) {
+                dateOfBooking = "${Utils.dateToMonthYear(faciBookings.dateOfBooking)} "
+
+            }else{
+                dateOfBooking =faciBookings.dateOfBooking
+
+            }
+            faciBookings.dateOfBooking = dateOfBooking.toString()
+
             holder.booking_date_tv.text = dateOfBooking
+
         }
+
+
         if (faciBookings.startDate != null && faciBookings.startDate.isNotEmpty()) {
             if (faciBookings.endDate != null && faciBookings.endDate.isNotEmpty()) {
-                startDates = faciBookings.startDate.split("T")
-                startDate = Utils.changeDateFormat(startDates!![0])
-                startDate = startDate!!.replace("-", "/")
-                endDates = faciBookings.endDate.split("T")
-                endDate = Utils.changeDateFormat(endDates!![0])
-                endDate = endDate!!.replace("-", "/")
+
+                if (faciBookings.startDate!!.contains("T")) {
+                    startDate = Utils.changeDateFormat(faciBookings?.startDate!!.split("T")[0])
+                        .replace("-", "/")
+                } else {
+                    startDate = faciBookings?.startDate!!.replace("-", "/")
+                }
+
+                faciBookings.startDate = startDate.toString()
+
+                holder.start_date_tv.text = "$startDate"
+
+                if (faciBookings.endDate!!.contains("T")) {
+                    endDate = Utils.changeDateFormat(faciBookings?.endDate!!.split("T")[0])
+                        .replace("-", "/")
+                } else {
+                    endDate = faciBookings?.endDate!!.replace("-", "/")
+                }
+
+                faciBookings.endDate = endDate.toString()
+
+
+
                 holder.start_date_tv.text = "$startDate - $endDate"
 
             }else{
-                holder.start_date_tv.text = startDate
+                if (faciBookings.startDate!!.contains("T")) {
+                    startDate = Utils.changeDateFormat(faciBookings?.startDate!!.split("T")[0])
+                        .replace("-", "/")
+                } else {
+                    startDate = faciBookings?.startDate!!.replace("-", "/")
+                }
+
+                faciBookings.startDate = startDate.toString()
+
+                holder.start_date_tv.text = "$startDate"
+
             }
         }
 
@@ -82,12 +120,12 @@ class FaciHistoryAdapter (
             }
         }
 
-        if (faciBookings.dateOfBooking != null && faciBookings.dateOfBooking.isNotEmpty()) {
+       /* if (faciBookings.dateOfBooking != null && faciBookings.dateOfBooking.isNotEmpty()) {
             val dateOfBookings = faciBookings.dateOfBooking.split("T")
             dateOfBooking = Utils.changeDateFormat(dateOfBookings!![0])
             dateOfBooking = dateOfBooking!!.replace("-", "/")
             holder.paid_on_tv.text = dateOfBooking
-        }
+        }*/
 
     }
 

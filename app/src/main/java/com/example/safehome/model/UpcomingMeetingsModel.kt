@@ -26,7 +26,7 @@ data class UpcomingMeetingsModel(
             val facilityName: String,
             var meetingDate: String,
             val meetingId: Int,
-            val meetingMinutes: Any,
+            val meetingMinutes: String,
             val meetingStatus: String,
             val modifiedBy: Any,
             val modifiedOn: Any,

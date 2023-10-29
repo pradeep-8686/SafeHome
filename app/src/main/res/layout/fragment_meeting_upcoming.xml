@@ -20,7 +20,7 @@
         android:paddingTop="5dp"
         android:paddingRight="15dp"
         android:paddingBottom="5dp"
-        android:text="No Personal Complaints \n Check Back Soon"
+        android:text="No Upcoming Meetings \n Check Back Soon"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:visibility="gone"

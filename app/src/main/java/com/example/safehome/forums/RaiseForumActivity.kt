@@ -98,7 +98,7 @@ class RaiseForumActivity : AppCompatActivity() {
 
 
         binding.backBtnClick.setOnClickListener {
-           val intent = Intent(this, HomeActivity::class.java)
+           val intent = Intent(this, ForumsListActivity::class.java)
             intent.putExtra("ScreenFrom", "MenuScreenFrag")
             overridePendingTransition(
                 android.R.anim.fade_in,

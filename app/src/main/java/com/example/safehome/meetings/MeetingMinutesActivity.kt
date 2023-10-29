@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -55,7 +56,9 @@ class MeetingMinutesActivity : AppCompatActivity() {
             complaintType()
 
         }
-
+        if (Meetingdata?.meetingMinutes != null){
+            binding.etComment.text = Editable.Factory.getInstance().newEditable(Meetingdata?.meetingMinutes)
+        }
         binding.tvComplaintType.text = Meetingdata!!.topicName
         binding.textView21.text = "Meeting Date : ${Utils.formatDateMonthYear(Meetingdata!!.meetingDate)}"
         if (Meetingdata!!.startTime != null && Meetingdata!!.endTime!= null) {

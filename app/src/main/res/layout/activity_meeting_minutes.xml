@@ -166,6 +166,8 @@
                 android:ems="10"
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="start"
+                android:editable="false"
+                android:clickable="false"
                 android:inputType="textImeMultiLine"
                 android:padding="12dp"
                 android:textColor="@color/black"

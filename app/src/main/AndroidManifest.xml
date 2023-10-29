@@ -33,6 +33,9 @@
         <activity
             android:name=".forums.RaiseForumActivity"
             android:exported="false" />
+        <activity
+            android:name=".forums.ForumsListDetailActivity"
+            android:exported="false" />
 
         <activity
             android:name=".complaints.ComplaintStatusActivity"
