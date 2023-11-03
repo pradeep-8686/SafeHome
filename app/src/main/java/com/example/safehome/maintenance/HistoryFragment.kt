@@ -74,7 +74,7 @@ class HistoryFragment : Fragment() {
         Auth_Token = Utils.getStringPref(requireContext(), "Token", "")
 
 //        addMyDuesData()
-        populateData()
+//        populateData()
         addYearList()
         addCategoryList()
 
@@ -183,7 +183,7 @@ class HistoryFragment : Fragment() {
             selectedCategoryId = ""
             binding.tvCategory.text = ""
         }
-        getPaidMaintenanaceDetailsByResident( selectedCategoryId, selectedYear)
+        getPaidMaintenanaceDetailsByResident(categoryId =  selectedCategoryId, year =  selectedYear)
         Log.d(TAG, "$selectedCategoryId , $selectedYear")
     }
 
@@ -196,10 +196,12 @@ class HistoryFragment : Fragment() {
 
 
     private fun populateData() {
-        if (maintenanceHistoryList.size == 0){
+        if (maintenanceHistoryList.isEmpty()){
             binding.emptyBookingFacilitiesTxt.visibility = View.VISIBLE
+            binding.historyRecyclerView.visibility = View.GONE
         }else {
             binding.emptyBookingFacilitiesTxt.visibility = View.GONE
+            binding.historyRecyclerView.visibility = View.VISIBLE
             binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             historyAdapter = HistoryAdapter(requireContext(), maintenanceHistoryList)
             binding.historyRecyclerView.adapter = historyAdapter
@@ -251,9 +253,9 @@ class HistoryFragment : Fragment() {
         }
         selectedYear = year
         if (selectedCategoryId != null){
-            getPaidMaintenanaceDetailsByResident(selectedCategoryId!!, selectedYear!!)
+            getPaidMaintenanaceDetailsByResident(categoryId = selectedCategoryId!!, year = selectedYear!!)
         }else{
-            getPaidMaintenanaceDetailsByResident(selectedYear!!)
+            getPaidMaintenanaceDetailsByResident(year = selectedYear!!)
         }
         Log.d(TAG, "$selectedCategoryId!! , $selectedYear!!")
     }
@@ -295,9 +297,9 @@ class HistoryFragment : Fragment() {
         }
         if (selectedYear != null){
 
-            getPaidMaintenanaceDetailsByResident(selectedCategoryId!!, selectedYear!!)
+            getPaidMaintenanaceDetailsByResident(categoryId = selectedCategoryId!!, year = selectedYear!!)
         }else{
-            getPaidMaintenanaceDetailsByResident(selectedCategoryId!!)
+            getPaidMaintenanaceDetailsByResident(categoryId = selectedCategoryId!!)
 
         }
         Log.d(TAG, "$selectedCategoryId , $selectedYear")
@@ -319,7 +321,7 @@ class HistoryFragment : Fragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private fun getPaidMaintenanaceDetailsByResident(categoryId: String? = null, year: String? = null) {
+    private fun getPaidMaintenanaceDetailsByResident(categoryId: String? = "", year: String? = "") {
         //progressbar
         customProgressDialog.progressDialogShow(
             requireContext(),
@@ -338,17 +340,12 @@ class HistoryFragment : Fragment() {
                 customProgressDialog.progressDialogDismiss()
                 // here successfully response
                 if (response.isSuccessful && response.body() != null) {
-                    if (response.body()?.data != null && response.body()!!.data.isNotEmpty()) {
                         if (maintenanceHistoryList.isNotEmpty()) {
                             maintenanceHistoryList.clear()
                         }
                         maintenanceHistoryList =
                             response.body()!!.data as ArrayList<MaintenanceHistoryModel.Data>
 
-
-                    } else {
-                        // vehilceModelDropDown()
-                    }
                     populateData()
 //                    historyAdapter.notifyDataSetChanged()
                 } else {

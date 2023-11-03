@@ -70,7 +70,7 @@ class MeetingsCompletedFragment : Fragment() {
         User_Id = Utils.getStringPref(requireContext(), "residentId", "")
         Auth_Token = Utils.getStringPref(requireContext(), "Token", "")
 
-        getAllUpcomingEventsApiCall("2023")
+        getAllUpcomingEventsApiCall(year = "2023")
         addData()
      //   populateData(meetingCompletedModelList)
         addYearList()
@@ -198,10 +198,13 @@ class MeetingsCompletedFragment : Fragment() {
     private fun populateData(meetingCompletedModelList: ArrayList<UpcomingMeetingsModel.Data.MeetingData>) {
         //    upcomingList.clear()
 
-        if (this.meetingCompletedModelList.size == 0) {
+        if (meetingCompletedModelList.isEmpty()) {
             binding.emptyEventsTxt.visibility = View.VISIBLE
+            binding.personalRecyclerView.visibility = View.GONE
+
         } else {
             binding.emptyEventsTxt.visibility = View.GONE
+            binding.personalRecyclerView.visibility = View.VISIBLE
             binding.personalRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             communityComplaintsAdapter =
                 MeetingCompletedAdapter(requireContext(), meetingCompletedModelList)
@@ -271,9 +274,9 @@ class MeetingsCompletedFragment : Fragment() {
             binding.yearTxt.text = year
         }
         selectedYear = year
-         if (selectedYear != null){
+         if (year != null){
 
-             getAllUpcomingEventsApiCall(selectedYear!!)
+             getAllUpcomingEventsApiCall(year = year!!)
          }
 
     }

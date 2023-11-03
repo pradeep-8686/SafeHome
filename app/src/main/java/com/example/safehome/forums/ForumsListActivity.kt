@@ -382,7 +382,7 @@ class ForumsListActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun getAllForumCommentsNetworkCall(forumItem1: GetAllForumDetailsModel.Data.Forum) {
         customProgressDialog.progressDialogShow(this@ForumsListActivity, this.getString(R.string.loading))
-        getAllCommentsCall = apiInterface.getAllCommentDetailsByForumId("bearer "+Auth_Token, forumItem1.forumID)
+        getAllCommentsCall = apiInterface.getAllCommentDetailsByForumId("bearer "+Auth_Token, 27)
         getAllCommentsCall.enqueue(object: Callback<GetAllForumCommentsModel> {
             override fun onResponse(
                 call: Call<GetAllForumCommentsModel>,
@@ -431,7 +431,7 @@ class ForumsListActivity : AppCompatActivity() {
         commentsRecyclerView.layoutManager = LinearLayoutManager(this)
         forumCommentsAdapter = ForumCommentsAdapter(this@ForumsListActivity, forumCommentsList)
         commentsRecyclerView.adapter = forumCommentsAdapter
-        forumCommentsAdapter.setCallback(this@ForumsListActivity)
+      //  forumCommentsAdapter.setCallback(this@ForumsListActivity)
         forumCommentsAdapter.notifyDataSetChanged()
     }
 
@@ -465,7 +465,7 @@ class ForumsListActivity : AppCompatActivity() {
         val no: TextView = view.findViewById(R.id.no_btn)
         val yes: TextView = view.findViewById(R.id.yes_btn)
         val member_mob_number: TextView = view.findViewById(R.id.member_mob_number)
-        member_mob_number.setText("Are you sure you want to delete this poll?")
+        member_mob_number.setText("Are you sure you want to delete this Forum?")
 
         close.setOnClickListener {
             if (pollDeleteDialog!!.isShowing) {

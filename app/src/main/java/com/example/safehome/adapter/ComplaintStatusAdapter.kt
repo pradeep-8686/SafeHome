@@ -12,6 +12,7 @@ import com.example.safehome.R
 import com.example.safehome.complaints.CommunityFragment
 import com.example.safehome.complaints.ComplaintsActivity
 import com.example.safehome.complaints.PersonalFragment
+import com.example.safehome.complaints.UpdateComplaintActivity
 import com.example.safehome.dailyhelp.DailyHelpActivity
 import com.example.safehome.dailyhelp.DailyHelpMemberListActivity
 import com.example.safehome.dailyhelp.DailyHelpPaymentHistoryFragment
@@ -30,6 +31,7 @@ import com.example.safehome.services.ServicesPaymentHistoryFragment
 class ComplaintStatusAdapter(var context: Context, private var statesList: List<String>) :
     RecyclerView.Adapter<ComplaintStatusAdapter.MyViewHolder>() {
     private lateinit var personalFragment: PersonalFragment
+    private lateinit var updateComplaintActivity: UpdateComplaintActivity
     private lateinit var communityFragment: CommunityFragment
 
 
@@ -53,6 +55,8 @@ class ComplaintStatusAdapter(var context: Context, private var statesList: List<
         holder.ageGroupTv.setOnClickListener {
           if( context is ComplaintsActivity) {
                 personalFragment.setCallbackComplaintStatus(it.tag as String)
+            }else if( context is UpdateComplaintActivity) {
+              updateComplaintActivity.setCallbackComplaintStatus(it.tag as String)
             }
 //          else {
 //              communityFragment.setCallbackComplaintStatusCommunity(it.tag as String)
@@ -69,6 +73,10 @@ class ComplaintStatusAdapter(var context: Context, private var statesList: List<
 
     fun setCallbackComplaintStatus(personalFragment: PersonalFragment) {
         this.personalFragment = personalFragment
+    }
+
+    fun setCallbackComplaintStatus(updateComplaintActivity: UpdateComplaintActivity) {
+        this.updateComplaintActivity = updateComplaintActivity
     }
 
     fun setCallbackComplaintStatusCommunity(communityFragment: CommunityFragment) {

@@ -9,5 +9,6 @@ data class CommunityComplaintsModel(
     val discloseDetails: String,
     val description: String,
     val createdAt: String,
+    val assignBy: String,
     val attachPhoto: ArrayList<Int>
 )

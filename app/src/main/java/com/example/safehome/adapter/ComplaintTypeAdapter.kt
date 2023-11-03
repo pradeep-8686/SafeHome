@@ -13,6 +13,7 @@ import com.example.safehome.complaints.CommunityFragment
 import com.example.safehome.complaints.ComplaintsActivity
 import com.example.safehome.complaints.PersonalFragment
 import com.example.safehome.complaints.RaiseComplaintActivity
+import com.example.safehome.complaints.UpdateComplaintActivity
 import com.example.safehome.dailyhelp.DailyHelpActivity
 import com.example.safehome.dailyhelp.DailyHelpMemberListActivity
 import com.example.safehome.dailyhelp.DailyHelpPaymentHistoryFragment
@@ -35,6 +36,7 @@ class ComplaintTypeAdapter(var context: Context, private var statesList: List<St
     private lateinit var raiseComplaintActivity: RaiseComplaintActivity
     private lateinit var raisePollActivity:RaisePollActivity
     private lateinit var updatePollActivity:UpdatePollActivity
+    private lateinit var updateComplaintActivity:UpdateComplaintActivity
 
 
     override fun onCreateViewHolder(
@@ -57,6 +59,8 @@ class ComplaintTypeAdapter(var context: Context, private var statesList: List<St
         holder.ageGroupTv.setOnClickListener {
             if( context is RaiseComplaintActivity) {
                 raiseComplaintActivity.setCallbackComplaintType(it.tag as String)
+            } else if( context is UpdateComplaintActivity) {
+                updateComplaintActivity.setCallbackComplaintType(it.tag as String)
             } else if (context is RaisePollActivity){
 //                raisePollActivity.setCallbackComplaintType(it.tag as String)
             }else{
@@ -75,6 +79,10 @@ class ComplaintTypeAdapter(var context: Context, private var statesList: List<St
 
     fun setCallbackComplaintType(raiseComplaintActivity: RaiseComplaintActivity) {
         this.raiseComplaintActivity = raiseComplaintActivity
+    }
+
+    fun setCallbackComplaintType(updateComplaintActivity: UpdateComplaintActivity) {
+        this.updateComplaintActivity = updateComplaintActivity
     }
 
     fun setCallbackComplaintType(raisePollActivity: RaisePollActivity) {

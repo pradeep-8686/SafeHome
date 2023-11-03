@@ -43,7 +43,10 @@ class SafeHomeMainUserAdapter(var context: Context,
         }
 
         holder.defaultSwitchImg.isChecked = currentItem.isDefaultText
+        if (currentItem.isDefaultText){
 
+            lastSelectedPosition = position
+        }
 //        if (safeHomeUserModelList.isDefaultText){
 //            if (safeHomeUserModelList.isDefaultText == "true"){
 //                holder.defaultSwitchImg.isChecked = true

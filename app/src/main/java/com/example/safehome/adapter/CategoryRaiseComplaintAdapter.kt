@@ -14,6 +14,7 @@ import com.example.safehome.complaints.ComplaintStatusActivity
 import com.example.safehome.complaints.ComplaintsActivity
 import com.example.safehome.complaints.PersonalFragment
 import com.example.safehome.complaints.RaiseComplaintActivity
+import com.example.safehome.complaints.UpdateComplaintActivity
 import com.example.safehome.dailyhelp.DailyHelpActivity
 import com.example.safehome.dailyhelp.DailyHelpMemberListActivity
 import com.example.safehome.dailyhelp.DailyHelpPaymentHistoryFragment
@@ -32,6 +33,7 @@ import com.example.safehome.services.ServicesPaymentHistoryFragment
 class CategoryRaiseComplaintAdapter(var context: Context, private var statesList: List<String>) :
     RecyclerView.Adapter<CategoryRaiseComplaintAdapter.MyViewHolder>() {
     private lateinit var raiseComplaintActivity: RaiseComplaintActivity
+    private lateinit var updateComplaintActivity: UpdateComplaintActivity
     private lateinit var complaintStatusActivity: ComplaintStatusActivity
 
     override fun onCreateViewHolder(
@@ -56,6 +58,8 @@ class CategoryRaiseComplaintAdapter(var context: Context, private var statesList
               raiseComplaintActivity.setCallbackCategory(it.tag as String)
             } else if (context is ComplaintStatusActivity){
               complaintStatusActivity.setCallbackEscalateTo(it.tag as String)
+            }else if (context is UpdateComplaintActivity){
+              updateComplaintActivity.setCallbackCategory(it.tag as String)
             }else {
               //  facilitiesHistoryFragment.selectYear(it.tag as String)
             }
@@ -71,6 +75,9 @@ class CategoryRaiseComplaintAdapter(var context: Context, private var statesList
 
     fun setCallbackCategory(raiseComplaintActivity: RaiseComplaintActivity) {
         this.raiseComplaintActivity = raiseComplaintActivity
+    }
+    fun setCallbackCategory(updateComplaintActivity: UpdateComplaintActivity) {
+        this.updateComplaintActivity = updateComplaintActivity
     }
     fun setCallbackEscalateTo(complaintStatusActivity: ComplaintStatusActivity) {
         this.complaintStatusActivity = complaintStatusActivity

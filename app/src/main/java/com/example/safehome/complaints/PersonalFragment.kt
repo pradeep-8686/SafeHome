@@ -211,7 +211,7 @@ class PersonalFragment : Fragment() {
             "Admin",
             "Yes",
             "Water pipe is broken. Need immediate action",
-            "2 Days Ago",
+            "2 Months Ago",
             R.drawable.pending_new,
 
             attachPhoto
@@ -231,7 +231,7 @@ class PersonalFragment : Fragment() {
             "Admin",
             "Yes",
             "Water pipe is broken. Need immediate action",
-            "2 Days Ago",
+            "5 Days Ago",
             R.drawable.in_progress_new,
             attachPhoto2
         )
@@ -249,7 +249,7 @@ class PersonalFragment : Fragment() {
             "Admin",
             "Yes",
             "Water pipe is broken. Need immediate action",
-            "3 Days Ago",
+            "3  Weeks Ago",
 
             R.drawable.completed_new,
             attachPhoto3
@@ -265,11 +265,26 @@ class PersonalFragment : Fragment() {
             "Admin",
             "Yes",
             "Water pipe is broken. Need immediate action",
-            "4 Days Ago",
-            R.drawable.c_re_initiate,
+            "2 Months Ago",
+            R.drawable.c_re_pending,
             attachPhoto4
         )
         personalComplaintsModelList.add(c4)
+
+        val attachPhoto5 = ArrayList<Int>()
+        val c5 = PersonalComplaintsModel(
+            "Reinitiate \nPending",
+            "Resident Level",
+            "Plumbing Issue",
+            "High",
+            "Admin",
+            "Yes",
+            "Water pipe is broken. Need immediate action",
+            "2 Days Ago",
+            R.drawable.c_re_initiate,
+            attachPhoto5
+        )
+        personalComplaintsModelList.add(c5)
 
         populateData(personalComplaintsModelList)
 
@@ -302,6 +317,7 @@ class PersonalFragment : Fragment() {
         complaintStatusList.add("Pending")
         complaintStatusList.add("In Progress")
         complaintStatusList.add("Resolved")
+        complaintStatusList.add("Reinitiate Pending")
         complaintStatusList.add("Reinitiate")
     }
 

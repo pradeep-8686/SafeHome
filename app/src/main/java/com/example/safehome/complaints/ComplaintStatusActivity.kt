@@ -3,40 +3,37 @@ package com.example.safehome.complaints
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
-import android.graphics.Matrix
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import android.widget.EditText
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.RadioButton
+import android.widget.RelativeLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.safehome.HomeActivity
 import com.example.safehome.R
 import com.example.safehome.Utils
 import com.example.safehome.adapter.CategoryRaiseComplaintAdapter
 import com.example.safehome.custom.CustomProgressDialog
 import com.example.safehome.databinding.ActivityComplaintStatusBinding
-import com.example.safehome.databinding.ActivityComplaintsBinding
 import com.example.safehome.maintenance.HistoryFragment
 import com.example.safehome.repository.APIClient
 import com.example.safehome.repository.APIInterface
 import com.github.chrisbanes.photoview.PhotoView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ComplaintStatusActivity : AppCompatActivity() {
 
+    private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var binding: ActivityComplaintStatusBinding
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var apiInterface: APIInterface
@@ -67,7 +64,7 @@ class ComplaintStatusActivity : AppCompatActivity() {
         binding.tittleTxt.text = "Plumbing Issue"
         binding.tvCategory.text = status
 
-                binding.backBtnClick.setOnClickListener {
+        binding.backBtnClick.setOnClickListener {
             onBackPressed()
         }
 
@@ -75,10 +72,10 @@ class ComplaintStatusActivity : AppCompatActivity() {
         loadRadioGroup()
         clickActions()
 
-     /*   if (status == "pending"){
-            binding.tvDetailsDisclosedTitle.visibility = View.GONE
-            binding.tvDetailsDisclosed.visibility = View.GONE
-        }*/
+        /*   if (status == "pending"){
+               binding.tvDetailsDisclosedTitle.visibility = View.GONE
+               binding.tvDetailsDisclosed.visibility = View.GONE
+           }*/
     }
 
     private fun clickActions() {
@@ -94,21 +91,51 @@ class ComplaintStatusActivity : AppCompatActivity() {
             escalateToPopUp()
         }
 
+        binding.yesBtn.setOnClickListener {
+            showBootomSheetDialog(it)
+        }
 
+        /*  binding.mainLayout.setOnClickListener {
 
-      /*  binding.mainLayout.setOnClickListener {
+              if (attachPhotoWindow?.isShowing == true) {
+                  attachPhotoWindow?.dismiss()
+              }
 
-            if (attachPhotoWindow?.isShowing == true) {
-                attachPhotoWindow?.dismiss()
-            }
+              if (keepPollPopupWindow?.isShowing == true) {
+                  keepPollPopupWindow?.dismiss()
+              }
 
-            if (keepPollPopupWindow?.isShowing == true) {
-                keepPollPopupWindow?.dismiss()
-            }
-
-        }*/
+          }*/
 
     }
+
+    @SuppressLint("MissingInflatedId")
+    private fun showBootomSheetDialog(view: View) {
+        bottomSheetDialog = BottomSheetDialog(this@ComplaintStatusActivity, R.style.AppBottomSheetDialogTheme)
+        val sheetView: View = layoutInflater.inflate(
+            R.layout.forum_comments_btmsheet, view!!.findViewById<View>(R.id.main_ll) as? ViewGroup
+        )
+        val closeImg = sheetView.findViewById<ImageView>(R.id.close)
+        //  commentsRecyclerView = sheetView.findViewById<RecyclerView>(R.id.comments_recyclerview)
+        val commentsLayout = sheetView.findViewById<RelativeLayout>(R.id.comments_rl)
+        commentsLayout.visibility = View.VISIBLE
+        val replyLayout = sheetView.findViewById<RelativeLayout>(R.id.forum_reply_layout)
+        replyLayout.visibility = View.VISIBLE
+        val etReply = sheetView.findViewById<EditText>(R.id.ed_comment)
+        val sendImg = sheetView.findViewById<ImageView>(R.id.comment_send_img)
+        sendImg.setOnClickListener {
+            //  addForumCommentServiceCall(etReply.text.toString(), forumItem)
+        }
+        closeImg.setOnClickListener {
+            if (bottomSheetDialog.isShowing){
+                bottomSheetDialog.dismiss()
+            }
+        }
+        //  getAllForumCommentsNetworkCall(forumItem)
+        bottomSheetDialog.setContentView(sheetView)
+        bottomSheetDialog.show()
+    }
+
     private fun addEscalateToList() {
         escalateToList.add("Admin")
         escalateToList.add("President")
@@ -243,7 +270,7 @@ class ComplaintStatusActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     private fun showGalleryPopup(fileName : Int) {
         val layoutInflater: LayoutInflater =
-           getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = layoutInflater.inflate(R.layout.show_image_dialog, null)
         showGalleryDetailsDialog = Dialog(this, R.style.CustomAlertDialog)
         showGalleryDetailsDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)

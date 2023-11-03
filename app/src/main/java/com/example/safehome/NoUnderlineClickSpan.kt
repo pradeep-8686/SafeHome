@@ -68,7 +68,7 @@ fun TextView.setResizableText(
     }
     val charactersAtLineEnd = textLayout.getLineEnd(maxLines - 1)
     val suffixText =
-        if (viewMore) resources.getString(R.string.resizable_text_read_more) else resources.getString(R.string.resizable_text_read_more)
+        if (viewMore) resources.getString(R.string.resizable_text_read_more) else resources.getString(R.string.resizable_text_read_less)
     var charactersToTake = charactersAtLineEnd - suffixText.length / 2 // Good enough first guess
     if (charactersToTake <= 0) {
         // Happens when text is empty

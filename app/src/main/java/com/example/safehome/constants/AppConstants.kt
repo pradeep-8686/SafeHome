@@ -93,7 +93,9 @@ class AppConstants {
         const val addForum= "notice/AddForumDetails"
         const val updateForum= "notice/UpdateForumDetails"
         const val deleteForumDetails= "notice/DeleteForumDetailsById?"
-        const val getAllCommentDetailsByForumId= "notice/GetAllCommentDetailsByForumId?ForumId=27"
+        const val getAllCommentDetailsByForumId= "notice/GetAllCommentDetailsByForumId?"
         const val addForumCommentDetails = "notice/AddForumCommentDetails"
+        const val addForumCommentReply = "notice/AddForumCommentReply"
+        const val deleteForumCommentDetails = "notice/DeleteForumCommentDetails?"
     }
 }

@@ -82,6 +82,9 @@ class CommunityComplaintsAdapter(
         if (complaint.assignTo != null) {
             holder.tv_assigned_to.text = "To : ${complaint.assignTo}"
         }
+        if (complaint.assignBy != null) {
+            holder.tv_by_assigned.text = "By : ${complaint.assignBy}"
+        }
 
         if (complaint.createdAt != null) {
             holder.tv_created_at.text = "Raised : ${complaint.createdAt}"
@@ -136,6 +139,7 @@ class CommunityComplaintsAdapter(
         val tv_description: TextView = itemView.findViewById(R.id.tv_description)
         val tv_assigned_to: TextView = itemView.findViewById(R.id.tv_assigned_to)
         val tv_created_at: TextView = itemView.findViewById(R.id.tv_created_at)
+        val tv_by_assigned: TextView = itemView.findViewById(R.id.tv_by_assigned)
         val tvPriority: TextView = itemView.findViewById(R.id.tvPriority)
         val rvImagesList: RecyclerView = itemView.findViewById(R.id.rvImagesList)
 

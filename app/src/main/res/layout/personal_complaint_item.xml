@@ -21,19 +21,19 @@
 
     <TextView
         android:id="@+id/tv_status"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginStart="14dp"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Pending"
         android:layout_marginTop="2dp"
+        android:fontFamily="@font/poppins_medium"
         android:gravity="center"
+        android:text="Pending"
         android:textColor="@color/white"
         android:textSize="@dimen/_12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_status_image"/>
+        app:layout_constraintTop_toBottomOf="@+id/iv_status_image" />
 
 
     <TextView

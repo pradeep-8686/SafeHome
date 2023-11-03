@@ -92,7 +92,7 @@ class PersonalComplaintsAdapter(
             holder.tv_description.text = complaint.description
         }
         if (complaint.assignTo != null) {
-            holder.tv_assigned_to.text = "To : ${complaint.assignTo}"
+            holder.tv_assigned_to.text = "To2 : ${complaint.assignTo}"
         }
 
         if (complaint.createdAt != null) {

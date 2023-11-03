@@ -13,6 +13,7 @@ import com.example.safehome.complaints.CommunityFragment
 import com.example.safehome.complaints.ComplaintsActivity
 import com.example.safehome.complaints.PersonalFragment
 import com.example.safehome.complaints.RaiseComplaintActivity
+import com.example.safehome.complaints.UpdateComplaintActivity
 import com.example.safehome.dailyhelp.DailyHelpActivity
 import com.example.safehome.dailyhelp.DailyHelpMemberListActivity
 import com.example.safehome.dailyhelp.DailyHelpPaymentHistoryFragment
@@ -31,6 +32,7 @@ import com.example.safehome.services.ServicesPaymentHistoryFragment
 class PriorityAdapter(var context: Context, private var statesList: List<String>) :
     RecyclerView.Adapter<PriorityAdapter.MyViewHolder>() {
     private lateinit var raiseComplaintActivity: RaiseComplaintActivity
+    private lateinit var updateComplaintActivity: UpdateComplaintActivity
 
 
     override fun onCreateViewHolder(
@@ -53,6 +55,8 @@ class PriorityAdapter(var context: Context, private var statesList: List<String>
         holder.ageGroupTv.setOnClickListener {
           if( context is RaiseComplaintActivity) {
               raiseComplaintActivity.setCallbackPriority(it.tag as String)
+            } else if( context is UpdateComplaintActivity) {
+              updateComplaintActivity.setCallbackPriority(it.tag as String)
             } else {
               //  facilitiesHistoryFragment.selectYear(it.tag as String)
             }
@@ -68,6 +72,9 @@ class PriorityAdapter(var context: Context, private var statesList: List<String>
 
     fun setCallbackPriority(raiseComplaintActivity: RaiseComplaintActivity) {
         this.raiseComplaintActivity = raiseComplaintActivity
+    }
+    fun setCallbackPriority(updateComplaintActivity: UpdateComplaintActivity) {
+        this.updateComplaintActivity = updateComplaintActivity
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

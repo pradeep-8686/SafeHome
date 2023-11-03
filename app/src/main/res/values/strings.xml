@@ -133,6 +133,8 @@
     <string name="ok">OK</string>
     <string name="Rs">\u20B9</string>
     <string name="resizable_text_read_more">      ....View More</string>
+    <string name="resizable_text_read_less">      ....View Less</string>
+
     <string name="notice_dialog_txt">Dear Resident, Greeting for the dsy! When seeking information online or contacting support,  be cautious of patient scams of phishing attampts...  </string>
     <string name="acservice_repair"><![CDATA[ACService&Repair]]></string>
     <string name="relationship">Relationship</string>
@@ -143,6 +145,11 @@
     <string name="escalated_approval_txt">After 24 hours, you can send a reminder for request Approval</string>
     <string name="share"><u>Share</u></string>
     <string name="invoice1"><u>Invoice</u></string>
+    <string name="guest">Guest</string>
+    <string name="cab">Cab</string>
+    <string name="delivery">Delivery</string>
+    <string name="staff">Staff</string>
+    <string name="others">Others</string>
 
 
 </resources>

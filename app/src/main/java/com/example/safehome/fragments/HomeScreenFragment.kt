@@ -41,6 +41,7 @@ import com.example.safehome.repository.APIInterface
 import com.example.safehome.services.ServicesActivity
 import com.example.safehome.viewpageradapter.HomeBottomViewPagerAdapter
 import com.example.safehome.viewpageradapter.HomeTopViewPagerAdapter
+import com.example.safehome.visitors.VisitorActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -255,6 +256,23 @@ class HomeScreenFragment : Fragment() {
                 e.printStackTrace()
             }
         }
+
+        binding.visitorLayout.setOnClickListener {
+            try {
+                val eIntent = Intent(requireContext(), VisitorActivity::class.java)
+                eIntent.flags =
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                eIntent.putExtra("ScreenFrom", "HomeScreenFrag")
+                getActivity()?.overridePendingTransition(
+                    android.R.anim.fade_in,
+                    android.R.anim.fade_out
+                );
+                requireContext().startActivity(eIntent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
 
     }
 

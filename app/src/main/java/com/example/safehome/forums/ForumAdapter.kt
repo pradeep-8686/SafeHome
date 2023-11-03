@@ -38,7 +38,11 @@ class ForumAdapter(
         val forumItem = forumResponseModel[position]
 
         if (!forumItem.postedBy.isNullOrEmpty()) {
-            holder.tvRaisedBy.text = "By : ${forumItem.postedBy}"
+            if (forumItem.postedBy == "Resident"){
+                holder.tvRaisedBy.text = "By : ${forumItem.postedBy} Block " + forumItem.block + "-" + forumItem.flatNo
+            }else {
+                holder.tvRaisedBy.text = "By : ${forumItem.postedBy}"
+            }
         }
 
         if (!forumItem.topic.isNullOrEmpty()) {

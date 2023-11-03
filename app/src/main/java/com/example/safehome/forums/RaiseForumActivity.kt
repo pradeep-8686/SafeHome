@@ -2,6 +2,7 @@ package com.example.safehome.forums
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -16,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import android.widget.DatePicker
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
@@ -42,7 +44,9 @@ import com.example.safehome.repository.APIInterface
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 
 class RaiseForumActivity : AppCompatActivity() {
@@ -161,6 +165,46 @@ class RaiseForumActivity : AppCompatActivity() {
             keepPoll()
         }
 
+        binding.startDateTxt?.setOnClickListener {
+            val startDateDialog = DatePickerDialog(
+                this@RaiseForumActivity,
+                dateSetListener_book_now_start_date,
+                // set DatePickerDialog to point to today's date when it loads up
+                cal_startDate.get(Calendar.YEAR),
+                cal_startDate.get(Calendar.MONTH),
+                cal_startDate.get(Calendar.DAY_OF_MONTH)
+            )
+
+            startDateDialog.datePicker.minDate = System.currentTimeMillis() - 1000
+            startDateDialog.show()
+        }
+
+        binding.endDateTxt?.setOnClickListener {
+            val endDateDialog = DatePickerDialog(
+                this@RaiseForumActivity,
+                dateSetListener__book_now_end_date,
+                // set DatePickerDialog to point to today's date when it loads up
+                cal_endDate.get(Calendar.YEAR),
+                cal_endDate.get(Calendar.MONTH),
+                cal_endDate.get(Calendar.DAY_OF_MONTH)
+            )
+            // Set a minimum date to disable previous dates
+            try {
+                val dateInMillis = Utils.convertStringToDateMillis(
+                    binding.startDateTxt!!.text.toString(),
+                    "dd/MM/yyyy"
+                )
+                endDateDialog.datePicker.minDate = dateInMillis
+            } catch (e: Exception) {
+                endDateDialog.datePicker.minDate =
+                    System.currentTimeMillis() - 1000 // Subtract 1 second to prevent selecting the current day
+            }
+            // endDateDialog.datePicker.minDate = System.currentTimeMillis() - 1000
+            endDateDialog.show()
+        }
+
+
+
 
         binding.mainLayout.setOnClickListener {
 
@@ -199,6 +243,10 @@ class RaiseForumActivity : AppCompatActivity() {
 
                     binding.etTopic.text = Editable.Factory.getInstance().newEditable(topic)
                 }
+                if (forumItem.keepQuestionFor != null) {
+                    keepForumFor = forumItem.keepQuestionFor.toString()
+                    binding.keepPollForTxt.text = forumItem.keepQuestionFor
+                }
 
                 if (forumItem.description != null) {
 
@@ -225,6 +273,13 @@ class RaiseForumActivity : AppCompatActivity() {
                     binding.etPollTo.text = selectedPostName.joinToString()
                 }
 
+//                if (forumItem.fromDate != null) {
+//                    binding.startDateTxt.text = pollItem.fromDate
+//                }
+//                if (forumItem.fromDate != null) {
+//                    binding.endDateTxt.text = pollItem.toDate
+//                }
+
             }
         }
     }
@@ -237,6 +292,20 @@ class RaiseForumActivity : AppCompatActivity() {
             this@RaiseForumActivity,
             this.getString(R.string.loading)
         )
+        var startDate = binding.startDateTxt.text.toString()
+        if (!startDate.contains("DD/MM/YYYY")) {
+            startDate = Utils.changeDateFormatToMMDDYYYY(startDate)
+        } else {
+            startDate = ""
+        }
+        var endDate = binding.endDateTxt.text.toString()
+        if (!endDate.contains("DD/MM/YYYY")) {
+            endDate = Utils.changeDateFormatToMMDDYYYY(endDate)
+        } else {
+            endDate = ""
+        }
+
+
 
         val forumOptionsMap: MutableMap<String, Any> = HashMap()
 
@@ -317,12 +386,26 @@ class RaiseForumActivity : AppCompatActivity() {
             this.getString(R.string.loading)
         )
 
+        var startDate = binding.startDateTxt.text.toString()
+        if (!startDate.contains("DD/MM/YYYY")) {
+            startDate = Utils.changeDateFormatToMMDDYYYY(startDate)
+        } else {
+            startDate = ""
+        }
+        var endDate = binding.endDateTxt.text.toString()
+        if (!endDate.contains("DD/MM/YYYY")) {
+            endDate = Utils.changeDateFormatToMMDDYYYY(endDate)
+        } else {
+            endDate = ""
+        }
+
+
         val forumOptionsMap: MutableMap<String, Any> = HashMap()
 
         forumOptionsMap["forumId"] = forumItem.forumID
 
         forumOptionsMap["Topic "] = topic
-        forumOptionsMap["KeepQuestionFor"] = keepForumFor
+//        forumOptionsMap["KeepQuestionFor"] = keepForumFor
         forumOptionsMap["Description"] = description
         forumOptionsMap["Attachment"] = imageFile
 
@@ -400,10 +483,7 @@ class RaiseForumActivity : AppCompatActivity() {
             binding.etTopic.error = "Question is required"
             return false
         }
-        if (description.isEmpty()) {
-            binding.etDescription.error = "Description is required"
-            return false
-        }
+
 
         if (keepForumFor.isEmpty()) {
             Toast.makeText(this, "Keep Question For field is required", Toast.LENGTH_SHORT).show()
@@ -416,6 +496,10 @@ class RaiseForumActivity : AppCompatActivity() {
             return false
         }
 
+        if (description.isEmpty()) {
+            binding.etDescription.error = "Description is required"
+            return false
+        }
         return true
 
     }
@@ -743,13 +827,60 @@ class RaiseForumActivity : AppCompatActivity() {
             binding.keepPollForTxt.text = keepPollFor.keepFor
             // selectedCategoryId = ComplaintStatus
 
-//            keepForumFor = keepPollFor.keepFor
-            keepForumFor = "Always"
+            keepForumFor = keepPollFor.keepId.toString()
+
+            if ( keepPollFor.keepFor.equals("Custom")) {
+
+                binding.tvDate.visibility = View.VISIBLE
+                binding.llDate.visibility = View.VISIBLE
+            } else {
+                binding.tvDate.visibility = View.GONE
+                binding.llDate.visibility = View.GONE
+            }
 
         }
         Log.d(HistoryFragment.TAG, "$keepPollFor")
     }
 
+
+    // create an OnDateSetListener
+    val dateSetListener__book_now_end_date = object : DatePickerDialog.OnDateSetListener {
+        override fun onDateSet(
+            view: DatePicker, year: Int, monthOfYear: Int,
+            dayOfMonth: Int
+        ) {
+            // disable dates before today
+            val disablePastDates = Calendar.getInstance().timeInMillis - 1000
+            view.setMinDate(disablePastDates)
+            cal_endDate.set(Calendar.YEAR, year)
+            cal_endDate.set(Calendar.MONTH, monthOfYear)
+            cal_endDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+
+            val myFormat = "dd/MM/YYYY" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            binding.endDateTxt!!.text = sdf.format(cal_endDate.getTime())
+        }
+    }
+
+    // create an OnDateSetListener
+    val dateSetListener_book_now_start_date = object : DatePickerDialog.OnDateSetListener {
+        override fun onDateSet(
+            view: DatePicker, year: Int, monthOfYear: Int,
+            dayOfMonth: Int
+        ) {
+            cal_startDate.set(Calendar.YEAR, year)
+            cal_startDate.set(Calendar.MONTH, monthOfYear)
+            cal_startDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            // disable dates before today
+            val disablePastDates = Calendar.getInstance().timeInMillis
+            view.setMinDate(disablePastDates)
+
+            val myFormat = "dd/MM/YYYY" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            binding.startDateTxt!!.text = sdf.format(cal_startDate.getTime())
+        }
+    }
 
 
 }

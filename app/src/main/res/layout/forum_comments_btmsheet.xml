@@ -16,17 +16,18 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_marginLeft="@dimen/_15dp"
-                android:layout_weight="0.8"
+                android:layout_marginLeft="@dimen/_25dp"
+                android:layout_weight="0.85"
                 android:id="@+id/tvPollResult"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:text="Comments"
                 android:textColor="#111111"
-                android:textSize="20dp" />
+                android:textSize="17sp" />
 
             <ImageView
                 android:layout_marginTop="@dimen/_5dp"
@@ -40,8 +41,8 @@
                 />
         </LinearLayout>
 
-<!--
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/comments_rl"
             android:layout_marginTop="@dimen/_15dp"
             android:layout_width="match_parent"
@@ -63,7 +64,6 @@
                 android:text="Admin@_123:"
                 android:gravity="center_vertical"
                 android:fontFamily="@font/poppins_regular"
-                android:layout_marginTop="@dimen/_10dp"
                 android:layout_toRightOf="@id/profile_icon"/>
 
             <TextView
@@ -75,7 +75,6 @@
                 android:gravity="center_vertical"
                 android:textColor="@color/black"
                 android:fontFamily="@font/poppins_regular"
-                android:layout_marginTop="@dimen/_10dp"
                 android:layout_toRightOf="@id/forum_commented_user"/>
 
             <TextView
@@ -92,7 +91,6 @@
                 />
 
         </RelativeLayout>
--->
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginTop="@dimen/_10dp"
@@ -100,6 +98,57 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/forum_reply_layout"
+            android:layout_marginLeft="@dimen/_20dp"
+            android:layout_marginRight="@dimen/_20dp"
+            android:layout_marginBottom="@dimen/_10dp"
+            android:layout_marginTop="@dimen/_5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/reply_profile_icon"
+                android:layout_marginLeft="@dimen/_15dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/profile"/>
+
+            <LinearLayout
+                android:weightSum="1"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="@dimen/_10dp"
+                android:layout_marginRight="@dimen/_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:background="@drawable/editext_bg"
+                android:layout_toRightOf="@id/reply_profile_icon">
+
+                <EditText
+                    android:id="@+id/et_add_reply_comment"
+                    android:layout_marginLeft="@dimen/_15dp"
+                    android:layout_weight="0.85"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="Add reply"
+                    android:textColorHint="@color/otp_editext_color"
+                    android:textColor="@color/otp_editext_color"/>
+
+                <ImageView
+                    android:id="@+id/reply_send_img"
+                    android:layout_weight="0.15"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/send"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:layout_marginBottom="@dimen/_10dp"
@@ -129,7 +178,7 @@
                 <EditText
                     android:id="@+id/ed_comment"
                     android:layout_marginLeft="@dimen/_15dp"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.85"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -139,10 +188,10 @@
 
                 <ImageView
                     android:id="@+id/comment_send_img"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.15"
                     android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/profile"/>
+                    android:layout_height="20dp"
+                    android:src="@drawable/send"/>
 
             </LinearLayout>
 

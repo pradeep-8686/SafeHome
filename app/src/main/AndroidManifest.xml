@@ -19,6 +19,12 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".visitors.guest.GuestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".visitors.VisitorActivity"
+            android:exported="false" />
+        <activity
             android:name=".polls.UpdatePollActivity"
             android:exported="false" />
         <activity
@@ -36,7 +42,6 @@
         <activity
             android:name=".forums.ForumsListDetailActivity"
             android:exported="false" />
-
         <activity
             android:name=".complaints.ComplaintStatusActivity"
             android:exported="false" />
@@ -45,6 +50,9 @@
             android:exported="false" />
         <activity
             android:name=".meetings.MeetingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".complaints.UpdateComplaintActivity"
             android:exported="false" />
         <activity
             android:name=".complaints.RaiseComplaintActivity"

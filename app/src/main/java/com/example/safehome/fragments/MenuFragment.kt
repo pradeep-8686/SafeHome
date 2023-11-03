@@ -27,6 +27,7 @@ import com.example.safehome.meetings.MeetingsActivity
 import com.example.safehome.notice.NoticeActivity
 import com.example.safehome.polls.PollsActivity
 import com.example.safehome.services.ServicesActivity
+import com.example.safehome.visitors.VisitorActivity
 
 
 class MenuFragment : Fragment() {
@@ -184,6 +185,21 @@ class MenuFragment : Fragment() {
         binding.forumMenuLayout.setOnClickListener {
             try {
                 val eIntent = Intent(requireContext(), ForumsListActivity::class.java)
+                eIntent.flags =
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                eIntent.putExtra("ScreenFrom", "MenuScreenFrag")
+                getActivity()?.overridePendingTransition(
+                    android.R.anim.fade_in,
+                    android.R.anim.fade_out
+                );
+                requireContext().startActivity(eIntent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        binding.visitorsLayout.setOnClickListener {
+            try {
+                val eIntent = Intent(requireContext(), VisitorActivity::class.java)
                 eIntent.flags =
                     Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 eIntent.putExtra("ScreenFrom", "MenuScreenFrag")

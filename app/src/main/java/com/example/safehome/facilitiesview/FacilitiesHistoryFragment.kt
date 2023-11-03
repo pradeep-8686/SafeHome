@@ -202,10 +202,13 @@ class FacilitiesHistoryFragment : Fragment() {
 
 
 
-        if (bookingList.size == 0){
+        if (bookingList.isEmpty()){
             binding.emptyBookingFacilitiesTxt.visibility = View.VISIBLE
+            binding.historyRecyclerView.visibility = View.GONE
+
         }else {
             binding.emptyBookingFacilitiesTxt.visibility = View.GONE
+            binding.historyRecyclerView.visibility = View.VISIBLE
             binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             faciHistoryAdapter = FaciHistoryAdapter(requireContext(), bookingList)
             binding.historyRecyclerView.adapter = faciHistoryAdapter

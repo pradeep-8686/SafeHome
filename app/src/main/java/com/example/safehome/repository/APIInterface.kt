@@ -1,6 +1,7 @@
 package com.example.safehome.repository
 
 import com.example.safehome.constants.AppConstants
+import com.example.safehome.forums.AddReplyCommentModel
 import com.example.safehome.forums.AddUpdateForumResponse
 import com.example.safehome.forums.GetAllForumCommentsModel
 import com.example.safehome.forums.GetAllForumDetailsModel
@@ -684,5 +685,17 @@ interface APIInterface {
     fun addForumCommentDetails(
         @Header("Authorization") authorizationValue: String,
         @Body jsonObject: JsonObject
+        ) : Call<AddServiceBookingList>
+
+    @POST(AppConstants.RetrofitApis.addForumCommentReply)
+    fun addForumCommentReply(
+        @Header("Authorization") authorizationValue: String,
+        @Body jsonObject: JsonObject
+        ): Call<AddReplyCommentModel>
+
+    @DELETE(AppConstants.RetrofitApis.deleteForumCommentDetails)
+    fun deleteForumCommentDetails(
+        @Header("Authorization") authorizationValue: String,
+        @Query("commentId") commentId: String
         ) : Call<AddServiceBookingList>
 }

@@ -208,8 +208,8 @@ class CommunityFragment : Fragment() {
 
     private fun addData() {
         val attachPhoto = ArrayList<Int>()
-        attachPhoto.add(R.drawable.c_park_1)
-        attachPhoto.add(R.drawable.c_park_1)
+        attachPhoto.add(R.drawable.com_img_6)
+        attachPhoto.add(R.drawable.com_img_7)
 
         val c1 = CommunityComplaintsModel(
             "Pending",
@@ -220,6 +220,7 @@ class CommunityFragment : Fragment() {
             "Yes",
             "Parking Done in Wrong Slot....",
             "2 Days Ago",
+            "D-104 Srinija",
             attachPhoto
         )
         personalComplaintsModelList.add(c1)
@@ -239,6 +240,7 @@ class CommunityFragment : Fragment() {
             "Yes",
             "Water pipe is broken. Need immediate action",
             "3 Hrs Ago",
+            "A-104 Ravi",
             attachPhoto2
         )
         personalComplaintsModelList.add(c2)
@@ -306,6 +308,7 @@ class CommunityFragment : Fragment() {
         complaintStatusList.add("Pending")
         complaintStatusList.add("In Progress")
         complaintStatusList.add("Resolved")
+        complaintStatusList.add("Reinitiate Pending")
         complaintStatusList.add("Reinitiate")
     }
 
