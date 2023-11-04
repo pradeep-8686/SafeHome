@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/_10dp"
+        android:layout_marginRight="@dimen/_10dp"
+        android:layout_marginLeft="@dimen/_10dp"
+        android:background="@drawable/my_dues_gradient_bg"
+        android:weightSum="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/visitor_img"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/_10dp"
+            android:layout_marginRight="@dimen/_5dp"
+            android:layout_weight="0.2"
+            android:layout_width="0dp"
+            android:src="@drawable/visitor_cab"
+            android:layout_height="50dp"/>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/_5dp"
+            android:layout_marginBottom="@dimen/_5dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/_10dp"
+            android:layout_weight="0.8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/visitor_purpose_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="cab"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16sp"
+                android:fontFamily="@font/poppins_regular"/>
+
+            <TextView
+                android:id="@+id/visitor_purposeBy_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ola"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_regular"/>
+
+            <TextView
+                android:id="@+id/visitor_vechileNo_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:visibility="gone"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_regular"/>
+            <TextView
+                android:id="@+id/visitor_name_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:visibility="gone"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_regular"/>
+            <TextView
+                android:id="@+id/visitor_Timings_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="10 July 2023"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_regular"/>
+            <TextView
+                android:id="@+id/visitor_allowedBy_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Allowed By Teja"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_regular"/>
+            <TextView
+                android:id="@+id/visitor_InTime_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="In Time: 10:30 Pm"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_regular"/>
+
+            <TextView
+                android:id="@+id/visitor_allowFor_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Allow for: Once"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_regular"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
