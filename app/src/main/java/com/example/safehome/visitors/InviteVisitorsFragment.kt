@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.safehome.R
 import com.example.safehome.databinding.FragmentInviteVisitorsBinding
+import com.example.safehome.visitors.cab.CabActivity
 import com.example.safehome.visitors.guest.GuestActivity
 
 
@@ -31,6 +32,12 @@ class InviteVisitorsFragment : Fragment() {
         binding.clGuest.setOnClickListener {
 
             val intent = Intent(requireContext(), GuestActivity::class.java)
+            startActivity(intent)
+
+        }
+        binding.clCab.setOnClickListener {
+
+            val intent = Intent(requireContext(), CabActivity::class.java)
             startActivity(intent)
 
         }

@@ -1,4 +1,4 @@
-package com.example.safehome.visitors.guest
+package com.example.safehome.visitors.cab
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -19,15 +19,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.safehome.R
 import com.example.safehome.Utils
 import com.example.safehome.databinding.FragmentAllowFrequentlyBinding
-import com.example.safehome.databinding.FragmentAllowOnceBinding
+import com.example.safehome.databinding.FragmentCabAllowFrequentlyBinding
+import com.example.safehome.databinding.FragmentCabAllowOnceBinding
+import com.example.safehome.visitors.guest.GuestTypeAdapter
 import com.example.safehome.visitors.guest.selectguest.SelectGuestActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class AllowFrequentlyFragment : Fragment() {
 
-    private lateinit var binding: FragmentAllowFrequentlyBinding
+class CabAllowFrequentlyFragment : Fragment() {
+    private lateinit var binding: FragmentCabAllowFrequentlyBinding
     private var categoryPopupWindow: PopupWindow? = null
     private var schedulePopupWindow: PopupWindow? = null
     private var guestTypeList: ArrayList<String> = ArrayList()
@@ -40,7 +42,7 @@ class AllowFrequentlyFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAllowFrequentlyBinding.inflate(inflater, container, false)
+        binding = FragmentCabAllowFrequentlyBinding.inflate(inflater, container, false)
 
 
         setGuestType()
@@ -60,19 +62,16 @@ class AllowFrequentlyFragment : Fragment() {
 
     private fun setGuestType() {
 
-        guestTypeList.add("Family")
-        guestTypeList.add("Friend")
-        guestTypeList.add("Relative")
+        guestTypeList.add("Ola")
+        guestTypeList.add("Uber")
+        guestTypeList.add("Quick Ride")
+        guestTypeList.add("Meru")
+        guestTypeList.add("Rapido")
         guestTypeList.add("Other")
 
     }
 
     private fun clickEvents() {
-
-        binding.btnSelectGuest.setOnClickListener {
-            val intent = Intent(requireContext(), SelectGuestActivity::class.java)
-            startActivity(intent)
-        }
 
         binding.clSelectGuestType.setOnClickListener {
 
@@ -197,7 +196,7 @@ class AllowFrequentlyFragment : Fragment() {
             val guestTypeAdapter = GuestTypeAdapter(requireContext(), guestTypeList)
 
             dropDownRecyclerView.adapter = guestTypeAdapter
-            guestTypeAdapter.setCallbackServiceType(this@AllowFrequentlyFragment)
+            guestTypeAdapter.setCallbackServiceProvider1(this@CabAllowFrequentlyFragment)
         }
         categoryPopupWindow!!.elevation = 10F
         categoryPopupWindow!!.showAsDropDown(binding.selectGuestTypeTxt, 0, 0, Gravity.CENTER)
@@ -221,7 +220,7 @@ class AllowFrequentlyFragment : Fragment() {
             val guestTypeAdapter = GuestTypeAdapter(requireContext(), scheduleList)
 
             dropDownRecyclerView.adapter = guestTypeAdapter
-            guestTypeAdapter.setCallbackSchedule(this@AllowFrequentlyFragment)
+            guestTypeAdapter.setCallbackDate(this@CabAllowFrequentlyFragment)
         }
         schedulePopupWindow!!.elevation = 10F
         schedulePopupWindow!!.showAsDropDown(binding.scheduleTxt, 0, 0, Gravity.CENTER)
@@ -238,6 +237,15 @@ class AllowFrequentlyFragment : Fragment() {
         if (guestType != null) {
             binding.selectGuestTypeTxt.text = guestType
 //            selectedCategoryId = model.categoryId.toString()
+
+            if (guestType.equals("Other")){
+                binding.etServiceProvider.visibility = View.VISIBLE
+                binding.tvServiceProvider.visibility = View.VISIBLE
+            }else{
+                binding.etServiceProvider.visibility = View.GONE
+                binding.tvServiceProvider.visibility = View.GONE
+            }
+
         }
 
 

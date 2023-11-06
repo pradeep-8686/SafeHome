@@ -9,7 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.safehome.R
 
-class VisitorsListAdapter(private val context: Context, private var visitorsList: ArrayList<VisitorsListModel>):
+class VisitorsListAdapter(
+    private val context: Context,
+    private var visitorsList: ArrayList<VisitorsListModel>,
+    var visitorType : String
+):
     RecyclerView.Adapter<VisitorsListAdapter.MyViewHolder>() {
  private lateinit var visitorsListFragment: VisitorsListFragment
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -35,8 +39,12 @@ class VisitorsListAdapter(private val context: Context, private var visitorsList
             holder.visitorPurposeTitleTxt.text = visitorListItem.entryTitle
         }
         if (!visitorListItem.entryType.isNullOrEmpty()){
+            holder.visitorPurposeByTxt.visibility = View.VISIBLE
             holder.visitorPurposeByTxt.text = visitorListItem.entryType
+        }else{
+            holder.visitorPurposeByTxt.visibility = View.GONE
         }
+
         if (!visitorListItem.entryCabNum.isNullOrEmpty()){
             holder.visitorVechileNoTxt.visibility = View.VISIBLE
             holder.visitorVechileNoTxt.text = "Cab Number: "+visitorListItem.entryCabNum
@@ -54,7 +62,13 @@ class VisitorsListAdapter(private val context: Context, private var visitorsList
             holder.visitorNameTxt.visibility = View.GONE
         }
         if (!visitorListItem.entryDate.isNullOrEmpty()){
-            holder.visitorDateTxt.text = visitorListItem.entryDate
+            if(visitorType == "ExpectedVisitors"){
+                holder.visitorDateTxt.visibility = View.GONE
+
+            }else {
+                holder.visitorDateTxt.visibility = View.VISIBLE
+                holder.visitorDateTxt.text = visitorListItem.entryDate
+            }
         }
         if (!visitorListItem.allowedBy.isNullOrEmpty()){
             holder.visitorAllowedByText.text = visitorListItem.allowedBy
@@ -66,6 +80,18 @@ class VisitorsListAdapter(private val context: Context, private var visitorsList
             holder.allowForTxt.text = "Allow For: "+visitorListItem.allowFor
         }
 
+        if ( visitorType == "ExpectedVisitors"){
+            holder.ivEdit.visibility = View.VISIBLE
+            holder.ivDelete.visibility = View.VISIBLE
+
+        }else{
+            holder.ivEdit.visibility = View.GONE
+            holder.ivDelete.visibility = View.GONE
+        }
+
+        holder.ivDelete.setOnClickListener {
+            visitorsListFragment.deleteVisitorItem(visitorListItem)
+        }
     }
 
     fun setCallback(visitorsListFragment: VisitorsListFragment) {
@@ -82,6 +108,8 @@ class VisitorsListAdapter(private val context: Context, private var visitorsList
      val visitorInTimingTxt = itemView.findViewById<TextView>(R.id.visitor_InTime_txt)
      val visitorNameTxt = itemView.findViewById<TextView>(R.id.visitor_name_txt)
      val visitorVechileNoTxt = itemView.findViewById<TextView>(R.id.visitor_vechileNo_txt)
+     val ivDelete = itemView.findViewById<ImageView>(R.id.ivDelete)
+     val ivEdit = itemView.findViewById<ImageView>(R.id.ivEdit)
     }
 
 }

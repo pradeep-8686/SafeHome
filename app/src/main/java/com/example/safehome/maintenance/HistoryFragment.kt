@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,11 +24,8 @@ import com.example.safehome.databinding.FragmentHistoryBinding
 import com.example.safehome.model.CategoryModel
 import com.example.safehome.model.MaintenanceHistoryModel
 import com.example.safehome.model.MyDues
-import com.example.safehome.model.VehicleModel
-import com.example.safehome.model.VehicleModelResp
 import com.example.safehome.repository.APIClient
 import com.example.safehome.repository.APIInterface
-import com.example.safehome.services.ServicesTypeAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

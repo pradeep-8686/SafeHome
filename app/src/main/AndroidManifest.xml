@@ -19,6 +19,12 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".visitors.cab.CabActivity"
+            android:exported="false" />
+        <activity
+            android:name=".visitors.guest.selectguest.SelectGuestActivity"
+            android:exported="false" />
+        <activity
             android:name=".visitors.guest.GuestActivity"
             android:exported="false" />
         <activity

@@ -21,5 +21,7 @@
     <color name="golden_yellow">#FFDF00</color>
     <color name="green">#38AF3D</color>
     <color name="text_dark">#404040</color>
+    <color name="selected_color">#296DE0</color>
+    <color name="contact_bg">#5E6573</color>
 
 </resources>

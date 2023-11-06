@@ -28,6 +28,8 @@ import com.example.safehome.polls.PollsActivity
 import com.example.safehome.services.ServicesActivity
 import com.example.safehome.services.ServicesMemberListActivity
 import com.example.safehome.services.ServicesPaymentHistoryFragment
+import com.example.safehome.visitors.VisitorActivity
+import com.example.safehome.visitors.VisitorsListFragment
 
 class YearAdapter(var context: Context, private var statesList: List<String>) :
     RecyclerView.Adapter<YearAdapter.MyViewHolder>() {
@@ -46,7 +48,7 @@ class YearAdapter(var context: Context, private var statesList: List<String>) :
     private lateinit var meetingsCompletedFragment: MeetingsCompletedFragment
     private lateinit var pollsActivity: PollsActivity
     private lateinit var forumsListActivity: ForumsListActivity
-
+    private lateinit var visitorsListFragment: VisitorsListFragment
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -89,6 +91,8 @@ class YearAdapter(var context: Context, private var statesList: List<String>) :
             }
             else if (context is ForumsListActivity){
                 forumsListActivity.selectForumsYear(it.tag as String)
+            }else if (context is VisitorActivity){
+                visitorsListFragment.selectVisitorYear(it.tag as String)
             }
             else {
                 facilitiesHistoryFragment.selectYear(it.tag as String)
@@ -103,9 +107,7 @@ class YearAdapter(var context: Context, private var statesList: List<String>) :
         return 0
     }
 
-    fun setCallback(historyFragment: HistoryFragment) {
-        this.historyFragment = historyFragment
-    }
+
     fun setPollsCallback(pollsActivity: PollsActivity) {
         this.pollsActivity = pollsActivity
     }
@@ -147,6 +149,15 @@ class YearAdapter(var context: Context, private var statesList: List<String>) :
 
     fun setCallbackComplaintsYear(meetingsCompletedFragment: MeetingsCompletedFragment) {
         this.meetingsCompletedFragment = meetingsCompletedFragment
+    }
+
+    fun setCallback(historyFragment: HistoryFragment) {
+      this.historyFragment = historyFragment
+    }
+
+    fun setVisitorsHistoryCallback(visitorsListFragment: VisitorsListFragment) {
+        this.visitorsListFragment = visitorsListFragment
+
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

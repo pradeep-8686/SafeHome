@@ -4,51 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/black_screes_bg"
-    tools:context=".visitors.guest.AllowFrequentlyFragment">
+    android:background="@drawable/black_screes_bg">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_select_guest"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/poppins_medium"
-            android:text="Select Guest"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <TextView
-            android:id="@+id/btn_select_guest"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/pay_now_solid_bg"
-            android:drawableRight="@drawable/guest_contact"
-            android:editable="false"
-            android:fontFamily="@font/poppins_regular"
-            android:gravity="center_vertical"
-            android:hint="Select Guest from contacts"
-            android:inputType="text"
-            android:padding="8dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_select_guest" />
 
         <TextView
             android:id="@+id/tv_select_guest_type"
@@ -59,12 +20,12 @@
             android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="Select Guest Type*"
+            android:text=" Service Provider*"
             android:textColor="@color/white"
             android:textSize="@dimen/_16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_select_guest" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -82,7 +43,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
-                android:hint="Select Guest Type"
+                android:hint="Select Service Provider"
                 android:paddingStart="12dp"
                 android:paddingTop="5dp"
                 android:paddingRight="5dp"
@@ -118,6 +79,42 @@
 
 
         <TextView
+            android:id="@+id/tv_service_provider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Name of the provider"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_select_guest_type" />
+
+        <EditText
+            android:id="@+id/et_service_provider"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/search_layout_bg"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center_vertical"
+            android:hint=""
+            android:inputType="text"
+            android:paddingHorizontal="12dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/gray_color"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_service_provider" />
+
+        <TextView
             android:id="@+id/tv_guest_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -125,11 +122,11 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="Guest Name*"
+            android:text="Driver Name"
             android:textColor="@color/white"
             android:textSize="@dimen/_16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cl_select_guest_type" />
+            app:layout_constraintTop_toBottomOf="@+id/et_service_provider" />
 
         <EditText
             android:id="@+id/et_guest_name"
@@ -142,7 +139,7 @@
             android:drawableRight="@drawable/guest_person"
             android:fontFamily="@font/poppins_regular"
             android:gravity="center_vertical"
-            android:hint="Enter Guest Name"
+            android:hint="Enter Driver Name"
             android:inputType="text"
             android:paddingHorizontal="12dp"
             android:textColor="@color/white"
@@ -160,7 +157,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="Mobile Number*"
+            android:text="Mobile Number"
             android:textColor="@color/white"
             android:textSize="@dimen/_16sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -187,6 +184,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_mobile_number" />
 
+        <TextView
+            android:id="@+id/tv_cab_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Cab Number*"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_mobile_number" />
+
+        <EditText
+            android:id="@+id/et_cab_number"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/search_layout_bg"
+            android:drawableRight="@drawable/visitor_car"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center_vertical"
+            android:hint="Enter Cab Number"
+            android:inputType="text"
+            android:paddingHorizontal="12dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/gray_color"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cab_number" />
+
+
 
         <TextView
             android:id="@+id/tv_schedule"
@@ -202,7 +235,7 @@
             android:textSize="@dimen/_16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_mobile_number" />
+            app:layout_constraintTop_toBottomOf="@+id/et_cab_number" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout

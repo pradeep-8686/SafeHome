@@ -150,6 +150,6 @@
     <string name="delivery">Delivery</string>
     <string name="staff">Staff</string>
     <string name="others">Others</string>
-
+    <string name="invite_for_visitor_text">For Hassle Free Access, Show this Number at the Gate &amp; Send your visitor this invitation too</string>
 
 </resources>

@@ -4,51 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/black_screes_bg"
-    tools:context=".visitors.guest.AllowFrequentlyFragment">
+    android:background="@drawable/black_screes_bg">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_select_guest"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/poppins_medium"
-            android:text="Select Guest"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <TextView
-            android:id="@+id/btn_select_guest"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/pay_now_solid_bg"
-            android:drawableRight="@drawable/guest_contact"
-            android:editable="false"
-            android:fontFamily="@font/poppins_regular"
-            android:gravity="center_vertical"
-            android:hint="Select Guest from contacts"
-            android:inputType="text"
-            android:padding="8dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_select_guest" />
 
         <TextView
             android:id="@+id/tv_select_guest_type"
@@ -59,12 +20,12 @@
             android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="Select Guest Type*"
+            android:text="Service Provider*"
             android:textColor="@color/white"
             android:textSize="@dimen/_16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_select_guest" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -82,7 +43,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
-                android:hint="Select Guest Type"
+                android:hint="Select Service Provider"
                 android:paddingStart="12dp"
                 android:paddingTop="5dp"
                 android:paddingRight="5dp"
@@ -118,6 +79,41 @@
 
 
         <TextView
+            android:id="@+id/tv_service_provider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Name of the provider"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_select_guest_type" />
+
+        <EditText
+            android:id="@+id/et_service_provider"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/search_layout_bg"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center_vertical"
+            android:hint=""
+            android:inputType="text"
+            android:paddingHorizontal="12dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/gray_color"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_service_provider" />
+        <TextView
             android:id="@+id/tv_guest_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -125,11 +121,11 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="Guest Name*"
+            android:text="Driver Name"
             android:textColor="@color/white"
             android:textSize="@dimen/_16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cl_select_guest_type" />
+            app:layout_constraintTop_toBottomOf="@+id/et_service_provider" />
 
         <EditText
             android:id="@+id/et_guest_name"
@@ -142,7 +138,7 @@
             android:drawableRight="@drawable/guest_person"
             android:fontFamily="@font/poppins_regular"
             android:gravity="center_vertical"
-            android:hint="Enter Guest Name"
+            android:hint="Enter Driver Name"
             android:inputType="text"
             android:paddingHorizontal="12dp"
             android:textColor="@color/white"
@@ -160,7 +156,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="Mobile Number*"
+            android:text="Mobile Number"
             android:textColor="@color/white"
             android:textSize="@dimen/_16sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -186,92 +182,57 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_mobile_number" />
-
-
         <TextView
-            android:id="@+id/tv_schedule"
+            android:id="@+id/tv_cab_number"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:layout_marginEnd="16dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="Schedule*"
+            android:text="Cab Number*"
             android:textColor="@color/white"
             android:textSize="@dimen/_16sp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_mobile_number" />
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_schedule"
+        <EditText
+            android:id="@+id/et_cab_number"
             android:layout_width="0dp"
             android:layout_height="40dp"
+            android:layout_centerInParent="true"
             android:layout_marginStart="16dp"
-            android:background="@drawable/rectangle_et_bg"
-            app:layout_constraintEnd_toEndOf="@+id/tv_schedule"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/search_layout_bg"
+            android:drawableRight="@drawable/visitor_car"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center_vertical"
+            android:hint="Enter Cab Number"
+            android:inputType="text"
+            android:paddingHorizontal="12dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/gray_color"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_schedule">
-
-            <TextView
-                android:id="@+id/schedule_txt"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="Select Schedule"
-                android:paddingStart="12dp"
-                android:paddingTop="5dp"
-                android:paddingRight="5dp"
-                android:paddingBottom="5dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/light_white"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/image1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/image1"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/right_side_bg"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:background="@drawable/bottom_arrow"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@+id/tv_cab_number" />
 
         <LinearLayout
-            android:id="@+id/ll_date"
+            android:id="@+id/linearLayout9"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:visibility="gone"
             android:layout_marginEnd="16dp"
             android:orientation="horizontal"
-            android:weightSum="2"
+            android:weightSum="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cl_schedule">
+            app:layout_constraintTop_toBottomOf="@+id/et_cab_number">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/_10dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -279,10 +240,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="2dp"
-                    android:layout_marginEnd="4dp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:gravity="center"
-                    android:text="Start Date*"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left"
+                    android:text="Date"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_16sp">
 
@@ -291,68 +252,26 @@
                 <TextView
                     android:id="@+id/start_date_txt"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:background="@drawable/editext_bg"
-                    android:drawableRight="@drawable/calendar"
-                    android:textColorHint="@color/gray_color"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/editext_bg_blue"
+                    android:drawableRight="@drawable/guest_date"
                     android:drawablePadding="5dp"
                     android:fontFamily="@font/poppins_regular"
-                    android:gravity="left|center_horizontal"
-                    android:paddingLeft="5dp"
+                    android:gravity="left"
+                    android:hint="DD/MM/YYYY"
+                    android:paddingLeft="12dp"
                     android:paddingTop="8dp"
                     android:paddingRight="8dp"
                     android:paddingBottom="8dp"
-                    android:hint="DD/MM/YYYY"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_14sp">
-
-                </TextView>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginEnd="4dp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:gravity="center"
-                    android:text="End Date*"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_16sp">
-
-                </TextView>
-
-                <TextView
-                    android:id="@+id/end_date_txt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
                     android:textColorHint="@color/gray_color"
-                    android:background="@drawable/editext_bg"
-                    android:drawableRight="@drawable/calendar"
-                    android:drawablePadding="8dp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:gravity="left|center_horizontal|center"
-                    android:paddingLeft="5dp"
-                    android:paddingTop="8dp"
-                    android:paddingRight="8dp"
-                    android:paddingBottom="8dp"
-                    android:hint="DD/MM/YYYY"
-                    android:textColor="@color/white"
                     android:textSize="@dimen/_14sp">
 
                 </TextView>
 
             </LinearLayout>
+
 
         </LinearLayout>
 
@@ -368,7 +287,7 @@
             android:weightSum="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_date">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -505,6 +424,5 @@
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </ScrollView>
