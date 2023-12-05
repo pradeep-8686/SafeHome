@@ -87,11 +87,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0.6"
-                    android:fontFamily="@font/poppins_regular"
+                    android:fontFamily="@font/poppins_semibold"
                     android:gravity="start"
                     android:text="General Announcements"
                     android:textColor="@color/white"
-                    android:textSize="15sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/notice_posted_time_txt"
@@ -103,7 +103,7 @@
                     android:gravity="center"
                     android:text="6m ago"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_12sp" />
+                    android:textSize="9sp" />
 
             </LinearLayout>
 

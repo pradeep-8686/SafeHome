@@ -75,6 +75,10 @@ class ForumAdapter(
             holder.tvForumComment.text = "${forumItem.commentCount}"
         }
 
+//        if (!forumItem.createdOn.toString().isNullOrEmpty()) {
+//            holder.tvCreatedAt.text = forumItem.createdOn
+//        }
+
 
         holder.tvForumComment.setOnClickListener {
             //       forumsListActivity.viewComment(it,forumItem)
@@ -125,6 +129,7 @@ class ForumAdapter(
         val tvForumDescription: TextView = itemView.findViewById(R.id.tvForumDescription)
         val tvNoOfViews: TextView = itemView.findViewById(R.id.tvNoOfViews)
         val tvForumComment: TextView = itemView.findViewById(R.id.tvForumComment)
+        val tvCreatedAt: TextView = itemView.findViewById(R.id.tvCreatedAt)
         val ivEdit: ImageView = itemView.findViewById(R.id.ivEdit)
         val ivDelete: ImageView = itemView.findViewById(R.id.ivDelete)
         val forumItemCard: CardView = itemView.findViewById(R.id.forum_card_layout)

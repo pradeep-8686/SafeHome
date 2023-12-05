@@ -1,6 +1,11 @@
 package com.example.safehome.repository
 
+import com.example.safehome.alert.AlertDeleteResponse
+import com.example.safehome.alert.AlertRequest
+import com.example.safehome.alert.AlertResponse
+import com.example.safehome.alert.EmergencyTypeModel
 import com.example.safehome.constants.AppConstants
+import com.example.safehome.enews.UserENewsListModel
 import com.example.safehome.forums.AddReplyCommentModel
 import com.example.safehome.forums.AddUpdateForumResponse
 import com.example.safehome.forums.GetAllForumCommentsModel
@@ -18,22 +23,24 @@ import com.example.safehome.model.DailyHelpHistoryModel
 import com.example.safehome.model.DailyHelpRoles
 import com.example.safehome.model.DailyHelpStaffModel
 import com.example.safehome.model.DeleteFacilityModel
+import com.example.safehome.model.EmergencyContact
+import com.example.safehome.model.EmergencyContactCategory
 import com.example.safehome.model.FaciBookings
 import com.example.safehome.model.FamilyDetail
 import com.example.safehome.model.Flats
+import com.example.safehome.model.GetAllAssociationMembersModel
 import com.example.safehome.model.GetAllHistoryServiceTypes
 import com.example.safehome.model.GetAllNoticeStatus
 import com.example.safehome.model.GetAllPollDetailsModel
 import com.example.safehome.model.GetPollResultModel
 import com.example.safehome.model.LoginDetialsData
 import com.example.safehome.model.MaintenanceHistoryModel
-import com.example.safehome.model.MeetingCompletedModel
 import com.example.safehome.model.MeetingResponseStatusMaster
-import com.example.safehome.model.MeetingUpcomingModel
 import com.example.safehome.model.MobileSignUp
 import com.example.safehome.model.PersonalComplaintsModel
 import com.example.safehome.model.PollsKeepDropdownModel
 import com.example.safehome.model.PollsPostedDropDownModel
+import com.example.safehome.model.RelationshipTypesModel
 import com.example.safehome.model.ServiceDataList
 import com.example.safehome.model.ServiceProvidedTypesList
 import com.example.safehome.model.ServiceTypesList
@@ -50,7 +57,16 @@ import com.example.safehome.model.UserDetail
 import com.example.safehome.model.VehicleDetails
 import com.example.safehome.model.VehicleModel
 import com.example.safehome.model.YearModel
+import com.example.safehome.policies.PoliciesModel
 import com.example.safehome.polls.AddPollResponse
+import com.example.safehome.visitors.ApprovalStatusModel
+import com.example.safehome.visitors.GetAllVisitorDetailsModel
+import com.example.safehome.visitors.ScheduleModel
+import com.example.safehome.visitors.ServiceProviderModel
+import com.example.safehome.visitors.VisitorPostResponse
+import com.example.safehome.visitors.VisitorsTypeDropdownModel
+import com.example.safehome.visitors.staff.DeleteVisitorDetailsModel
+import com.example.safehome.visitors.staff.StaffServiceBookedDropDownModel
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -64,7 +80,6 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface APIInterface {
@@ -448,6 +463,7 @@ interface APIInterface {
     fun getDailyHelpHistory(
         @Header("Authorization") authorizationValue: String,
         @Header("staffTypeId") staffTypeId: Int? = null,
+        @Header("residentId") residentId : Int,
         @Header("year") year: String? = null
     ): Call<DailyHelpHistoryModel>
 
@@ -600,11 +616,10 @@ interface APIInterface {
     @GET(AppConstants.RetrofitApis.getAllPollDetails)
     fun getAllPollDetails(
         @Header("Authorization") authorizationValue: String,
-        @Header("postedTo") postedTo: String,
-        @Header("postedBy") postedBy: String,
-        @Header("endDate") endDate: String,
-        @Header("pageNumber") pageNumber: String,
-        @Header("resultsPerPage") resultsPerPage: String
+        @Header("userId") userId: Int,
+        @Header("year") year: String,
+        @Header("pageNumber") pageNumber: Int,
+        @Header("resultsPerPage") resultsPerPage: Int
         ):Call<GetAllPollDetailsModel>
 
     @GET(AppConstants.RetrofitApis.getPollResults)
@@ -698,4 +713,163 @@ interface APIInterface {
         @Header("Authorization") authorizationValue: String,
         @Query("commentId") commentId: String
         ) : Call<AddServiceBookingList>
+
+    @GET(AppConstants.RetrofitApis.getAllVisitorDetails)
+    fun getAllVisitorDetails(
+        @Header("Authorization") authorizationValue: String,
+        @Header("visitorId") visitorId: String,
+        @Header("visitorStatusId") visitorStatusId: String,
+        @Header("VisitorTypeServiceCategoryId") VisitorTypeServiceCategoryId: String,
+        @Header("visitorTypeId") visitorTypeId: String,
+        @Header("invitedRoleId") invitedRoleId: String,
+        @Header("blockId") blockId: String,
+        @Header("flatId") flatId: String,
+        @Header("residentId") residentId: String,
+        @Header("startDate") startDate: String,
+        @Header("endDate") endDate: String,
+        @Header("pageNumber") pageNumber: String,
+        @Header("resultsPerPage") resultsPerPage: String,
+        @Header("allowFor") allowFor: String,
+        ): Call<GetAllVisitorDetailsModel>
+
+    @GET(AppConstants.RetrofitApis.getAllVisitorTypeDropdown)
+    fun getAllVisitorTypeDropdown(
+        @Header("Authorization") authorizationValue: String
+        ): Call<VisitorsTypeDropdownModel>
+
+    @GET(AppConstants.RetrofitApis.getServiceProviderDropdown)
+    fun getServiceProviderCall(
+        @Header("Authorization") authorizationValue: String,
+        @Query("VisitorTypeId") commentId: Int
+        ): Call<ServiceProviderModel>
+
+    @GET(AppConstants.RetrofitApis.GetVisitorScheduleDropdown)
+    fun getScheduleCall(
+        @Header("Authorization") authorizationValue: String,
+        @Query("VisitorTypeId") commentId: Int
+        ): Call<ScheduleModel>
+
+    @FormUrlEncoded
+    @POST(AppConstants.RetrofitApis.postVisitorAPI)
+    fun postVisitorAPICall(
+        @Header("Authorization") authorizationValue: String,
+        @FieldMap inviteVisitor: MutableMap<String, Any>
+    ): Call<VisitorPostResponse>
+
+    @FormUrlEncoded
+    @PUT(AppConstants.RetrofitApis.updateVisitorAPI)
+    fun updateVisitorAPI(
+        @Header("Authorization") authorizationValue: String,
+        @FieldMap inviteVisitor: MutableMap<String, Any>
+    ): Call<VisitorPostResponse>
+
+
+    @GET(AppConstants.RetrofitApis.getAllApprovalStatusTypes)
+    fun getAllApprovalStatusTypes(
+        @Header("Authorization") authorizationValue: String
+    ): Call<ApprovalStatusModel>
+
+    @DELETE(AppConstants.RetrofitApis.deleteVisitorDetails)
+    fun deleteVisitorDetails(
+        @Header("Authorization") authorizationValue: String,
+        @Query("VisitorId") VisitorId: Int
+    ): Call<DeleteVisitorDetailsModel>
+
+    @GET(AppConstants.RetrofitApis.getStaffdetailsbyStafftypeIdDropdown)
+    fun getStaffdetailsbyStafftypeIdDropdown(
+        @Header("Authorization") authorizationValue: String,
+        @Query("StaffTypeId") StaffTypeId: Int,
+        @Query("AlreadybookedStatus") AlreadybookedStatus: String
+        ): Call<StaffServiceBookedDropDownModel>
+
+    @GET(AppConstants.RetrofitApis.getpoliciesAPI)
+    fun getPoliciesAPI(
+        @Header("Authorization") authorizationValue: String,
+        @Header("resultsPerPage") resultsPerPage: Int ?= 50,
+        @Header("pageNumber") pageNumber: Int ?= 1
+    ): Call<PoliciesModel>
+
+
+    @GET(AppConstants.RetrofitApis.getEmergentContactAPI)
+    fun getEmergentContactAPI(
+        @Header("Authorization") authorizationValue: String,
+        @Header("resultsPerPage") resultsPerPage: Int ?= 50,
+        @Header("pageNumber") pageNumber: Int ?= 1,
+        @Header("contactTypeId") contactTypeId: Int ?= 0
+    ): Call<EmergencyContact>
+
+    @GET(AppConstants.RetrofitApis.getEmergentContactCategoryAPI)
+    fun getEmergentContactCategoryAPI(
+        @Header("Authorization") authorizationValue: String,
+        @Header("resultsPerPage") resultsPerPage: Int ?= 50,
+        @Header("pageNumber") pageNumber: Int ?= 1
+    ): Call<EmergencyContactCategory>
+
+    @GET(AppConstants.RetrofitApis.getAllUserENewsDetails)
+    fun getAllUserENewsDetails(
+        @Header("Authorization") authorizationValue: String,
+    @Header("userId") userId: String,
+    @Header("month") month: String,
+    @Header("year") year: String,
+    @Header("fromDate") fromDate: String,
+    @Header("toDate") toDate: String,
+    @Header("pageNumber") pageNumber: String,
+    @Header("resultsPerPage") resultsPerPage: String,
+    ): Call<UserENewsListModel>
+
+    @PUT(AppConstants.RetrofitApis.updatePollVotingStatus)
+    fun updatePollVotingStatus(
+        @Header("Authorization") authorizationValue: String,
+        @Body jsonObject: JsonObject
+    ):Call<AddServiceBookingList>
+
+    @GET(AppConstants.RetrofitApis.getAllAssociatonMembers)
+    fun getAllAssociatonMembers(
+        @Header("Authorization") authorizationValue: String,
+      /*  @Header("clientRoleId") clientRoleId: Int,
+        @Header("statusId") statusId: Int,
+        @Header("flatId") flatId: Int,
+        @Header("blockId") blockId: Int,
+        @Header("fullName") fullName: String,
+        @Header("startDate") startDate: String,
+        @Header("endDate") endDate: String,*/
+        @Header("pageNumber") pageNumber: Int,
+        @Header("resultsPerPage") resultsPerPage: Int
+        ) : Call<GetAllAssociationMembersModel>
+
+    @GET(AppConstants.RetrofitApis.getAllRelationShipTypes)
+    fun getAllRelationShipTypes(
+        @Header("Authorization") authorizationValue: String
+        ):Call<RelationshipTypesModel>
+
+    @GET(AppConstants.RetrofitApis.getAlertUrl)
+    fun getAllAlertDetails(
+        @Header("Authorization") authorizationValue: String,
+        @Header("pageNumber") pageNumber: String,
+        @Header("resultsPerPage") resultsPerPage: String
+    ):Call<AlertResponse>
+
+    @DELETE(AppConstants.RetrofitApis.deleteAlertUrl)
+    fun deleteAlert(
+        @Header("Authorization") authorizationValue: String,
+        @Query("alertId") alertId : Int
+    ): Call<AlertDeleteResponse>
+
+    @GET(AppConstants.RetrofitApis.GetAllEmergencyTypeDetailsDropDown)
+    fun GetAllEmergencyTypeDetailsDropDown(
+        @Header("Authorization") authorizationValue: String
+    ): Call<EmergencyTypeModel>
+
+    @POST(AppConstants.RetrofitApis.SendAlertDetails)
+    fun SendAlertDetails(
+        @Header("Authorization") authorizationValue: String,
+        @Body alertRequest: AlertRequest
+    ): Call<AlertDeleteResponse>
+
+
+    @PUT(AppConstants.RetrofitApis.UpdateAlertDetails)
+    fun UpdateAlertDetails(
+        @Header("Authorization") authorizationValue: String,
+        @Body alertRequest: AlertRequest
+    ): Call<AlertDeleteResponse>
 }

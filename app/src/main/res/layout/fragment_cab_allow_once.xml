@@ -174,7 +174,8 @@
             android:fontFamily="@font/poppins_regular"
             android:gravity="center_vertical"
             android:hint="Enter Mobile Number"
-            android:inputType="text"
+            android:inputType="number"
+            android:maxLength="10"
             android:paddingHorizontal="12dp"
             android:textColor="@color/white"
             android:textColorHint="@color/gray_color"
@@ -243,7 +244,7 @@
                     android:layout_marginTop="@dimen/_5dp"
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="left"
-                    android:text="Date"
+                    android:text="Date*"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_16sp">
 
@@ -302,7 +303,7 @@
                     android:layout_marginTop="@dimen/_5dp"
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="left"
-                    android:text="Time"
+                    android:text="Time*"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_16sp">
 

@@ -10,9 +10,10 @@ data class AllFacilitiesModel(
         val totalRecords: Int
     ) {
         data class Facility(
-            val amount: Any,
-            val chargeByDay: Boolean,
-            val chargeByHour: Boolean,
+            val cgstpercentageForOutSidersChargeByDay: Double,
+            val cgstpercentageForOutSidersChargeByHour: Double,
+            val cgstpercentageForResidentsChargeByDay: Double,
+            val cgstpercentageForResidentsChargeByHour: Double,
             val chargeable: String,
             val comments: String,
             val createdBy: Int,
@@ -27,6 +28,10 @@ data class AllFacilitiesModel(
             val outSidersChargeByHour: Double,
             val residentsChargeByDay: Double,
             val residentsChargeByHour: Double,
+            val sgstpercentageForOutSidersChargeByDay: Double,
+            val sgstpercentageForOutSidersChargeByHour: Double,
+            val sgstpercentageForResidentsChargeByDay: Double,
+            val sgstpercentageForResidentsChargeByHour: Double,
             val statusId: Int,
             val statusName: String
         ) {

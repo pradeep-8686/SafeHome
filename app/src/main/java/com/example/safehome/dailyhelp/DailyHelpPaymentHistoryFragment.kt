@@ -274,11 +274,10 @@ class DailyHelpPaymentHistoryFragment : Fragment() {
             this.getString(R.string.loading)
         )
 //        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5OTg5NDU2NDU2IiwiZW1haWwiOiJhZG1pbkB5b3BtYWlsLmNvbSIsImp0aSI6ImIwODI3OGVkLTE0ZjMtNDdkNi04Y2Q5LWQ4NGM1YjU1MjFhYSIsInJvbGUiOiJBZG1pbiIsImNvbW11bml0eUlkIjoibFJqVk9JMzlLNDF2S2dzSVRjNVZPdz09IiwiY29tbXVuaXR5QWxpYXMiOiJjQ3RuTXU1bDNvTWtsOXJES25iNlZSdjlOalFVU1RVZEFINzFNTUdBcG5SRXlDbUtwdC9lS00rc0lwQlZMOWFCIiwiY29tbXVuaXR5TmFtZSI6IitBbWhITHZkSXlibmpOSVlicEFGUk5KSE1pMzEzb3BEN1lJNWh5dFR6cE9iaVVuT2padWd1V2M0eVdmdkJRa3giLCJmaXJzdE5hbWUiOiJINWRNTjExQk1TbXFNLzNoRE1PODdBPT0iLCJsYXN0TmFtZSI6Im40RnA0R1VIT0xQYnB0Yk11alVOL0E9PSIsInVzZXJJZCI6IjEiLCJuYmYiOjE2OTM0NDkwMjUsImV4cCI6MTcyNDk4NTAyNSwiaWF0IjoxNjkzNDQ5MDI1LCJpc3MiOiJTYWZlSG9tZS5jb20iLCJhdWQiOiJTYWZlSG9tZS5jb20ifQ.iTw2TQLFXOP_B7st5HrrT9FDI48ugqcu_KUknjlhnv4"
-
 //        Auth_Token = token
         // here sign up service call
         dailyHelpHistoryModel = apiInterface.getDailyHelpHistory(
-            "Bearer " + Auth_Token, staffId, year
+            "Bearer " + Auth_Token, staffId, User_Id!!.toInt(), year
         )
         dailyHelpHistoryModel.enqueue(object : Callback<DailyHelpHistoryModel> {
             override fun onResponse(

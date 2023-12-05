@@ -13,10 +13,10 @@ data class Data(
     val roleId: String,
     val roleName: String,
     val flatNo: String,
+    val flatId: String,
     val block: String,
+    val blockID: String,
     val communityName: String,
     val city: String,
     val state: String,
-
-
 )

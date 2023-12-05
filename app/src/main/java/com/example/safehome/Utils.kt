@@ -86,6 +86,7 @@ class Utils {
             }
             return formattedDate
         }
+
         @RequiresApi(Build.VERSION_CODES.O)
         fun dateMonthYear(inputDate: String): String{
             val inputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
@@ -109,10 +110,11 @@ class Utils {
             return outPutFormat.format(date)
         }
 
+        @RequiresApi(Build.VERSION_CODES.O)
         fun formatDateAndMonth(inputDate: String): String {
             // Define the input and output date formats
-            val inputFormat = SimpleDateFormat("YYYY-MM-dd", Locale.getDefault())
-            val outputFormat = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
+            val inputFormat = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+            val outputFormat = DateTimeFormatter.ofPattern("dd MMMM yyyy")
 
             try {
                 // Parse the input date string to a Date object
@@ -125,6 +127,26 @@ class Utils {
                 return inputDate // Return the input string if parsing fails
             }
         }
+
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun formatMonthAndDateYear(inputDate: String): String {
+            // Define the input and output date formats
+            val inputFormat = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+            val outputFormat = DateTimeFormatter.ofPattern("MMMM dd, yyyy")
+
+            try {
+                // Parse the input date string to a Date object
+                val date = inputFormat.parse(inputDate)
+
+                // Format the parsed date to the desired output format
+                return outputFormat.format(date)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return inputDate // Return the input string if parsing fails
+            }
+        }
+
         @RequiresApi(Build.VERSION_CODES.O)
         fun formatDateMonthYear(inputDate: String): String {
             // Define the input and output date formats

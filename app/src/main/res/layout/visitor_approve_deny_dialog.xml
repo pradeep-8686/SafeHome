@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_pink"
     android:orientation="vertical">
     <LinearLayout
@@ -39,7 +40,7 @@
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:padding="1dp"
-        android:src="@drawable/profile" />
+        android:src="@drawable/guest_waiting" />
 
     <TextView
         android:layout_marginTop="5dp"
@@ -93,6 +94,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
+            app:tint="@color/black"
             android:padding="1dp"
             android:src="@drawable/guest_date" />
 
@@ -130,6 +132,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
+            app:tint="@color/black"
             android:padding="1dp"
             android:src="@drawable/guest_time" />
 
@@ -160,18 +163,18 @@
             android:textColor="@color/white"
             android:fontFamily="@font/poppins_regular"
             android:textSize="15sp"
-            android:background="@drawable/rectangler_vrify_bg"
+            android:background="@drawable/rectangler_vrify_bg_8dp"
             android:layout_gravity="center"
             android:gravity="center"/>
 
 
         <TextView
             android:layout_marginLeft="@dimen/_25dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="160dp"
+            android:layout_height="35dp"
             android:text="Approve"
             android:textColor="@color/white"
-            android:background="@drawable/rectangler_vrify_bg"
+            android:background="@drawable/pay_now_solid_bg_4dp"
             android:fontFamily="@font/poppins_regular"
             android:textSize="15sp"
             android:layout_gravity="center"

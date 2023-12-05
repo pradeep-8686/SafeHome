@@ -181,11 +181,19 @@ class ListFragment : Fragment() {
         // bookNowDialog(myDues)
         try {
             val fIntent = Intent(requireContext(), ListBookNowActivity::class.java)
+
             fIntent.putExtra("bookType", myDues.name)
             fIntent.putExtra("facilityId", myDues.facilityId)
             fIntent.putExtra("from", "List")
             fIntent.putExtra("bookByDay", myDues.residentsChargeByDay)
             fIntent.putExtra("bookByHour", myDues.residentsChargeByHour)
+
+            fIntent.putExtra("cgstBookByDay", myDues.cgstpercentageForResidentsChargeByDay)
+            fIntent.putExtra("cgstBookByHour", myDues.cgstpercentageForResidentsChargeByHour)
+
+            fIntent.putExtra("sgstBookByDay", myDues.sgstpercentageForResidentsChargeByDay)
+            fIntent.putExtra("sgstBookByHour", myDues.sgstpercentageForResidentsChargeByHour)
+
             fIntent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             getActivity()?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

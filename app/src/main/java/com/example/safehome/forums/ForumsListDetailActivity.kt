@@ -250,7 +250,8 @@ class ForumsListDetailActivity : Activity() {
                             1 -> {
                                 if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
                                     Utils.showToast(this@ForumsListDetailActivity, response.body()!!.message.toString())
-                                    forumCommentsAdapter.notifyDataSetChanged()
+                          //          forumCommentsAdapter.notifyDataSetChanged()
+                                    bottomSheetDialog.dismiss()
                                 }
                             }
                             else -> {

@@ -492,8 +492,15 @@ class BookingsFragment : Fragment() {
             fIntent.putExtra("facilityId", faciBookings.facilityId)
             fIntent.putExtra("bookFacilityId", faciBookings.bookFacilityId)
             fIntent.putExtra("from", "bookings")
-            fIntent.putExtra("bookByHour", 1.00)
-            fIntent.putExtra("bookByTime", 1.00)
+            fIntent.putExtra("bookByHour", faciBookings.residentsChargeByDay)
+            fIntent.putExtra("bookByTime",  faciBookings.residentsChargeByHour)
+
+            fIntent.putExtra("cgstBookByDay", faciBookings.cgstpercentageForResidentsChargeByDay)
+            fIntent.putExtra("cgstBookByHour", faciBookings.cgstpercentageForResidentsChargeByHour)
+
+            fIntent.putExtra("sgstBookByDay", faciBookings.sgstpercentageForResidentsChargeByDay)
+            fIntent.putExtra("sgstBookByHour", faciBookings.sgstpercentageForResidentsChargeByHour)
+
             fIntent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             getActivity()?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

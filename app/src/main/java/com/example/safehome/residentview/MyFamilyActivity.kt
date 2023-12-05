@@ -15,7 +15,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -28,26 +27,28 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.safehome.HomeActivity
 import com.example.safehome.R
 import com.example.safehome.Utils
 import com.example.safehome.adapter.AgeGroupAdapter
+import com.example.safehome.adapter.MyFamilyRelationshipAdapter
 import com.example.safehome.custom.CustomProgressDialog
 import com.example.safehome.databinding.ActivityMyFamilyBinding
 import com.example.safehome.model.MobileSignUp
+import com.example.safehome.model.RelationshipTypesModel
 import com.example.safehome.repository.APIClient
 import com.example.safehome.repository.APIInterface
-import com.google.gson.JsonObject
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Multipart
 import java.io.IOException
 
 class MyFamilyActivity : AppCompatActivity() {
+    private lateinit var relashionShipPopupWindow: PopupWindow
+    private var realationshipTypesList: ArrayList<RelationshipTypesModel.Data> = ArrayList()
+    private lateinit var relationshipTypeServiceCall: Call<RelationshipTypesModel>
     private lateinit var binding: ActivityMyFamilyBinding
     private var firstName: String? = null
     private var lastName: String? = null
@@ -132,8 +133,85 @@ class MyFamilyActivity : AppCompatActivity() {
             clearData()
         }
 
+        binding.selectReationCl.setOnClickListener {
+            getRealtionshipeTypeServiceCall()
+        }
+
         binding.profilePicture.setOnClickListener { pickImageFromGallery() }
     }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun getRealtionshipeTypeServiceCall() {
+        customProgressDialog.progressDialogShow(this@MyFamilyActivity, this.getString(R.string.loading))
+        relationshipTypeServiceCall = apiInterface.getAllRelationShipTypes("bearer "+Auth_Token)
+        relationshipTypeServiceCall.enqueue(object: Callback<RelationshipTypesModel> {
+            override fun onResponse(
+                call: Call<RelationshipTypesModel>,
+                response: Response<RelationshipTypesModel>
+            ) {
+                if (response.isSuccessful && response.body()!= null){
+
+                    customProgressDialog.progressDialogDismiss()
+                    if (response.body()!!.statusCode!= null){
+                        when(response.body()!!.statusCode){
+                            1 -> {
+                                if (realationshipTypesList.isNotEmpty()){
+                                    realationshipTypesList.clear()
+                                }
+                                if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
+                                    //      Utils.showToast(this@ENewsActivity, response.body()!!.message.toString())
+                                    realationshipTypesList = response.body()!!.data as ArrayList<RelationshipTypesModel.Data>
+                                    showRelationshipDropDown(realationshipTypesList)
+                                }
+                            }
+                            else -> {
+                                if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
+                                    Utils.showToast(this@MyFamilyActivity, response.body()!!.message.toString())
+                                }
+                            }
+                        }
+                    }
+                }else{
+
+                    customProgressDialog.progressDialogDismiss()
+                }
+            }
+
+            override fun onFailure(call: Call<RelationshipTypesModel>, t: Throwable) {
+                customProgressDialog.progressDialogDismiss()
+                Utils.showToast(this@MyFamilyActivity, t.message.toString())
+
+            }
+
+        })   
+    }
+
+    private fun showRelationshipDropDown(realationshipTypesList: ArrayList<RelationshipTypesModel.Data>) {
+        val layoutInflater: LayoutInflater =
+            this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view: View = layoutInflater.inflate(R.layout.drop_down_layout, null)
+
+        relashionShipPopupWindow = PopupWindow(
+            view,
+            binding.selectAgeGroupTxt.measuredWidth,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+            //(Utils.screenHeight * 0.3).toInt()
+        )
+        if (realationshipTypesList.isNotEmpty()) {
+
+            val linearLayoutManager = LinearLayoutManager(this)
+
+            val dropDownRecyclerView = view.findViewById<RecyclerView>(R.id.drop_down_recycler_view)
+            dropDownRecyclerView.layoutManager = linearLayoutManager
+            val ageGroupAdapter = MyFamilyRelationshipAdapter(this, realationshipTypesList)
+
+            dropDownRecyclerView.adapter = ageGroupAdapter
+            ageGroupAdapter.setCallback(this@MyFamilyActivity)
+        }
+        relashionShipPopupWindow!!.elevation = 10F
+        relashionShipPopupWindow!!.showAsDropDown(binding.selectRelationTxt, 0, 0, Gravity.CENTER)
+    }
+
 
     private fun clearData() {
         binding.firstNameEt.setText("")
@@ -578,6 +656,18 @@ class MyFamilyActivity : AppCompatActivity() {
         } else {
             binding.mobileNumberHeader.text =
                 Html.fromHtml(getString(R.string.mobile_number_hint) + "" + "<font color='white'>*</font>")
+        }
+    }
+
+    fun setRelationType(relationTypeName: RelationshipTypesModel.Data) {
+        if (relashionShipPopupWindow != null) {
+            if (relashionShipPopupWindow!!.isShowing) {
+                relashionShipPopupWindow!!.dismiss()
+            }
+        }
+
+        if (!relationTypeName.relationShipName.isNullOrEmpty()){
+            binding.selectRelationTxt.text = relationTypeName.relationShipName
         }
     }
 

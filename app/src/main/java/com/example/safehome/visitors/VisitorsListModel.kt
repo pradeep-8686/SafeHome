@@ -1,5 +1,7 @@
 package com.example.safehome.visitors
 
+import java.io.Serializable
+
 data class VisitorsListModel(
     val entryTitle: String,
     val entryType: String,
@@ -10,4 +12,4 @@ data class VisitorsListModel(
     val allowFor: String,
     val entryPersonName: String,
     val visitorImage: Int
-)
+) : Serializable

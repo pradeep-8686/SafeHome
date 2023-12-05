@@ -13,11 +13,12 @@ import com.example.safehome.model.GetAllPollDetailsModel
 
 class PollsOptionAdapter(
     var context: Context,
-    private var pollResponseModel: List<GetAllPollDetailsModel.Data.Poll.PollOption>
+    private var pollResponseModel: List<GetAllPollDetailsModel.Data.Poll.PollOption>,
+    private var pollItem: GetAllPollDetailsModel.Data.Poll
 ) :
     RecyclerView.Adapter<PollsOptionAdapter.MyViewHolder>() {
     private lateinit var pollsActivity : PollsActivity
-
+    private lateinit var pollsAdapter: PollsAdapter
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -38,11 +39,10 @@ class PollsOptionAdapter(
             holder.tvPollOption.background = context.getDrawable(R.drawable.ic_green_rec)
         }else{
             holder.tvPollOption.background = context.getDrawable(R.drawable.ic_gray_rec)
-
         }
 
         holder.itemView.setOnClickListener {
-            pollsActivity.clickAction(meeting)
+            pollsActivity.clickAction(meeting, pollItem)
         }
 
     }

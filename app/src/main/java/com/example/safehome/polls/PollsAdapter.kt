@@ -21,6 +21,7 @@ class PollsAdapter(
     private val userId :  String
 ) :
     RecyclerView.Adapter<PollsAdapter.MyViewHolder>() {
+    private lateinit var pollItem: GetAllPollDetailsModel.Data.Poll
     private lateinit var pollsActivity : PollsActivity
 
     override fun onCreateViewHolder(
@@ -34,7 +35,7 @@ class PollsAdapter(
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val pollItem = pollResponseModel[position]
+        val  pollItem = pollResponseModel[position]
 
 
         if (!pollItem.postedBy.isNullOrEmpty()) {
@@ -98,7 +99,7 @@ class PollsAdapter(
             holder.optionRecyclerView.visibility = View.VISIBLE
             holder.optionRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             val pollsOptionAdapter =
-                PollsOptionAdapter(context, pollItem.pollOptions)
+                PollsOptionAdapter(context, pollItem.pollOptions, pollItem)
             holder.optionRecyclerView.adapter = pollsOptionAdapter
             pollsOptionAdapter.setCallback(pollsActivity)
             pollsOptionAdapter.notifyDataSetChanged()
@@ -141,6 +142,8 @@ class PollsAdapter(
     fun setCallback(pollsActivity: PollsActivity) {
         this.pollsActivity = pollsActivity
     }
+
+
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvRaisedBy: TextView = itemView.findViewById(R.id.tvRaisedBy)

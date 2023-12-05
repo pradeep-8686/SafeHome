@@ -59,7 +59,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="Select Guest Type*"
+            android:text="Guest Type*"
             android:textColor="@color/white"
             android:textSize="@dimen/_16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -177,8 +177,9 @@
             android:drawableRight="@drawable/guest_mobile"
             android:fontFamily="@font/poppins_regular"
             android:gravity="center_vertical"
+            android:maxLength="10"
             android:hint="Enter Mobile Number"
-            android:inputType="text"
+            android:inputType="number"
             android:paddingHorizontal="12dp"
             android:textColor="@color/white"
             android:textColorHint="@color/gray_color"
@@ -383,7 +384,7 @@
                     android:layout_marginTop="@dimen/_5dp"
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="left"
-                    android:text="Time"
+                    android:text="Time*"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_16sp">
 

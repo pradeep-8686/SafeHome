@@ -42,49 +42,49 @@ class NoticeDetailsActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun readStatusSendToNotice(readStatusId: Int?) {
-            customProgressDialog.progressDialogShow(this, this.getString(R.string.loading))
+        customProgressDialog.progressDialogShow(this, this.getString(R.string.loading))
 
         updateReadStatusServicesCall =
-                apiInterface.updateNoticeRead("bearer " + Auth_Token, readStatusId!! )
+            apiInterface.updateNoticeRead("bearer " + Auth_Token, readStatusId!! )
         updateReadStatusServicesCall.enqueue(object : Callback<JsonObject> {
-                override fun onResponse(
-                    call: Call<JsonObject>,
-                    response: Response<JsonObject>
-                ) {
-                    if (response.isSuccessful && response.body() != null) {
-                        customProgressDialog.progressDialogDismiss()
-                        if (response.body()!!.has("statusCode") != null) {
-                            when (response.body()!!.has("statusCode").toString() ) {
-                                "1" -> {
-                                    if (response.body()!!.has("message") != null && response.body()!!.has("message").toString().isNotEmpty()) {
+            override fun onResponse(
+                call: Call<JsonObject>,
+                response: Response<JsonObject>
+            ) {
+                if (response.isSuccessful && response.body() != null) {
+                    customProgressDialog.progressDialogDismiss()
+                    if (response.body()!!.has("statusCode") != null) {
+                        when (response.body()!!.has("statusCode").toString() ) {
+                            "1" -> {
+                                if (response.body()!!.has("message") != null && response.body()!!.has("message").toString().isNotEmpty()) {
 //                                        Utils.showToast(
 //                                            this@NoticeDetailsActivity,
 //                                            response.body()!!.has("message").toString()
 //                                        )
-                                    }
                                 }
+                            }
 
-                                else -> {
-                                    if (response.body()!!.has("message").toString() != null && response.body()!!.has("message").toString().isNotEmpty()) {
+                            else -> {
+                                if (response.body()!!.has("message").toString() != null && response.body()!!.has("message").toString().isNotEmpty()) {
 //                                        Utils.showToast(
 //                                            this@NoticeDetailsActivity,
 //                                            response.body()!!.has("message").toString().toString()
 //                                        )
-                                    }
                                 }
                             }
                         }
-                    } else {
-                        customProgressDialog.progressDialogDismiss()
                     }
-                }
-
-                override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                } else {
                     customProgressDialog.progressDialogDismiss()
-                    Utils.showToast(this@NoticeDetailsActivity, t.message.toString())
                 }
+            }
 
-            })
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                customProgressDialog.progressDialogDismiss()
+                Utils.showToast(this@NoticeDetailsActivity, t.message.toString())
+            }
+
+        })
     }
 
     private fun inIt() {

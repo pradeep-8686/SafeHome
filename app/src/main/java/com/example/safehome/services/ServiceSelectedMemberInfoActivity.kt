@@ -239,9 +239,10 @@ class ServiceSelectedMemberInfoActivity : AppCompatActivity() {
             mTimePicker = TimePickerDialog(
                 this,
                 { timePicker, selectedHour, selectedMinute ->
-                    binding.startTimeText.text = String.format("%02d:%02d %s", selectedHour, selectedMinute,
+                  /*  binding.startTimeText.text = String.format("%02d:%02d %s", selectedHour, selectedMinute,
                         if (selectedHour < 12) "AM" else "PM"
-                    )
+                    )*/
+                    setTime("StartTime", selectedHour, selectedMinute)
                 },
                 hour,
                 minute,
@@ -392,11 +393,15 @@ fun Booking() {
 
     private fun setTime(Time: String, selectedHour: Int, selectedMinute: Int) {
         try {
-          /*  var hour_str: String? = null
+
+            var hour_str: String? = null
             if (selectedHour < 10) {
                 hour_str = "0" + selectedHour
             } else {
                 hour_str = selectedHour.toString()
+            }
+            if(hour_str == "00"){
+                hour_str = "12"
             }
 
             var minute_str: String? = null
@@ -406,24 +411,27 @@ fun Booking() {
                 minute_str = selectedMinute.toString()
             }
 
-            if (Time.equals("StartTime")) {
-                binding.startTimeText?.setText("$hour_str:$minute_str")
-            }*/
-
             var hour: Int = selectedHour
             if(selectedHour in 0..11){
-                time = "$selectedHour:$selectedMinute AM"
+
+                time = "$hour_str:$minute_str AM"
             } else {
                 if(selectedHour == 12){
-                    time = "$selectedHour:$selectedMinute PM"
+                    time = "$hour_str:$minute_str PM"
                 } else{
                     hour = hour!!- 12;
-                    time = "$hour:$selectedMinute PM";                }
+                    if (hour < 10) {
+                        hour_str = "0" + hour
+                    } else {
+                        hour_str = hour.toString()
+                    }
+                    time = "$hour_str:$minute_str PM";
+                }
             }
 
             if (Time == "StartTime") {
                 binding.startTimeText?.text = time
-            } 
+            }
 
         } catch (ex: Exception) {
         }

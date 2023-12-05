@@ -7,18 +7,18 @@ import com.example.safehome.R
 import com.example.safehome.Utils
 import com.example.safehome.activity.BaseActivity
 import com.example.safehome.databinding.ActivitySelectGuestBinding
-import com.example.safehome.visitors.VisitorActivity
-import com.example.safehome.visitors.guest.AllowFrequentlyFragment
-import com.example.safehome.visitors.guest.AllowOnceFragment
+import com.example.safehome.visitors.ApprovalStatusModel
 import com.example.safehome.visitors.guest.GuestActivity
 
 class SelectGuestActivity : BaseActivity() {
 
+    private var from: String?= null
     private lateinit var binding : ActivitySelectGuestBinding
 
     private var User_Id: String? = ""
     private var Auth_Token: String? = ""
     private var ScreenFrom: String? = ""
+    private var approvalStatus : ArrayList<ApprovalStatusModel.Data> ? =null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +29,11 @@ class SelectGuestActivity : BaseActivity() {
         ScreenFrom = intent.getStringExtra("ScreenFrom")
         User_Id = Utils.getStringPref(this, "User_Id", "")
         Auth_Token = Utils.getStringPref(this, "Token", "")
+        from  = intent.getStringExtra("from")
+        if ( intent.getSerializableExtra("approvalStatus") != null){
 
+            approvalStatus = intent.getSerializableExtra("approvalStatus") as ArrayList<ApprovalStatusModel.Data>
+        }
         binding.backBtnClick.setOnClickListener {
             val intent = Intent(this, GuestActivity::class.java)
             intent.putExtra("ScreenFrom", ScreenFrom)
@@ -37,7 +41,7 @@ class SelectGuestActivity : BaseActivity() {
             finish()
         }
 
-        replaceFragment(R.id.fragment_container, ContactsFragment())
+        replaceFragment(R.id.fragment_container, ContactsFragment(approvalStatus, from))
 
         buttonClickEvents()
 
@@ -50,14 +54,17 @@ class SelectGuestActivity : BaseActivity() {
             binding.contactsBtn.background =
                 getDrawable(R.drawable.rectangler_vrify_bg)
             binding.recentsBtn.setBackgroundResource(0)
-            replaceFragment(R.id.fragment_container, ContactsFragment())
+         /*   val bundle = Bundle()
+            bundle.putString("from", from)
+            val contactFragment = ContactsFragment(approvalStatus, from)   */
+            replaceFragment(R.id.fragment_container, ContactsFragment(approvalStatus, from))
         }
 
         binding.recentsBtn.setOnClickListener {
             binding.recentsBtn.background = getDrawable(R.drawable.rectangler_vrify_bg)
             binding.contactsBtn.setBackgroundResource(0)
 
-            replaceFragment(R.id.fragment_container, RecentFragment())
+            replaceFragment(R.id.fragment_container, RecentFragment(approvalStatus))
         }
     }
 
@@ -65,6 +72,7 @@ class SelectGuestActivity : BaseActivity() {
         super.onBackPressed()
         val intent = Intent(this, GuestActivity::class.java)
         intent.putExtra("ScreenFrom", ScreenFrom)
+        intent.putExtra("from", from)
         startActivity(intent)
         finish()
     }

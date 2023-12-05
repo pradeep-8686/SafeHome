@@ -273,7 +273,7 @@ class NoticeActivity: Activity() {
         Log.e("Token", Auth_Token.toString())
         customProgressDialog.progressDialogShow(this@NoticeActivity, this.getString(R.string.loading))
 
-        getAllNoticeCall = apiInterface.getallNoticesStatus("bearer " + Auth_Token,10,1,noticeView,year)
+        getAllNoticeCall = apiInterface.getallNoticesStatus("bearer " + Auth_Token,50,1,noticeView,year)
         getAllNoticeCall.enqueue(object : Callback<GetAllNoticeStatus> {
             override fun onResponse(
                 call: Call<GetAllNoticeStatus>,

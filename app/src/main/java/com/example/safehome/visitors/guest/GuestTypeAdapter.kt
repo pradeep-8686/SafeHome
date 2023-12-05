@@ -9,17 +9,25 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.safehome.R
+import com.example.safehome.visitors.ServiceProviderModel
 import com.example.safehome.visitors.cab.CabAllowFrequentlyFragment
 import com.example.safehome.visitors.cab.CabAllowOnceFragment
+import com.example.safehome.visitors.delivery.DeliveryAllowFrequentlyFragment
+import com.example.safehome.visitors.delivery.DeliveryAllowOnceFragment
+import com.example.safehome.visitors.others.OthersAllowFrequentlyFragment
+import com.example.safehome.visitors.staff.StaffAllowFrequentlyFragment
+import com.example.safehome.visitors.staff.StaffAllowOnceFragment
 
-class GuestTypeAdapter(var context: Context, private var guestTypeList: List<String>) :
+class GuestTypeAdapter(var context: Context, private var guestTypeList: List<ServiceProviderModel.Data>) :
     RecyclerView.Adapter<GuestTypeAdapter.MyViewHolder>() {
     private var allowOnceFragment: AllowOnceFragment? = null
     private var allowFrequentlyFragment: AllowFrequentlyFragment? = null
-    private var allowFrequentlyFragment1: AllowFrequentlyFragment? = null
     private var cabAllowOnceFragment : CabAllowOnceFragment? = null
     private var cabAllowFrequentlyFragment : CabAllowFrequentlyFragment? = null
-    private var cabAllowFrequentlyFragment1 : CabAllowFrequentlyFragment? = null
+    private var deliveryAllowOnceFragment : DeliveryAllowOnceFragment? = null
+    private var deliveryAllowFrequentlyFragment : DeliveryAllowFrequentlyFragment? = null
+    private var staffAllowOnceFragment : StaffAllowOnceFragment? = null
+    private var staffAllowFrequentlyFragment : StaffAllowFrequentlyFragment? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -32,26 +40,23 @@ class GuestTypeAdapter(var context: Context, private var guestTypeList: List<Str
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val guestType: String = guestTypeList[position]
-        holder.ageGroupTv.tag = guestType
-        if (guestType.isNotEmpty()) {
-            holder.ageGroupTv.text = guestType
+        val guestType = guestTypeList[position]
+        holder.ageGroupTv.tag = guestType.name
+        if (guestType.name.isNotEmpty()) {
+            holder.ageGroupTv.text = guestType.name
         }
 
         holder.ageGroupTv.setOnClickListener {
 
                 if (allowOnceFragment != null) {
 
-                    allowOnceFragment?.setGuestType(guestTypeList[position])
+                    allowOnceFragment?.setGuestType(guestType)
                 }
                 if (allowFrequentlyFragment != null) {
 
                     allowFrequentlyFragment?.setGuestType(guestTypeList[position])
                 }
-                if (allowFrequentlyFragment1 != null) {
 
-                    allowFrequentlyFragment1?.setSchedule(guestTypeList[position])
-                }
                 if (cabAllowOnceFragment != null) {
 
                     cabAllowOnceFragment?.setServiceProvider(guestTypeList[position])
@@ -60,9 +65,25 @@ class GuestTypeAdapter(var context: Context, private var guestTypeList: List<Str
 
                     cabAllowFrequentlyFragment?.setGuestType(guestTypeList[position])
                 }
-                if (cabAllowFrequentlyFragment1 != null) {
 
-                    cabAllowFrequentlyFragment1?.setSchedule(guestTypeList[position])
+
+                if (deliveryAllowOnceFragment != null) {
+
+                    deliveryAllowOnceFragment?.setServiceProvider(guestTypeList[position])
+                }
+                if (deliveryAllowFrequentlyFragment != null) {
+
+                    deliveryAllowFrequentlyFragment?.setServiceProvider(guestTypeList[position])
+                }
+
+                if (staffAllowOnceFragment != null) {
+
+                    staffAllowOnceFragment?.setServiceProvider(guestTypeList[position])
+                }
+
+                if (staffAllowFrequentlyFragment != null) {
+
+                    staffAllowFrequentlyFragment?.setServiceProvider(guestTypeList[position])
                 }
 
 
@@ -85,19 +106,32 @@ class GuestTypeAdapter(var context: Context, private var guestTypeList: List<Str
         this.allowFrequentlyFragment = allowFrequentlyFragment
     }
 
-    fun setCallbackSchedule(allowFrequentlyFragment1: AllowFrequentlyFragment) {
-        this.allowFrequentlyFragment1 = allowFrequentlyFragment1
-    }
+
     fun setCallbackServiceProvider(cabAllowOnceFragment: CabAllowOnceFragment) {
         this.cabAllowOnceFragment = cabAllowOnceFragment
     }
-    fun setCallbackDate(cabAllowFrequentlyFragment: CabAllowFrequentlyFragment) {
-        this.cabAllowFrequentlyFragment1 = cabAllowFrequentlyFragment
-    }
+
 
     fun setCallbackServiceProvider1(cabAllowFrequentlyFragment: CabAllowFrequentlyFragment) {
         this.cabAllowFrequentlyFragment = cabAllowFrequentlyFragment
     }
+    fun setCallbackDeliveryOnce(deliveryAllowOnceFragment: DeliveryAllowOnceFragment) {
+        this.deliveryAllowOnceFragment = deliveryAllowOnceFragment
+    }
+
+    fun setCallbackDeliveryFrq(deliveryAllowFrequentlyFragment: DeliveryAllowFrequentlyFragment) {
+        this.deliveryAllowFrequentlyFragment = deliveryAllowFrequentlyFragment
+    }
+
+    fun setCallbackStaffOnce(staffAllowOnceFragment: StaffAllowOnceFragment) {
+        this.staffAllowOnceFragment = staffAllowOnceFragment
+    }
+
+
+    fun setCallbackStaffFrq(staffAllowFrequentlyFragment: StaffAllowFrequentlyFragment) {
+        this.staffAllowFrequentlyFragment = staffAllowFrequentlyFragment
+    }
+
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ageGroupTv: TextView = itemView.findViewById(R.id.ageGroup_tv)

@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.safehome.R
+import com.example.safehome.visitors.ApprovalStatusModel
 
 
-class RecentFragment : Fragment() {
+class RecentFragment(private val approvalStatus : ArrayList<ApprovalStatusModel.Data>?= null) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -32,12 +32,14 @@ import com.example.safehome.model.GetPollResultModel
 import com.example.safehome.model.YearModel
 import com.example.safehome.repository.APIClient
 import com.example.safehome.repository.APIInterface
+import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class PollsActivity : AppCompatActivity() {
 
+    private lateinit var updatePollVotingStatusCall: Call<AddServiceBookingList>
     private lateinit var deletePollCall: Call<AddServiceBookingList>
     private lateinit var getPollResultCall: Call<GetPollResultModel>
     private var pollResultsList: ArrayList<GetPollResultModel.Data.Polldata> = ArrayList()
@@ -97,8 +99,7 @@ class PollsActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun getAllPollsDetailsCall() {
         customProgressDialog.progressDialogShow(this@PollsActivity, this.getString(R.string.loading))
-        getAllPollsDetailCall = apiInterface.getAllPollDetails("bearer "+Auth_Token,"", "",
-        "", "1", "10")
+        getAllPollsDetailCall = apiInterface.getAllPollDetails("bearer "+Auth_Token, User_Id!!.toInt(), "2023",1, 10)
         getAllPollsDetailCall.enqueue(object: Callback<GetAllPollDetailsModel> {
             override fun onResponse(
                 call: Call<GetAllPollDetailsModel>,
@@ -461,8 +462,53 @@ class PollsActivity : AppCompatActivity() {
 
     }
 
-    fun clickAction(pollItem: GetAllPollDetailsModel.Data.Poll.PollOption) {
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun clickAction(
+        pollItem: GetAllPollDetailsModel.Data.Poll.PollOption,
+        pollItem1: GetAllPollDetailsModel.Data.Poll
+    ) {
+        customProgressDialog.progressDialogShow(this@PollsActivity, this.getString(R.string.loading))
+        val jsonObject = JsonObject()
+        jsonObject.addProperty("PollId", pollItem.pollId)
+        jsonObject.addProperty("OptionId", pollItem.optionId)
+        jsonObject.addProperty("PollResultId", pollItem1.pollResultID)
+        Log.e("PollResultId", ""+pollItem1.pollResultID)
+        updatePollVotingStatusCall = apiInterface.updatePollVotingStatus("bearer "+Auth_Token, jsonObject)
+        updatePollVotingStatusCall.enqueue(object: Callback<AddServiceBookingList> {
+            override fun onResponse(
+                call: Call<AddServiceBookingList>,
+                response: Response<AddServiceBookingList>
+            ) {
+                if (response.isSuccessful && response.body()!= null){
+                    customProgressDialog.progressDialogDismiss()
+                    if (response.body()!!.statusCode!= null){
+                        when(response.body()!!.statusCode){
+                            1 -> {
+                                if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
+                                    Utils.showToast(this@PollsActivity, response.body()!!.message.toString())
+                                    pollsAdapter.notifyDataSetChanged()
+                                    getAllPollsDetailsCall()
+                                }
+                            }
+                            else -> {
+                                if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
+                                    Utils.showToast(this@PollsActivity, response.body()!!.message.toString())
+                                }
+                            }
+                        }
+                    }else{
+                        customProgressDialog.progressDialogDismiss()
 
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<AddServiceBookingList>, t: Throwable) {
+                customProgressDialog.progressDialogDismiss()
+                Utils.showToast(this@PollsActivity, t.message.toString())
+            }
+
+        })
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)

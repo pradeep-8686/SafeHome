@@ -15,6 +15,7 @@ import com.example.safehome.complaints.PersonalFragment
 import com.example.safehome.dailyhelp.DailyHelpActivity
 import com.example.safehome.dailyhelp.DailyHelpMemberListActivity
 import com.example.safehome.dailyhelp.DailyHelpPaymentHistoryFragment
+import com.example.safehome.enews.ENewsActivity
 import com.example.safehome.eventsview.EventsActivity
 import com.example.safehome.eventsview.EventsHistoryFragment
 import com.example.safehome.facilitiesview.FacilitiesHistoryFragment
@@ -28,6 +29,7 @@ import com.example.safehome.polls.PollsActivity
 import com.example.safehome.services.ServicesActivity
 import com.example.safehome.services.ServicesMemberListActivity
 import com.example.safehome.services.ServicesPaymentHistoryFragment
+import com.example.safehome.visitors.HistoryVisitorsListFragment
 import com.example.safehome.visitors.VisitorActivity
 import com.example.safehome.visitors.VisitorsListFragment
 
@@ -49,6 +51,8 @@ class YearAdapter(var context: Context, private var statesList: List<String>) :
     private lateinit var pollsActivity: PollsActivity
     private lateinit var forumsListActivity: ForumsListActivity
     private lateinit var visitorsListFragment: VisitorsListFragment
+    private lateinit var historyVisitorsListFragment: HistoryVisitorsListFragment
+    private lateinit var eNewsActivity: ENewsActivity
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -92,7 +96,9 @@ class YearAdapter(var context: Context, private var statesList: List<String>) :
             else if (context is ForumsListActivity){
                 forumsListActivity.selectForumsYear(it.tag as String)
             }else if (context is VisitorActivity){
-                visitorsListFragment.selectVisitorYear(it.tag as String)
+                historyVisitorsListFragment.selectVisitorYear(it.tag as String)
+            }else if (context is ENewsActivity){
+                eNewsActivity.setEnewsYear(it.tag as String)
             }
             else {
                 facilitiesHistoryFragment.selectYear(it.tag as String)
@@ -158,6 +164,16 @@ class YearAdapter(var context: Context, private var statesList: List<String>) :
     fun setVisitorsHistoryCallback(visitorsListFragment: VisitorsListFragment) {
         this.visitorsListFragment = visitorsListFragment
 
+    }
+
+
+    fun setVisitorsHistoryCallback(historyVisitorsListFragment: HistoryVisitorsListFragment) {
+        this.historyVisitorsListFragment = historyVisitorsListFragment
+
+    }
+
+    fun setEnewCallback(eNewsActivity: ENewsActivity) {
+        this.eNewsActivity = eNewsActivity
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

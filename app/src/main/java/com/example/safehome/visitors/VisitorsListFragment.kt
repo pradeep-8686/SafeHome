@@ -1,11 +1,15 @@
 package com.example.safehome.visitors
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,69 +18,146 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.safehome.R
+import com.example.safehome.Utils
 import com.example.safehome.adapter.YearAdapter
+import com.example.safehome.custom.CustomProgressDialog
 import com.example.safehome.databinding.FragmentVisitorsListBinding
-import com.example.safehome.maintenance.HistoryFragment
+import com.example.safehome.repository.APIClient
+import com.example.safehome.repository.APIInterface
+import com.example.safehome.visitors.cab.CabActivity
+import com.example.safehome.visitors.delivery.DeliveryActivity
+import com.example.safehome.visitors.guest.GuestActivity
+import com.example.safehome.visitors.others.OthersActivity
+import com.example.safehome.visitors.staff.StaffActivity
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.Locale
 
 
-class VisitorsListFragment : Fragment() {
+class VisitorsListFragment(private val approvalStatus : ArrayList<ApprovalStatusModel.Data>?= null)  : Fragment() {
 
-    private var yearPopupWindow: PopupWindow?= null
+    private var totalVisitorDetailsList: ArrayList<GetAllVisitorDetailsModel.Data.Event> = ArrayList()
+    private lateinit var getAllVisitorDetailsCall: Call<GetAllVisitorDetailsModel>
     private lateinit var binding : FragmentVisitorsListBinding
-    private var visitorsList:ArrayList<VisitorsListModel> = ArrayList()
-    private var expectedVisitorsList:ArrayList<VisitorsListModel> = ArrayList()
-    private var historyVisitorsList:ArrayList<VisitorsListModel> = ArrayList()
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private var yearPopupWindow: PopupWindow?= null
     private var visitorDeleteDialog: Dialog? = null
     private var yearList: ArrayList<String> = ArrayList()
     private lateinit var visitorsListAdapter: VisitorsListAdapter
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var apiInterface: APIInterface
+    var User_Id: String? = ""
+    var Auth_Token: String? = ""
+    var ScreenFrom: String? = ""
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
         binding = FragmentVisitorsListBinding.inflate(inflater, container, false)
-        addVisitorsList()
-        populateData()
-        addYearList()
+     //   addVisitorsList()
         inIt()
+
+        getAllVisitorsDetailsServiceCall()
+        //populateData(totalVisitorDetailsList)
+        addYearList()
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun getAllVisitorsDetailsServiceCall() {
+        customProgressDialog.progressDialogShow(requireContext(), this.getString(R.string.loading))
+        getAllVisitorDetailsCall = apiInterface.getAllVisitorDetails("bearer "+Auth_Token, "", "",
+        "", "","","", "","", "", "", "1", "10", "")
+        getAllVisitorDetailsCall.enqueue(object: Callback<GetAllVisitorDetailsModel> {
+            @SuppressLint("SuspiciousIndentation")
+            override fun onResponse(
+                call: Call<GetAllVisitorDetailsModel>,
+                response: Response<GetAllVisitorDetailsModel>
+            ) {
+                if (response.isSuccessful && response.body()!= null){
+                    customProgressDialog.progressDialogDismiss()
+                    if (response.body()!!.statusCode!= null){
+                        when(response.body()!!.statusCode){
+                            1 -> {
+                                if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
+                                    if (totalVisitorDetailsList.isNotEmpty()) {
+                                        totalVisitorDetailsList.clear()
+                                    }
+                                    totalVisitorDetailsList = response.body()!!.data.events as ArrayList<GetAllVisitorDetailsModel.Data.Event>
+                                    //     Utils.showToast(requireContext(), response.body()!!.message.toString())
+
+                                }
+                            //    populateData(totalVisitorDetailsList)
+                                replaceCurrentVisitorsFragment()
+                            }
+
+                            else -> {
+                                if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
+                                    Utils.showToast(requireContext(), response.body()!!.message.toString())
+                                }
+                            }
+                        }
+                    }else{
+                        customProgressDialog.progressDialogDismiss()
+
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetAllVisitorDetailsModel>, t: Throwable) {
+                customProgressDialog.progressDialogDismiss()
+                Utils.showToast(requireContext(), t.message.toString())
+            }
+
+        })
+    }
+
     private fun inIt() {
+        customProgressDialog = CustomProgressDialog()
+        apiInterface = APIClient.getClient(requireContext())
+        User_Id = Utils.getStringPref(requireContext(), "User_Id", "")
+        Auth_Token = Utils.getStringPref(requireContext(), "Token", "")
+
         binding.yearLayout.visibility = View.GONE
+        binding.searchLayout.visibility = View.GONE
+        binding.visitorFiltersLayout.visibility = View.GONE
 
         binding.visitorsCurrentBtn.setOnClickListener {
-            binding.visitorsCurrentBtn.background = requireContext().getDrawable(R.drawable.rectangler_vrify_bg)
-            binding.visitorHistoryBtn.setBackgroundResource(0)
-            binding.visitorExpectedBtn.setBackgroundResource(0)
-            binding.yearLayout.visibility = View.GONE
-            addVisitorsList()
-            populateData()
+            replaceCurrentVisitorsFragment()
         }
         binding.visitorExpectedBtn.setOnClickListener {
-            binding.visitorExpectedBtn.background =
-                requireContext().getDrawable(R.drawable.rectangler_vrify_bg)
-            binding.visitorHistoryBtn.setBackgroundResource(0)
-            binding.visitorsCurrentBtn.setBackgroundResource(0)
-            binding.yearLayout.visibility = View.GONE
-
-            addExpectedVisitorsList()
-            populateExpectedVisitorsData()
+            replaceExpectedVisitorsFragment()
+        }
+        binding.visitorHistoryBtn.setOnClickListener {
+            replaceHistoryVisitorsFragment()
         }
 
-       binding.visitorHistoryBtn.setOnClickListener {
-           binding.visitorHistoryBtn.background =
-               requireContext().getDrawable(R.drawable.rectangler_vrify_bg)
-           binding.visitorExpectedBtn.setBackgroundResource(0)
-           binding.visitorsCurrentBtn.setBackgroundResource(0)
-           binding.yearLayout.visibility = View.VISIBLE
-           addHistoryVisitorsList()
-           populateHistoryVisitorsData()
-       }
+        binding.visitorFiltersLayout.setOnClickListener {
+            bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
+            val sheetView: View = layoutInflater.inflate(
+                R.layout.visitors_history_btmsheet, it!!.findViewById<View>(R.id.main_ll) as? ViewGroup
+            )
+            val closeImg = sheetView.findViewById<ImageView>(R.id.ic_close)
+            closeImg.setOnClickListener {
+                if (bottomSheetDialog.isShowing){
+                    bottomSheetDialog.dismiss()
+                }
+            }
+        //    getAllForumCommentsNetworkCall(forumItem)
+            bottomSheetDialog.setContentView(sheetView)
+            bottomSheetDialog.show()
 
+        }
         binding.yearCl.setOnClickListener {
             /*if (visitorsPopupWindow != null) {
                 if (visitorsPopupWindow!!.isShowing) {
@@ -93,11 +174,118 @@ class VisitorsListFragment : Fragment() {
                 yearDropDown()
             }
         }
+
+        binding.sampleEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                if (totalVisitorDetailsList.isNotEmpty()){
+
+                    filter(p0.toString())
+                }
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
     }
+
+    private fun replaceCurrentVisitorsFragment() {
+        binding.visitorsCurrentBtn.background = requireContext().getDrawable(R.drawable.rectangler_vrify_bg)
+        binding.visitorHistoryBtn.setBackgroundResource(0)
+        binding.visitorExpectedBtn.setBackgroundResource(0)
+
+        val visitorsListFragment = CurrentVisitorsListFragment(approvalStatus)
+        val finalList : ArrayList<GetAllVisitorDetailsModel.Data.Event> = totalVisitorDetailsList.filter { it.visitorStatusId == 1 } as ArrayList<GetAllVisitorDetailsModel.Data.Event>
+        val bundle = Bundle()
+        bundle.putSerializable("visitorsList", finalList)
+        visitorsListFragment.arguments = bundle
+        val fragmentManager = parentFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(
+            R.id.visitor_fragment_container,
+            visitorsListFragment
+        )
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
+    private fun replaceExpectedVisitorsFragment() {
+
+        binding.visitorExpectedBtn.background = requireContext().getDrawable(R.drawable.rectangler_vrify_bg)
+        binding.visitorsCurrentBtn.setBackgroundResource(0)
+        binding.visitorHistoryBtn.setBackgroundResource(0)
+
+        val visitorsListFragment = ExpectedVisitorsListFragment(approvalStatus)
+        val finalList : ArrayList<GetAllVisitorDetailsModel.Data.Event> = totalVisitorDetailsList.filter { it.visitorStatusId == 2 } as ArrayList<GetAllVisitorDetailsModel.Data.Event>
+
+        val bundle = Bundle()
+        bundle.putSerializable("visitorsList", finalList)
+        visitorsListFragment.arguments = bundle
+        val fragmentManager = parentFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(
+            R.id.visitor_fragment_container,
+            visitorsListFragment
+        )
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
+    private fun replaceHistoryVisitorsFragment() {
+        binding.visitorHistoryBtn.background = requireContext().getDrawable(R.drawable.rectangler_vrify_bg)
+        binding.visitorsCurrentBtn.setBackgroundResource(0)
+        binding.visitorExpectedBtn.setBackgroundResource(0)
+
+        val visitorsListFragment = HistoryVisitorsListFragment(approvalStatus)
+        val finalList : ArrayList<GetAllVisitorDetailsModel.Data.Event> = totalVisitorDetailsList.filter { it.visitorStatusId == 3 } as ArrayList<GetAllVisitorDetailsModel.Data.Event>
+
+        val bundle = Bundle()
+        bundle.putSerializable("visitorsList", finalList)
+        visitorsListFragment.arguments = bundle
+        val fragmentManager = parentFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(
+            R.id.visitor_fragment_container,
+            visitorsListFragment
+        )
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
+
+
+
+
+
+    private fun filter(text: String) {
+        val filteredList = ArrayList<GetAllVisitorDetailsModel.Data.Event>()
+        val visitorsList: ArrayList<GetAllVisitorDetailsModel.Data.Event> = totalVisitorDetailsList
+
+        for (eachCourse in visitorsList) {
+
+            if (
+                !eachCourse.visitorTypeName.isNullOrBlank() && eachCourse.visitorTypeName.lowercase(
+                    Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
+                !eachCourse.seviceProviderName.toString().isNullOrBlank() && eachCourse.seviceProviderName.toString().lowercase(
+                    Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
+                !eachCourse.name.toString().isNullOrBlank() && eachCourse.name.toString().lowercase(
+                    Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
+                !eachCourse.invitedBy.toString().isNullOrBlank() && eachCourse.invitedBy.toString().lowercase(
+                    Locale.getDefault()).contains(text.lowercase(Locale.getDefault())) ||
+                !eachCourse.allowFor.toString().isNullOrBlank() && eachCourse.allowFor.toString().lowercase(
+                    Locale.getDefault()).contains(text.lowercase(Locale.getDefault()))
+
+            ) {
+                filteredList.add(eachCourse)
+            }
+        }
+
+        visitorsListAdapter.filteredList(filteredList)
+    }
+
     private fun addYearList() {
         yearList.add("2023")
         yearList.add("2022")
-
     }
 
     private fun yearDropDown() {
@@ -140,86 +328,8 @@ class VisitorsListFragment : Fragment() {
 
     }
 
-    private fun populateHistoryVisitorsData() {
-        if (historyVisitorsList.size == 0) {
-            binding.emptyVisitorsTxt.visibility = View.VISIBLE
-        } else {
-            binding.emptyVisitorsTxt.visibility = View.GONE
-            binding.visitorsListRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-            visitorsListAdapter =
-                VisitorsListAdapter(requireContext(), historyVisitorsList , "HistoryVisitors")
-            binding.visitorsListRecyclerview.adapter = visitorsListAdapter
-            visitorsListAdapter.setCallback(this@VisitorsListFragment)
-            visitorsListAdapter.notifyDataSetChanged()
-        }
-    }
 
-    private fun addHistoryVisitorsList() {
-        historyVisitorsList.clear()
-        historyVisitorsList.add(
-            VisitorsListModel("Cab", "Ola", "TS 13 Ab 0001", "10 July 2023",
-                "Allowed By Teja", "3:00 PM", "Once", "", R.drawable.visitor_cab)
-        )
-    }
-
-    private fun populateExpectedVisitorsData() {
-       if (expectedVisitorsList.size == 0) {
-            binding.emptyVisitorsTxt.visibility = View.VISIBLE
-        } else {
-            binding.emptyVisitorsTxt.visibility = View.GONE
-            binding.visitorsListRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-            visitorsListAdapter =
-                VisitorsListAdapter(requireContext(), expectedVisitorsList , "ExpectedVisitors")
-            binding.visitorsListRecyclerview.adapter = visitorsListAdapter
-            visitorsListAdapter.setCallback(this@VisitorsListFragment)
-            visitorsListAdapter.notifyDataSetChanged()
-        }
-        }
-
-
-
-    private fun addExpectedVisitorsList() {
-        expectedVisitorsList.clear()
-        expectedVisitorsList.add(
-            VisitorsListModel("Cab", "Ola", "TS 13 Ab 0001", "10 July 2023",
-                "Allowed By Teja", "3:00 PM", "Once", "", R.drawable.visitor_cab)
-        )
-        expectedVisitorsList.add(VisitorsListModel("Delivery", "Swiggy", "", "10 July 2023",
-            "Allowed By Teja", "10:30 PM", "Once", "", R.drawable.visitor_delivery))
-    }
-
-    private fun populateData() {
-        if (visitorsList.size == 0) {
-            binding.emptyVisitorsTxt.visibility = View.VISIBLE
-        } else {
-            binding.emptyVisitorsTxt.visibility = View.GONE
-            binding.visitorsListRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-            visitorsListAdapter =
-                VisitorsListAdapter(requireContext(), visitorsList, "CurrentVisitors")
-            binding.visitorsListRecyclerview.adapter = visitorsListAdapter
-            visitorsListAdapter.setCallback(this@VisitorsListFragment)
-            visitorsListAdapter.notifyDataSetChanged()
-        }
-    }
-
-    private fun addVisitorsList() {
-        visitorsList.clear()
-        visitorsList.add(
-            VisitorsListModel("Cab", "Ola", "TS 13 Ab 0001", "10 July 2023",
-        "Allowed By Teja", "3:00 PM", "Once", "", R.drawable.visitor_cab)
-        )
-        visitorsList.add(VisitorsListModel("Delivery", "Swiggy", "", "10 July 2023",
-            "Allowed By Teja", "10:30 PM", "Once", "", R.drawable.visitor_delivery))
-
-        visitorsList.add(VisitorsListModel("Guest", "", "", "10 July 2023-10 August 2023",
-            "Allowed By Teja", "10:30 PM", "Frequently(Monthly)", "Ramesh", R.drawable.visitor_guest))
-
-        visitorsList.add(VisitorsListModel("Carpenter", "", "", "10 July 2023-18 July 2023",
-            "Allowed By Teja", "10:30 PM", "Frequently(Weekly)", "Srinivas", R.drawable.visitor_staff))
-
-    }
-
-    fun deleteVisitorItem(visitorListItem: VisitorsListModel) {
+    fun deleteVisitorItem(visitorListItem: GetAllVisitorDetailsModel.Data.Event) {
         val layoutInflater: LayoutInflater =
             requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = layoutInflater.inflate(R.layout.delete_tenant_dialog_popup, null)
@@ -237,7 +347,7 @@ class VisitorsListFragment : Fragment() {
         val no: TextView = view.findViewById(R.id.no_btn)
         val yes: TextView = view.findViewById(R.id.yes_btn)
         val member_mob_number: TextView = view.findViewById(R.id.member_mob_number)
-        member_mob_number.text = "Are you sure you want to delete this ${visitorListItem.entryTitle} Details?"
+        member_mob_number.text = "Are you sure you want to delete this ${visitorListItem.visitorTypeName} Details?"
 
         close.setOnClickListener {
             if (visitorDeleteDialog!!.isShowing) {
@@ -260,5 +370,28 @@ class VisitorsListFragment : Fragment() {
         visitorDeleteDialog!!.show()
     }
 
+    fun editVisitorItem(visitorListItem: GetAllVisitorDetailsModel.Data.Event) {
+      var intent: Intent? = null
+        intent = when (visitorListItem.visitorTypeName) {
+            "Cab" -> {
+                Intent(requireContext(), CabActivity::class.java)
+            }
+            "Delivery" -> {
+                Intent(requireContext(), DeliveryActivity::class.java)
+            }
+            "Guest" -> {
+                Intent(requireContext(), GuestActivity::class.java)
+            }
+            "Staff" -> {
+                Intent(requireContext(), StaffActivity::class.java)
+            }
+            else -> {
+                Intent(requireContext(), OthersActivity::class.java)
+            }
+        }
+        intent?.putExtra("visitorListItem", visitorListItem)
+        intent?.putExtra("VisitorTypeId", visitorListItem.visitorTypeId)
+        intent?.let { startActivity(it) }
+    }
 
 }

@@ -16,15 +16,20 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.example.safehome.R
 import com.example.safehome.Utils
+import com.example.safehome.alert.AlertActivity
+import com.example.safehome.communityview.EmergencyContactActivity
+import com.example.safehome.communityview.EmergencyContactCategoryActivity
 import com.example.safehome.complaints.ComplaintsActivity
 import com.example.safehome.dailyhelp.DailyHelpActivity
 import com.example.safehome.databinding.FragmentMenuBinding
+import com.example.safehome.enews.ENewsActivity
 import com.example.safehome.eventsview.EventsActivity
 import com.example.safehome.facilitiesview.FacilitiesActivity
 import com.example.safehome.forums.ForumsListActivity
 import com.example.safehome.maintenance.MaintenanceActivity
 import com.example.safehome.meetings.MeetingsActivity
 import com.example.safehome.notice.NoticeActivity
+import com.example.safehome.policies.PoliciesActivity
 import com.example.safehome.polls.PollsActivity
 import com.example.safehome.services.ServicesActivity
 import com.example.safehome.visitors.VisitorActivity
@@ -122,6 +127,32 @@ class MenuFragment : Fragment() {
             }catch (e: Exception){
 
             }
+
+            try {
+                enewsLayout.setOnClickListener {
+                    val eIntent = Intent(requireContext(), ENewsActivity::class.java)
+                    eIntent.flags =
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    eIntent.putExtra("ScreenFrom", "MenuScreenFrag")
+                    getActivity()?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    requireContext().startActivity(eIntent)
+                }
+            }catch (e: Exception){
+
+            }
+
+            try {
+                emergencyContactsLayout.setOnClickListener {
+                    val eIntent = Intent(requireContext(), EmergencyContactCategoryActivity::class.java)
+                    eIntent.flags =
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    eIntent.putExtra("ScreenFrom", "MenuScreenFrag")
+                    getActivity()?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    requireContext().startActivity(eIntent)
+                }
+            }catch (e: Exception){
+
+            }
         }
         binding.servicesLayout.setOnClickListener {
             try {
@@ -182,6 +213,21 @@ class MenuFragment : Fragment() {
                 e.printStackTrace()
             }
         }
+        binding.policiesMenuLayout.setOnClickListener {
+            try {
+                val eIntent = Intent(requireContext(), PoliciesActivity::class.java)
+                eIntent.flags =
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                eIntent.putExtra("ScreenFrom", "MenuScreenFrag")
+                getActivity()?.overridePendingTransition(
+                    android.R.anim.fade_in,
+                    android.R.anim.fade_out
+                );
+                requireContext().startActivity(eIntent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
         binding.forumMenuLayout.setOnClickListener {
             try {
                 val eIntent = Intent(requireContext(), ForumsListActivity::class.java)
@@ -212,6 +258,24 @@ class MenuFragment : Fragment() {
                 e.printStackTrace()
             }
         }
+
+
+        binding.alertMenuLayout.setOnClickListener {
+            try {
+                val eIntent = Intent(requireContext(), AlertActivity::class.java)
+                eIntent.flags =
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                eIntent.putExtra("ScreenFrom", "MenuScreenFrag")
+                getActivity()?.overridePendingTransition(
+                    android.R.anim.fade_in,
+                    android.R.anim.fade_out
+                );
+                requireContext().startActivity(eIntent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
 
         return binding.root
     }

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/light_pink">
+
+
+    <ImageView
+        android:id="@+id/close_btn_click"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/paid_on_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Call to"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/primaryNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:text="Primary Number"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/paid_on_header" />
+
+    <TextView
+        android:id="@+id/tvPrimaryNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/primaryNumber"
+        app:layout_constraintTop_toBottomOf="@+id/primaryNumber"
+        tools:text="9182050604" />
+
+
+    <ImageView
+        android:id="@+id/primaryCall"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_marginEnd="12dp"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:src="@drawable/phone"
+        app:layout_constraintBottom_toBottomOf="@+id/primaryMsg"
+        app:layout_constraintEnd_toStartOf="@+id/primaryMsg"
+        app:layout_constraintTop_toTopOf="@+id/primaryMsg" />
+
+    <ImageView
+        android:id="@+id/primaryMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:adjustViewBounds="true"
+        android:layout_marginEnd="16dp"
+        android:layout_weight="1"
+        android:src="@drawable/eme_contact_chat"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPrimaryNumber"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/primaryNumber" />
+
+
+
+    <TextView
+        android:id="@+id/secondaryNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:text="Secondary Number"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPrimaryNumber" />
+
+    <TextView
+        android:id="@+id/tvSecondaryNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="24dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/secondaryNumber"
+        app:layout_constraintTop_toBottomOf="@+id/secondaryNumber"
+        tools:text="9182050604" />
+
+
+    <ImageView
+        android:id="@+id/secondaryCall"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_marginEnd="12dp"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:src="@drawable/phone"
+        app:layout_constraintBottom_toBottomOf="@+id/secondaryMsg"
+        app:layout_constraintEnd_toStartOf="@+id/secondaryMsg"
+        app:layout_constraintTop_toTopOf="@+id/secondaryMsg" />
+
+    <ImageView
+        android:id="@+id/secondaryMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:adjustViewBounds="true"
+        android:layout_marginEnd="16dp"
+        android:layout_weight="1"
+        android:src="@drawable/eme_contact_chat"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSecondaryNumber"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/secondaryNumber" />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -67,60 +67,120 @@
                     />
             </LinearLayout>
 
+            <LinearLayout
+                android:weightSum="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_weight="0.65"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/visitor_purposeBy_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ola"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/poppins_regular"/>
 
-            <TextView
-                android:id="@+id/visitor_purposeBy_txt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Ola"
-                android:textColor="@color/white"
-                android:fontFamily="@font/poppins_regular"/>
+                    <TextView
+                        android:id="@+id/visitor_vechileNo_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:visibility="gone"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/poppins_regular"/>
+                    <TextView
+                        android:id="@+id/visitor_name_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:visibility="gone"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/poppins_regular"/>
+                    <TextView
+                        android:id="@+id/visitor_Date_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="10 July 2023"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/poppins_regular"/>
+                    <TextView
+                        android:id="@+id/visitor_allowedBy_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Allowed By Teja"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/poppins_regular"/>
+                    <TextView
+                        android:id="@+id/visitor_InTime_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="In Time: 10:30 Pm"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/poppins_regular"/>
+                    <TextView
+                        android:id="@+id/visitor_OutTime_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Out Time: 10:30 Pm"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/poppins_regular"/>
 
-            <TextView
-                android:id="@+id/visitor_vechileNo_txt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:visibility="gone"
-                android:textColor="@color/white"
-                android:fontFamily="@font/poppins_regular"/>
-            <TextView
-                android:id="@+id/visitor_name_txt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:visibility="gone"
-                android:textColor="@color/white"
-                android:fontFamily="@font/poppins_regular"/>
-            <TextView
-                android:id="@+id/visitor_Timings_txt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="10 July 2023"
-                android:textColor="@color/white"
-                android:fontFamily="@font/poppins_regular"/>
-            <TextView
-                android:id="@+id/visitor_allowedBy_txt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Allowed By Teja"
-                android:textColor="@color/white"
-                android:fontFamily="@font/poppins_regular"/>
-            <TextView
-                android:id="@+id/visitor_InTime_txt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="In Time: 10:30 Pm"
-                android:textColor="@color/white"
-                android:fontFamily="@font/poppins_regular"/>
+                    <TextView
+                        android:id="@+id/visitor_allowFor_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Allow for: Once"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/poppins_regular"/>
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/preApproved_status_layout"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pre Approved: "
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/poppins_regular"/>
+                        <TextView
+                            android:id="@+id/pre_approved_status_txt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Yes"
+                            android:textColor="@color/green"
+                            android:fontFamily="@font/poppins_regular"/>
+                    </LinearLayout>
+                </LinearLayout>
 
-            <TextView
-                android:id="@+id/visitor_allowFor_txt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Allow for: Once"
-                android:textColor="@color/white"
-                android:fontFamily="@font/poppins_regular"/>
+                <LinearLayout
+                    android:id="@+id/share_otp_layout"
+                    android:gravity="end"
+                    android:layout_marginRight="@dimen/_10dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.35"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_gravity="end"
+                        android:id="@+id/invite_btn"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:padding="@dimen/_5dp"
+                        android:background="@drawable/rectangler_vrify_bg"
+                        android:gravity="center"
+                        android:text="Share OTP"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.safehome.communityview.AssociationMembersActivity
 import com.example.safehome.communityview.EmergencyContactActivity
+import com.example.safehome.communityview.EmergencyContactCategoryActivity
 import com.example.safehome.communityview.ResidentsActivity
 import com.example.safehome.databinding.FragmentCommunityBinding
 
@@ -40,7 +41,7 @@ class CommunityFragment : Fragment() {
             startActivity(residentIntent)
         }
         binding.emergencyContactsLayout.setOnClickListener {
-            val residentIntent = Intent(requireContext(), EmergencyContactActivity::class.java)
+            val residentIntent = Intent(requireContext(), EmergencyContactCategoryActivity::class.java)
             startActivity(residentIntent)
         }
     }

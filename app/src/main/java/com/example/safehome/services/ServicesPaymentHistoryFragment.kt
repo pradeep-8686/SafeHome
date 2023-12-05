@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -176,6 +177,9 @@ class ServicesPaymentHistoryFragment : Fragment() {
 
 //        Auth_Token = token
         // here sign up service call
+        Log.e("TOken", ""+Auth_Token)
+        Log.e("residentId", ""+residentId)
+        Log.e("staffId", ""+staffId)
         servicePaymentHistoryCall = apiInterface.getStaffPaymentHistory(
             "Bearer " + Auth_Token, residentId = residentId, staffTypeId =  staffId.toString(), year = year
         )

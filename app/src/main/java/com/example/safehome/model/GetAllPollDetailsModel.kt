@@ -6,26 +6,27 @@ data class GetAllPollDetailsModel(
     val `data`: Data,
     val message: String,
     val statusCode: Int
-) : Serializable{
+):Serializable {
     data class Data(
         val polls: List<Poll>,
         val totalRecords: Int
-    ) : Serializable{
+    ):Serializable {
         data class Poll(
             val attachPhoto: String,
+            val block: String,
             val comments: String,
-            val controlName: Any,
+            val controlName: String,
             val createdBy: Int,
             val createdByName: String,
             val createdOn: String,
+            val flatNo: String,
             val fromDate: String,
             val keepFor: String,
             val keepPollForId: Int,
-            val modifiedBy: Int,
-            val modifiedOn: String,
-            val pollControlId: Any,
+            val pollControlId: Int,
             val pollId: Int,
             val pollOptions: List<PollOption>,
+            val pollResultID: Int,
             val postedBy: String,
             val postedDate: String,
             val postedTime: String,
@@ -33,21 +34,25 @@ data class GetAllPollDetailsModel(
             val question: String,
             val resultTobePublic: Boolean,
             val timeStamp: String,
-            val toDate: String
-        ): Serializable {
+            val toDate: String,
+            val totalVotes: Int,
+            val userId: Int,
+            val userResponceId: Int,
+            val userResponceName: String
+        ):Serializable {
             data class PollOption(
                 val optionId: Int,
                 val optionName: String,
                 val pollId: Int,
                 val voteCount: Int,
                 val votePercentage: Int
-            ): Serializable
+            ):Serializable
 
             data class PostedTo(
                 val name: String,
                 val pollId: Int,
                 val postedToId: Int
-            ): Serializable
+            ):Serializable
         }
     }
 }

@@ -38,50 +38,70 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class ListBookNowActivity: BaseActivity() {
-    private var residentId: String?= null
+class ListBookNowActivity : BaseActivity() {
+    private var residentId: String? = null
     private var Auth_token: String? = null
-    private var facilityId: Int?= null
+    private var facilityId: Int? = null
     private lateinit var addBookingServiceCall: Call<AddServiceBookingList>
     private lateinit var updateBookingServiceCall: Call<AddServiceBookingList>
     private lateinit var customProgressDialog: CustomProgressDialog
     private var timeCount = 1
     private var dateCount = 1
-    private var bookingType: String?= null
-    private var bookingTotalCharge: String? =null
+    private var bookingType: String? = null
+    private var bookingTotalCharge: String? = null
     private lateinit var bookNowDialogBinding: BookNowDialogBinding
     var cal_startDate = Calendar.getInstance()
     var cal_endDate = Calendar.getInstance()
     private var confirmationDialog: Dialog? = null
     private lateinit var apiInterface: APIInterface
-    private var bookByHour : Double = 0.0
-    private var bookByDay : Double = 0.0
-    private var time: String?= null
-    private var bookFacilityId: String?= null
-    private var from: String?= null
+    private var bookByHour: Double = 0.0
+    private var bookByDay: Double = 0.0
+    private var cgstBookByDay: Double = 0.0
+    private var cgstBookByHour: Double = 0.0
+    private var sgstBookByDay: Double = 0.0
+    private var sgstBookByHour: Double = 0.0
+    private var totalDayTax: Double = 0.0
+    private var totalHourTax: Double = 0.0
+    private var time: String? = null
+    private var bookFacilityId: String? = null
+    private var from: String? = null
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bookNowDialogBinding = BookNowDialogBinding.inflate(layoutInflater)
         setContentView(bookNowDialogBinding.root)
-        if (intent!= null){
+        if (intent != null) {
             bookingType = intent.getStringExtra("bookType")
             facilityId = intent.getIntExtra("facilityId", 0)
             bookByDay = intent.getDoubleExtra("bookByDay", 1.00)
             bookByHour = intent.getDoubleExtra("bookByHour", 1.00)
-            Log.e("facilityId",""+facilityId)
-            bookNowDialogBinding.totalChargeEt.text = bookByHour.toString()
+            Log.e("facilityId", "" + facilityId)
             from = intent.getStringExtra("from")
             if (from!! == "bookings") {
                 bookFacilityId = intent.getStringExtra("bookFacilityId")
             }
+
+            cgstBookByDay = intent.getDoubleExtra("cgstBookByDay", 0.00)
+            cgstBookByHour = intent.getDoubleExtra("cgstBookByHour", 0.00)
+
+            sgstBookByDay = intent.getDoubleExtra("sgstBookByDay", 0.00)
+            sgstBookByHour = intent.getDoubleExtra("sgstBookByHour", 0.00)
+            calculateTax()
+            bookNowDialogBinding.totalChargeEt.text = (bookByHour + totalDayTax).toString()
         }
 
         bookNowDialogBinding.purposeEt.setBackgroundResource(android.R.color.transparent)
         bookNowDialogBinding.commentsEt.setBackgroundResource(android.R.color.transparent)
 
         inIt()
+    }
+
+    private fun calculateTax() {
+
+        totalDayTax = cgstBookByDay + sgstBookByDay
+        totalHourTax = cgstBookByHour + sgstBookByHour
+
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -91,35 +111,43 @@ class ListBookNowActivity: BaseActivity() {
         Auth_token = Utils.getStringPref(this@ListBookNowActivity, "Token", "")!!
         residentId = Utils.getStringPref(this@ListBookNowActivity, "residentId", "")!!
         bookNowDialogBinding.sendRequestTv.setOnClickListener {
-          //  confirmationPopup()
+            //  confirmationPopup()
             addBookFacilityNetworkCall()
         }
         bookNowDialogBinding.bookNowTitleTxt.text = bookingType
         bookNowDialogBinding.startDateTxt?.setOnClickListener {
-            val startDateDialog =  DatePickerDialog(this@ListBookNowActivity,
+            val startDateDialog = DatePickerDialog(
+                this@ListBookNowActivity,
                 dateSetListener_book_now_start_date,
                 // set DatePickerDialog to point to today's date when it loads up
                 cal_startDate.get(Calendar.YEAR),
                 cal_startDate.get(Calendar.MONTH),
-                cal_startDate.get(Calendar.DAY_OF_MONTH))
+                cal_startDate.get(Calendar.DAY_OF_MONTH)
+            )
 
             startDateDialog.datePicker.minDate = System.currentTimeMillis() - 1000
             startDateDialog.show()
         }
 
         bookNowDialogBinding.endDateTxt?.setOnClickListener {
-            val endDateDialog = DatePickerDialog(this@ListBookNowActivity,
+            val endDateDialog = DatePickerDialog(
+                this@ListBookNowActivity,
                 dateSetListener__book_now_end_date,
                 // set DatePickerDialog to point to today's date when it loads up
                 cal_endDate.get(Calendar.YEAR),
                 cal_endDate.get(Calendar.MONTH),
-                cal_endDate.get(Calendar.DAY_OF_MONTH))
+                cal_endDate.get(Calendar.DAY_OF_MONTH)
+            )
             // Set a minimum date to disable previous dates
             try {
-                val dateInMillis = Utils.convertStringToDateMillis(bookNowDialogBinding.startDateTxt!!.text.toString(), "dd/MM/yyyy")
+                val dateInMillis = Utils.convertStringToDateMillis(
+                    bookNowDialogBinding.startDateTxt!!.text.toString(),
+                    "dd/MM/yyyy"
+                )
                 endDateDialog.datePicker.minDate = dateInMillis
-            }catch (e: Exception){
-                endDateDialog.datePicker.minDate = System.currentTimeMillis() - 1000 // Subtract 1 second to prevent selecting the current day
+            } catch (e: Exception) {
+                endDateDialog.datePicker.minDate =
+                    System.currentTimeMillis() - 1000 // Subtract 1 second to prevent selecting the current day
             }
             // endDateDialog.datePicker.minDate = System.currentTimeMillis() - 1000
             endDateDialog.show()
@@ -163,61 +191,62 @@ class ListBookNowActivity: BaseActivity() {
             mTimePicker.show()
         }
 
-         bookNowDialogBinding.plusDateImg.setOnClickListener {
-             dateCount++
-             bookNowDialogBinding.numberOfDaysTxt.text = dateCount.toString()
-             if (dateCount > 1){
-                 bookNowDialogBinding.llHours.visibility = View.GONE
-                 val totalCharge = bookByDay * dateCount
-                 bookNowDialogBinding.totalChargeEt.text = totalCharge.toString()
-             }else{
-                 bookNowDialogBinding.llHours.visibility = View.VISIBLE
+        bookNowDialogBinding.plusDateImg.setOnClickListener {
+            dateCount++
+            bookNowDialogBinding.numberOfDaysTxt.text = dateCount.toString()
+            if (dateCount > 1) {
+                bookNowDialogBinding.llHours.visibility = View.GONE
+                val totalCharge = (bookByDay * dateCount) + (dateCount * totalDayTax)
+                bookNowDialogBinding.totalChargeEt.text = totalCharge.toString()
+            } else {
+                bookNowDialogBinding.llHours.visibility = View.VISIBLE
 
-                 if (dateCount == 0){
-                     bookNowDialogBinding.totalChargeEt.text = "0"
-                 }else{
-                     bookNowDialogBinding.totalChargeEt.text = bookByDay.toString()
-                 }
-             }
-         }
+                if (dateCount == 0) {
+                    bookNowDialogBinding.totalChargeEt.text = "0"
+                } else {
+                    bookNowDialogBinding.totalChargeEt.text = (bookByDay + totalDayTax).toString()
+                }
+            }
+        }
 
-         bookNowDialogBinding.minusDateImg.setOnClickListener {
+        bookNowDialogBinding.minusDateImg.setOnClickListener {
             dateCount--
-             if(dateCount >= 0){
-                 bookNowDialogBinding.numberOfDaysTxt.text = dateCount.toString()
-                 if (dateCount > 1){
-                     bookNowDialogBinding.llHours.visibility = View.GONE
-                     val totalCharge = bookByDay * dateCount
-                     bookNowDialogBinding.totalChargeEt.text = totalCharge.toString()
-                 }else{
-                     bookNowDialogBinding.llHours.visibility = View.VISIBLE
-                     if (dateCount == 0){
-                         bookNowDialogBinding.totalChargeEt.text = "0"
-                     }else{
-                         bookNowDialogBinding.totalChargeEt.text = bookByDay.toString()
-                     }
-                 }
-             }else{
-                 dateCount = 0
-                 bookNowDialogBinding.llHours.visibility = View.VISIBLE
-                 bookNowDialogBinding.totalChargeEt.text = "0"
-             }
+            if (dateCount >= 0) {
+                bookNowDialogBinding.numberOfDaysTxt.text = dateCount.toString()
+                if (dateCount > 1) {
+                    bookNowDialogBinding.llHours.visibility = View.GONE
+                    val totalCharge = (bookByDay * dateCount) + (dateCount * totalDayTax)
+                    bookNowDialogBinding.totalChargeEt.text = totalCharge.toString()
+                } else {
+                    bookNowDialogBinding.llHours.visibility = View.VISIBLE
+                    if (dateCount == 0) {
+                        bookNowDialogBinding.totalChargeEt.text = "0"
+                    } else {
+                        bookNowDialogBinding.totalChargeEt.text =
+                            (bookByDay + totalDayTax).toString()
+                    }
+                }
+            } else {
+                dateCount = 0
+                bookNowDialogBinding.llHours.visibility = View.VISIBLE
+                bookNowDialogBinding.totalChargeEt.text = "0"
+            }
         }
 
         bookNowDialogBinding.plusTimeImg.setOnClickListener {
             timeCount++
-            val totalCharge = bookByHour.toInt() * timeCount
+            val totalCharge = (bookByHour.toInt() * timeCount) + (totalHourTax * timeCount)
             bookNowDialogBinding.totalChargeEt.text = totalCharge.toString()
-           bookNowDialogBinding.numberOfHoursTxt.text = timeCount.toString()
+            bookNowDialogBinding.numberOfHoursTxt.text = timeCount.toString()
         }
 
         bookNowDialogBinding.minusTimeImg.setOnClickListener {
             timeCount--
             if (timeCount >= 0) {
-                val totalCharge = bookByHour.toInt() * timeCount
+                val totalCharge = (bookByHour.toInt() * timeCount) + (totalHourTax * timeCount)
                 bookNowDialogBinding.totalChargeEt.text = totalCharge.toString()
                 bookNowDialogBinding.numberOfHoursTxt.text = timeCount.toString()
-            }else{
+            } else {
                 timeCount = 0
                 bookNowDialogBinding.totalChargeEt.text = "0"
             }
@@ -233,7 +262,7 @@ class ListBookNowActivity: BaseActivity() {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun confirmationPopup() {
         val layoutInflater: LayoutInflater =
-              getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = layoutInflater.inflate(R.layout.confirmation_popup, null)
         confirmationDialog = Dialog(this@ListBookNowActivity, R.style.CustomAlertDialog)
         confirmationDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -260,7 +289,7 @@ class ListBookNowActivity: BaseActivity() {
                 confirmationDialog!!.dismiss()
             }
             moveToFacilityActivity()
-         //   addBookFacilityNetworkCall()
+            //   addBookFacilityNetworkCall()
 
             /*  if (bookNowDialog != null) {
                   if (bookNowDialog!!.isShowing) {
@@ -281,53 +310,66 @@ class ListBookNowActivity: BaseActivity() {
     @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun addBookFacilityNetworkCall() {
-        customProgressDialog.progressDialogShow(this@ListBookNowActivity, this.getString(R.string.loading))
+        customProgressDialog.progressDialogShow(
+            this@ListBookNowActivity,
+            this.getString(R.string.loading)
+        )
         var startDate = bookNowDialogBinding.startDateTxt.text.toString()
-        if(!startDate.contains("DD/MM/YYYY")){
+        if (!startDate.contains("DD/MM/YYYY")) {
             startDate = Utils.changeDateFormatToMMDDYYYY(startDate)
         }
         var endDate = bookNowDialogBinding.endDateTxt.text.toString()
-        if(!endDate.contains("DD/MM/YYYY")){
+        if (!endDate.contains("DD/MM/YYYY")) {
             endDate = Utils.changeDateFormatToMMDDYYYY(endDate)
         }
         var startTime = bookNowDialogBinding.startTimeText.text.toString().replace(":", "-")
         var endTime = bookNowDialogBinding.endTime.text.toString().replace(":", "-")
-        addBookingServiceCall = apiInterface.BookFacility("bearer "+Auth_token, residentId!!.toInt(), facilityId!!, "function",
+        addBookingServiceCall = apiInterface.BookFacility(
+            "bearer " + Auth_token, residentId!!.toInt(), facilityId!!, "function",
             bookNowDialogBinding.numberOfDaysTxt.text.toString().toInt(),
             startDate, endDate,
             bookNowDialogBinding.numberOfHoursTxt.text.toString().toInt(),
-            startTime, endTime, "Comments")
-           addBookingServiceCall.enqueue(object: Callback<AddServiceBookingList> {
+            startTime, endTime, "Comments"
+        )
+        addBookingServiceCall.enqueue(object : Callback<AddServiceBookingList> {
             override fun onResponse(
                 call: Call<AddServiceBookingList>,
                 response: Response<AddServiceBookingList>
             ) {
-                if (response.isSuccessful && response.body()!= null){
+                if (response.isSuccessful && response.body() != null) {
                     customProgressDialog.progressDialogDismiss()
                     confirmationDialog!!.show()
-                    if (response.body()!!.statusCode!= null){
-                        when(response.body()!!.statusCode){
+                    if (response.body()!!.statusCode != null) {
+                        when (response.body()!!.statusCode) {
                             1 -> {
                                 if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
-                                    Utils.showToast(this@ListBookNowActivity, response.body()!!.message.toString())
+                                    Utils.showToast(
+                                        this@ListBookNowActivity,
+                                        response.body()!!.message.toString()
+                                    )
                                 }
                             }
+
                             else -> {
                                 if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
-                                    Utils.showToast(this@ListBookNowActivity, response.body()!!.message.toString())
+                                    Utils.showToast(
+                                        this@ListBookNowActivity,
+                                        response.body()!!.message.toString()
+                                    )
                                 }
                             }
                         }
                     }
-                }else{
+                } else {
                     customProgressDialog.progressDialogDismiss()
-                   // Utils.showToast(this@ListBookNowActivity, "your booking is not successful")
+                    // Utils.showToast(this@ListBookNowActivity, "your booking is not successful")
                     moveToFacilityActivity()
                 }
             }
+
             override fun onFailure(call: Call<AddServiceBookingList>, t: Throwable) {
                 customProgressDialog.progressDialogDismiss()
-       //         moveToFacilityActivity()
+                //         moveToFacilityActivity()
                 Utils.showToast(this@ListBookNowActivity, t.message.toString())
             }
         })
@@ -390,7 +432,7 @@ class ListBookNowActivity: BaseActivity() {
             dayOfMonth: Int
         ) {
             // disable dates before today
-            val disablePastDates = Calendar.getInstance().timeInMillis- 1000
+            val disablePastDates = Calendar.getInstance().timeInMillis - 1000
             view.setMinDate(disablePastDates)
             cal_endDate.set(Calendar.YEAR, year)
             cal_endDate.set(Calendar.MONTH, monthOfYear)
@@ -431,19 +473,19 @@ class ListBookNowActivity: BaseActivity() {
               }*/
 
             var hour: Int = selectedHour
-            if(selectedHour in 0..11){
+            if (selectedHour in 0..11) {
                 time = "$selectedHour:$selectedMinute AM"
             } else {
-                if(selectedHour == 12){
+                if (selectedHour == 12) {
                     time = "$selectedHour:$selectedMinute PM"
-                } else{
-                    hour = hour!!- 12;
-                    time = "$hour:$selectedMinute PM";                }
+                } else {
+                    hour = hour!! - 12;
+                    time = "$hour:$selectedMinute PM"; }
             }
 
             if (Time == "StartTime") {
                 bookNowDialogBinding.startTimeText?.text = time
-            }else{
+            } else {
                 bookNowDialogBinding.endTime?.text = time
 
             }
@@ -453,45 +495,64 @@ class ListBookNowActivity: BaseActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private fun updateBookFacility(){
-        customProgressDialog.progressDialogShow(this@ListBookNowActivity, this.getString(R.string.loading))
+    private fun updateBookFacility() {
+        customProgressDialog.progressDialogShow(
+            this@ListBookNowActivity,
+            this.getString(R.string.loading)
+        )
         var startDate = bookNowDialogBinding.startDateTxt.text.toString()
-        if(!startDate.contains("DD/MM/YYYY")){
+        if (!startDate.contains("DD/MM/YYYY")) {
             startDate = Utils.changeDateFormatToMMDDYYYY(startDate)
         }
         var endDate = bookNowDialogBinding.endDateTxt.text.toString()
-        if(!endDate.contains("DD/MM/YYYY")){
+        if (!endDate.contains("DD/MM/YYYY")) {
             endDate = Utils.changeDateFormatToMMDDYYYY(endDate)
         }
         var startTime = bookNowDialogBinding.startTimeText.text.toString().replace(":", "-")
         var endTime = bookNowDialogBinding.endTime.text.toString().replace(":", "-")
-        updateBookingServiceCall = apiInterface.updateBookFacility("bearer "+Auth_token, bookFacilityId!!.toInt(),residentId!!.toInt(), facilityId!!, "function",
+        updateBookingServiceCall = apiInterface.updateBookFacility(
+            "bearer " + Auth_token,
+            bookFacilityId!!.toInt(),
+            residentId!!.toInt(),
+            facilityId!!,
+            "function",
             bookNowDialogBinding.numberOfDaysTxt.text.toString().toInt(),
-            startDate, endDate,
+            startDate,
+            endDate,
             bookNowDialogBinding.numberOfHoursTxt.text.toString().toInt(),
-            startTime, endTime, "Comments")
-        updateBookingServiceCall.enqueue(object: Callback<AddServiceBookingList> {
+            startTime,
+            endTime,
+            "Comments"
+        )
+        updateBookingServiceCall.enqueue(object : Callback<AddServiceBookingList> {
             override fun onResponse(
                 call: Call<AddServiceBookingList>,
                 response: Response<AddServiceBookingList>
             ) {
-                if (response.isSuccessful && response.body()!= null){
+                if (response.isSuccessful && response.body() != null) {
                     customProgressDialog.progressDialogDismiss()
-                    if (response.body()!!.statusCode!= null){
-                        when(response.body()!!.statusCode){
+                    if (response.body()!!.statusCode != null) {
+                        when (response.body()!!.statusCode) {
                             1 -> {
                                 if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
-                                    Utils.showToast(this@ListBookNowActivity, response.body()!!.message.toString())
+                                    Utils.showToast(
+                                        this@ListBookNowActivity,
+                                        response.body()!!.message.toString()
+                                    )
                                 }
                             }
+
                             else -> {
                                 if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
-                                    Utils.showToast(this@ListBookNowActivity, response.body()!!.message.toString())
+                                    Utils.showToast(
+                                        this@ListBookNowActivity,
+                                        response.body()!!.message.toString()
+                                    )
                                 }
                             }
                         }
                     }
-                }else{
+                } else {
                     customProgressDialog.progressDialogDismiss()
                     moveToFacilityActivity()
                 }

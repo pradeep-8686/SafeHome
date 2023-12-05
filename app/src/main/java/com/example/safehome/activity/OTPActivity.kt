@@ -566,6 +566,7 @@ class OTPActivity : AppCompatActivity() {
                                                     }
                                             } catch (ex: Exception) {
                                             }
+
                                             try {
                                                 response.body()?.data?.get(0)!!.communityName.toString()
                                                     ?.let {
@@ -589,6 +590,17 @@ class OTPActivity : AppCompatActivity() {
                                             } catch (ex: Exception) {
                                             }
                                             try {
+                                                response.body()?.data?.get(0)!!.blockID.toString()
+                                                    ?.let {
+                                                        Utils.saveStringPref(
+                                                            this@OTPActivity,
+                                                            "blockID",
+                                                            it
+                                                        )
+                                                    }
+                                            } catch (ex: Exception) {
+                                            }
+                                            try {
                                                 response.body()?.data?.get(0)!!.flatNo.toString()
                                                     ?.let {
                                                         Utils.saveStringPref(
@@ -599,7 +611,17 @@ class OTPActivity : AppCompatActivity() {
                                                     }
                                             } catch (ex: Exception) {
                                             }
-
+                                            try {
+                                                response.body()?.data?.get(0)!!.flatId.toString()
+                                                    ?.let {
+                                                        Utils.saveStringPref(
+                                                            this@OTPActivity,
+                                                            "flatId",
+                                                            it
+                                                        )
+                                                    }
+                                            } catch (ex: Exception) {
+                                            }
                                             Utils.savebooleanPref(
                                                 this@OTPActivity,
                                                 "IsLoggedIn",

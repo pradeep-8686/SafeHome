@@ -30,7 +30,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.safehome.HomeActivity
 import com.example.safehome.R
 import com.example.safehome.Utils
 import com.example.safehome.custom.CustomProgressDialog
@@ -375,6 +374,8 @@ class RaisePollActivity : AppCompatActivity() {
                                         this@RaisePollActivity,
                                         response.body()!!.message.toString()
                                     )
+                                  //  moveToPollsActivity()
+                                   moveToFacilityActivity()
                                 }
                             }
 
@@ -402,6 +403,10 @@ class RaisePollActivity : AppCompatActivity() {
                 Utils.showToast(this@RaisePollActivity, t.message.toString())
             }
         })
+    }
+
+    private fun moveToPollsActivity() {
+        TODO("Not yet implemented")
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -508,7 +513,6 @@ class RaisePollActivity : AppCompatActivity() {
 
     private fun moveToFacilityActivity() {
         val intent = Intent(this@RaisePollActivity, PollsActivity::class.java)
-        intent.putExtra("from", "bookingsPage")
         startActivity(intent)
         finish()
     }

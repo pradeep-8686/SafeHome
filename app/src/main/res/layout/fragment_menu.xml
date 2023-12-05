@@ -408,6 +408,7 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/emergency_contacts_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
@@ -667,6 +668,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/alert_menu_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
@@ -756,6 +758,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/policies_menu_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
@@ -781,6 +784,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/enews_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"

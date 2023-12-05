@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.example.safehome.HomeActivity
 import com.example.safehome.R
 import com.example.safehome.Utils
@@ -40,7 +41,7 @@ class MeetingsActivity  : BaseActivity() {
         apiInterface = APIClient.getClient(this)
         User_Id = Utils.getStringPref(this, "User_Id", "")
         Auth_Token = Utils.getStringPref(this, "Token", "")
-
+        Log.e("Auth_Token", ""+Auth_Token)
         binding.backBtnClick.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             intent.putExtra("ScreenFrom", ScreenFrom)

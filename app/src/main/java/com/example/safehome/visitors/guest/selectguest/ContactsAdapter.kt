@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.safehome.R
 
-class ContactsAdapter(var context: Context, private var contactsList: List<ContactsModel>) :
+class ContactsAdapter(var context: Context, private var contactsList: MutableList<ContactsModel>) :
     RecyclerView.Adapter<ContactsAdapter.MyViewHolder>() {
     private lateinit var contactsFragment: ContactsFragment
 
@@ -40,6 +40,7 @@ class ContactsAdapter(var context: Context, private var contactsList: List<Conta
         if (contact.isSelected) {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.selected_color))
             holder.tickImageView.visibility = View.VISIBLE
+
         } else {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.contact_bg))
             holder.tickImageView.visibility = View.INVISIBLE
@@ -63,7 +64,6 @@ class ContactsAdapter(var context: Context, private var contactsList: List<Conta
         return 0
     }
 
-
     fun setCallbackServiceType(contactsFragment: ContactsFragment) {
         this.contactsFragment = contactsFragment
     }
@@ -75,18 +75,20 @@ class ContactsAdapter(var context: Context, private var contactsList: List<Conta
 
         init {
             itemView.setOnClickListener {
+
                 val position = adapterPosition // Get the position of the clicked item
                 val item = contactsList[position] // Access the data item at this position
 
                 // Toggle the selection state of the item
                 item.isSelected = !item.isSelected
                 notifyItemChanged(position) // Notify the adapter of the change
+                contactsFragment.setContact(item)
             }
         }
 
     }
 
-    fun filterList(contactsList: List<ContactsModel>) {
+    fun filterList(contactsList: MutableList<ContactsModel>) {
         this.contactsList = contactsList;
         notifyDataSetChanged();
     }

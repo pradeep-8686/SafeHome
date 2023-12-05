@@ -102,7 +102,7 @@ class RaiseForumActivity : AppCompatActivity() {
 
 
         binding.backBtnClick.setOnClickListener {
-           val intent = Intent(this, ForumsListActivity::class.java)
+            val intent = Intent(this, ForumsListActivity::class.java)
             intent.putExtra("ScreenFrom", "MenuScreenFrag")
             overridePendingTransition(
                 android.R.anim.fade_in,
@@ -114,11 +114,12 @@ class RaiseForumActivity : AppCompatActivity() {
             onBackPressed()
         }
         binding.btnCancel.setOnClickListener {
-         binding.tvAttachPhoto.text = "Attach Photo"
-         binding.etPollTo.text = ""
-         binding.etDescription.text.clear()
-         binding.etTopic.text.clear()
+            binding.tvAttachPhoto.text = "Attach Photo"
+            binding.etPollTo.text = ""
+            binding.etDescription.text.clear()
+            binding.etTopic.text.clear()
             binding.keepPollForTxt.text = ""
+
         }
 
         binding.btnPost.setOnClickListener {
@@ -252,7 +253,8 @@ class RaiseForumActivity : AppCompatActivity() {
 
                     description = forumItem.description
 
-                    binding.etDescription.text = Editable.Factory.getInstance().newEditable(description)
+                    binding.etDescription.text =
+                        Editable.Factory.getInstance().newEditable(description)
                 }
 
                 if (forumItem.keepQuestionFor != null) {
@@ -306,14 +308,14 @@ class RaiseForumActivity : AppCompatActivity() {
         }
 
 
-
         val forumOptionsMap: MutableMap<String, Any> = HashMap()
 
         forumOptionsMap["Topic"] = topic
-        forumOptionsMap["KeepQuestionFor"] = keepForumFor
+        forumOptionsMap["KeepQuestionForId"] = keepForumFor
         forumOptionsMap["Description"] = description
         forumOptionsMap["Attachment"] = imageFile
-
+        forumOptionsMap["FromDate"] = "27-11-2023"
+        forumOptionsMap["ToDate"] = "29-11-2023"
 
         for (i in 0 until selectedPostToList.size) {
             forumOptionsMap["PostedToIds[$i]"] = selectedPostToList[i]
@@ -358,7 +360,7 @@ class RaiseForumActivity : AppCompatActivity() {
                                 }
                             }
                         }
-                    }else{
+                    } else {
                         customProgressDialog.progressDialogDismiss()
                         moveToFacilityActivity()
                     }
@@ -503,7 +505,6 @@ class RaiseForumActivity : AppCompatActivity() {
         return true
 
     }
-
 
 
     private fun attachPhotoPopup() {
@@ -829,7 +830,7 @@ class RaiseForumActivity : AppCompatActivity() {
 
             keepForumFor = keepPollFor.keepId.toString()
 
-            if ( keepPollFor.keepFor.equals("Custom")) {
+            if (keepPollFor.keepFor.equals("Custom")) {
 
                 binding.tvDate.visibility = View.VISIBLE
                 binding.llDate.visibility = View.VISIBLE
