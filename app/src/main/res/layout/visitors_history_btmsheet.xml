@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/_25dp"
+        android:weightSum="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/invite_for_text"
+            android:layout_marginLeft="@dimen/_15dp"
+            android:layout_width="0dp"
+            android:layout_weight="0.85"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:text="Filters"
+            android:fontFamily="@font/poppins_regular"
+            android:textSize="17sp" />
+
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:id="@+id/ic_close"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_15dp"
+            android:layout_weight="0.15"
+            android:src="@drawable/close"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvAll"
+        android:layout_marginTop="@dimen/_15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="All"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_marginLeft="@dimen/_30dp"/>
+
+    <View
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_color"/>
+    <TextView
+        android:id="@+id/tvGuest"
+        android:layout_marginTop="@dimen/_5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Guests"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_marginLeft="@dimen/_30dp"/>
+
+    <View
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_color"/>
+    <TextView
+        android:id="@+id/tvCab"
+        android:layout_marginTop="@dimen/_5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cab"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_marginLeft="@dimen/_30dp"/>
+
+    <View
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_color"/>
+    <TextView
+        android:id="@+id/tvDelivery"
+        android:layout_marginTop="@dimen/_5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delivery"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_marginLeft="@dimen/_30dp"/>
+
+    <View
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_color"/>
+    <TextView
+        android:id="@+id/tvStaff"
+        android:layout_marginTop="@dimen/_5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Staff"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_marginLeft="@dimen/_30dp"/>
+
+
+</LinearLayout>

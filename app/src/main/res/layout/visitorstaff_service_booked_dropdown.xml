@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/contact_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="List of House Keeping"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/_10dp"
+        android:textSize="@dimen/_16sp"
+        android:fontFamily="@font/poppins_regular"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="@dimen/_5dp"
+        android:id="@+id/service_booked_dropdown_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
