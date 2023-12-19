@@ -47,6 +47,15 @@ import java.util.Locale
 
 
 class BookingsFragment : Fragment() {
+    private lateinit var cash: RadioButton
+    private lateinit var chequeRBtn: RadioButton
+    private lateinit var UpiRBtn: RadioButton
+    private lateinit var eftRBtn: RadioButton
+    private lateinit var thirdPartyNameRBtn: RadioButton
+    private lateinit var rdGroup: RadioGroup
+    private lateinit var rdGroupTransactionStatus: RadioGroup
+    private lateinit var transactionNoEditTxt: EditText
+    private lateinit var transactionAmountEditTxt: EditText
 
     private var fileName: String?= null
     private val REQUEST_CODE: Int = 1000
@@ -345,11 +354,12 @@ class BookingsFragment : Fragment() {
         }
         payUsingOther!!.show()    }
 
+    @SuppressLint("MissingInflatedId")
     @RequiresApi(Build.VERSION_CODES.Q)
     fun selectedBookingPayNow(paymentStatus: FaciBookings.Data.Facilility) {
         val layoutInflater: LayoutInflater =
             requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = layoutInflater.inflate(R.layout.payment_mode_booking_in_daily_help_dialog, null)
+        val view = layoutInflater.inflate(R.layout.payment_mode_other_dialog, null)
         paymentModeOther = Dialog(requireContext(), R.style.CustomAlertDialog)
         paymentModeOther!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
         paymentModeOther!!.setContentView(view)
@@ -367,19 +377,22 @@ class BookingsFragment : Fragment() {
         // here logic ..
         val close = view.findViewById<ImageView>(R.id.close_btn_click)
         paid_on_date_txt = view.findViewById<TextView>(R.id.paid_on_date_txt)
+        transactionAmountEditTxt = view.findViewById<EditText>(R.id.et_amount)
+        transactionNoEditTxt = view.findViewById<EditText>(R.id.et_transaction_number)
         val cancel_btn = view.findViewById<TextView>(R.id.cancel_btn)
         val comments_et: EditText = view.findViewById(R.id.comments_et)
         comments_et.setBackgroundResource(android.R.color.transparent)
         val saveBtn = view.findViewById<TextView>(R.id.save_btn)
-        val rdGroup = view.findViewById<RadioGroup>(R.id.rdGroup)
-        val thirdPartyNameRBtn = view.findViewById<RadioButton>(R.id.third_party_name)
-        val eftRBtn = view.findViewById<RadioButton>(R.id.eft)
-        val UpiRBtn = view.findViewById<RadioButton>(R.id.Upi)
-        val chequeRBtn = view.findViewById<RadioButton>(R.id.cheque)
-        val cash = view.findViewById<RadioButton>(R.id.cash)
-        val selectedId: Int = rdGroup.checkedRadioButtonId
+        rdGroup = view.findViewById<RadioGroup>(R.id.rdGroup)
+        rdGroupTransactionStatus = view.findViewById<RadioGroup>(R.id.rdGroupTransactionStatus)
+        // thirdPartyNameRBtn = view.findViewById<RadioButton>(R.id.third_party_name)
+        eftRBtn = view.findViewById<RadioButton>(R.id.eft)
+        UpiRBtn = view.findViewById<RadioButton>(R.id.Upi)
+        chequeRBtn = view.findViewById<RadioButton>(R.id.cheque)
+        cash = view.findViewById<RadioButton>(R.id.cash)
+
         val documentLayout = view.findViewById<RelativeLayout>(R.id.upload_doc_rl)
-        uploadDocumentName = view.findViewById<TextView>(R.id.upload_docname_txt)
+        uploadDocumentName = view.findViewById<TextView>(R.id.upload_doc_text)
         paid_on_date_txt?.setOnClickListener {
             val datePickerDialog = DatePickerDialog(
                 requireContext(),
@@ -387,9 +400,7 @@ class BookingsFragment : Fragment() {
                 // set DatePickerDialog to point to today's date when it loads up
                 cal.get(Calendar.YEAR),
                 cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH)
-            )
-
+                cal.get(Calendar.DAY_OF_MONTH))
             datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
             datePickerDialog.show()
         }
@@ -406,13 +417,13 @@ class BookingsFragment : Fragment() {
         }
 
         saveBtn.setOnClickListener {
-            if (rdGroup?.checkedRadioButtonId == -1) {
-                Toast.makeText(requireContext(), "Please select option", Toast.LENGTH_LONG).show()
-            } else {
+            if (checkPaymentValidations()) {
                 if (paymentModeOther!!.isShowing) {
                     paymentModeOther!!.dismiss()
                 }
                 updatePaymentForBookFacilityNetworkCall(paymentStatus)
+            } else {
+
             }
 
         }
@@ -425,6 +436,32 @@ class BookingsFragment : Fragment() {
         }
         paymentModeOther!!.show()
     }
+
+    private fun checkPaymentValidations(): Boolean {
+        val selectedId = rdGroup.checkedRadioButtonId
+        val selectedTransactionStatusId = rdGroupTransactionStatus.checkedRadioButtonId
+        if(transactionAmountEditTxt.text.toString().isNullOrEmpty()){
+            Toast.makeText(requireContext(), "Amount Paid field is required", Toast.LENGTH_SHORT).show()
+            return false
+        }else if (paid_on_date_txt!!.text.toString().isNullOrEmpty()){
+            Toast.makeText(requireContext(), "Paid On field is required", Toast.LENGTH_SHORT).show()
+            return false
+        } else if (selectedId == -1){
+            Toast.makeText(requireContext(), "Payment Mode field is required", Toast.LENGTH_SHORT).show()
+            return false
+        }else if (transactionNoEditTxt!!.text.toString().isNullOrEmpty()){
+            Toast.makeText(requireContext(), "Transaction Number field is required", Toast.LENGTH_SHORT).show()
+            return false
+        }else if (selectedTransactionStatusId == -1){
+            Toast.makeText(requireContext(), "Transaction Status field is required", Toast.LENGTH_SHORT).show()
+            return false
+        }else if (uploadDocumentName!!.text.toString().isNullOrEmpty()){
+            Toast.makeText(requireContext(), "Document Type is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -488,6 +525,8 @@ class BookingsFragment : Fragment() {
     fun editBookingRequest(faciBookings: FaciBookings.Data.Facilility) {
         try {
             val fIntent = Intent(requireContext(), ListBookNowActivity::class.java)
+            fIntent.putExtra("faciBookings", faciBookings)
+
             fIntent.putExtra("bookType", faciBookings.name)
             fIntent.putExtra("facilityId", faciBookings.facilityId)
             fIntent.putExtra("bookFacilityId", faciBookings.bookFacilityId)
@@ -500,6 +539,7 @@ class BookingsFragment : Fragment() {
 
             fIntent.putExtra("sgstBookByDay", faciBookings.sgstpercentageForResidentsChargeByDay)
             fIntent.putExtra("sgstBookByHour", faciBookings.sgstpercentageForResidentsChargeByHour)
+            fIntent.putExtra("chargeable", faciBookings.chargeable)
 
             fIntent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

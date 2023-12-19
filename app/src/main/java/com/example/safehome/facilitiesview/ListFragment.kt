@@ -193,6 +193,7 @@ class ListFragment : Fragment() {
 
             fIntent.putExtra("sgstBookByDay", myDues.sgstpercentageForResidentsChargeByDay)
             fIntent.putExtra("sgstBookByHour", myDues.sgstpercentageForResidentsChargeByHour)
+            fIntent.putExtra("chargeable", myDues.chargeable)
 
             fIntent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

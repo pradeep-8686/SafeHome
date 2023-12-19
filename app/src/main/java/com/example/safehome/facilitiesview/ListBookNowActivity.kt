@@ -65,43 +65,119 @@ class ListBookNowActivity : BaseActivity() {
     private var time: String? = null
     private var bookFacilityId: String? = null
     private var from: String? = null
+    private var chargeable: String? = "Yes"
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bookNowDialogBinding = BookNowDialogBinding.inflate(layoutInflater)
         setContentView(bookNowDialogBinding.root)
+
         if (intent != null) {
             bookingType = intent.getStringExtra("bookType")
             facilityId = intent.getIntExtra("facilityId", 0)
-            bookByDay = intent.getDoubleExtra("bookByDay", 1.00)
-            bookByHour = intent.getDoubleExtra("bookByHour", 1.00)
+            bookByDay = intent.getDoubleExtra("bookByDay", 0.00)
+            bookByHour = intent.getDoubleExtra("bookByHour", 0.00)
             Log.e("facilityId", "" + facilityId)
             from = intent.getStringExtra("from")
             if (from!! == "bookings") {
                 bookFacilityId = intent.getStringExtra("bookFacilityId")
             }
+            chargeable = intent.getStringExtra("chargeable")
 
             cgstBookByDay = intent.getDoubleExtra("cgstBookByDay", 0.00)
             cgstBookByHour = intent.getDoubleExtra("cgstBookByHour", 0.00)
 
             sgstBookByDay = intent.getDoubleExtra("sgstBookByDay", 0.00)
             sgstBookByHour = intent.getDoubleExtra("sgstBookByHour", 0.00)
-            calculateTax()
-            bookNowDialogBinding.totalChargeEt.text = (bookByHour + totalDayTax).toString()
+
+            if (chargeable.equals("Yes", true)) {
+//                calculateTax()
+                bookNowDialogBinding.totalChargeEt.text = calculateByHour(bookByHour)
+            }
         }
 
+        getIntentData()
         bookNowDialogBinding.purposeEt.setBackgroundResource(android.R.color.transparent)
         bookNowDialogBinding.commentsEt.setBackgroundResource(android.R.color.transparent)
 
         inIt()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getIntentData() {
+        if (intent.extras?.getSerializable("faciBookings") != null) {
+            val faciBookings =
+                intent.extras?.getSerializable("faciBookings") as FaciBookings.Data.Facilility
+
+            if (faciBookings.purpose != null) {
+
+                bookNowDialogBinding.purposeEt.setText(faciBookings.purpose)
+            }
+            if (faciBookings.comments != null) {
+
+                bookNowDialogBinding.commentsEt.setText(faciBookings.comments)
+            }
+            if (faciBookings.noOfDays != null) {
+                bookNowDialogBinding.numberOfDaysTxt.text = faciBookings.noOfDays.toString()
+
+            }
+            if (faciBookings.noOfHours != null) {
+                bookNowDialogBinding.numberOfHoursTxt.text = faciBookings.noOfHours.toString()
+            }
+            if (faciBookings.startDate != null) {
+                bookNowDialogBinding.startDateTxt.text =
+                    Utils.formatDateMonthYear(faciBookings.startDate)
+            }
+            if (faciBookings.endDate != null) {
+                bookNowDialogBinding.endDateTxt.text =
+                    Utils.formatDateMonthYear(faciBookings.endDate)
+            }
+            if (faciBookings.startTime != null) {
+                bookNowDialogBinding.startTimeText.text = faciBookings.startTime
+            }
+            if (faciBookings.endTime != null) {
+                bookNowDialogBinding.endTime.text = faciBookings.endTime
+            }
+            if (faciBookings.totalAmount != null) {
+                bookNowDialogBinding.totalChargeEt.text =
+                    faciBookings.totalAmount.toString()
+
+            }
+        }
+    }
+
     private fun calculateTax() {
 
         totalDayTax = cgstBookByDay + sgstBookByDay
         totalHourTax = cgstBookByHour + sgstBookByHour
+        val cgst = (cgstBookByHour * bookByHour) / 100.0
+        val sgst = (sgstBookByHour * bookByHour) / 100.0
 
+        Log.d(
+            "Calculations",
+            "Total : $bookByHour \ncgst : $cgstBookByHour \nsgst : $sgstBookByHour"
+        )
+        Log.d("Calculations", "$cgstBookByHour % $bookByHour")
+
+        bookNowDialogBinding.totalChargeEt.text = (bookByHour + cgst + sgst).toString()
+
+    }
+
+    private fun calculateByHour(hour: Double): String {
+        val cgst = (cgstBookByHour * hour) / 100.0
+        val sgst = (sgstBookByHour * hour) / 100.0
+
+        Log.d("Calculations", "Total : $hour \ncgst : $cgst \nsgst : $sgst")
+
+        return (hour + cgst + sgst).toString()
+    }
+
+    private fun calculateByDay(day: Double): String {
+        val cgst = (cgstBookByDay * day) / 100.0
+        val sgst = (cgstBookByHour * day) / 100.0
+
+        return (day + cgst + sgst).toString()
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -112,7 +188,11 @@ class ListBookNowActivity : BaseActivity() {
         residentId = Utils.getStringPref(this@ListBookNowActivity, "residentId", "")!!
         bookNowDialogBinding.sendRequestTv.setOnClickListener {
             //  confirmationPopup()
-            addBookFacilityNetworkCall()
+
+            if (validations()) {
+                addBookFacilityNetworkCall()
+            }
+
         }
         bookNowDialogBinding.bookNowTitleTxt.text = bookingType
         bookNowDialogBinding.startDateTxt?.setOnClickListener {
@@ -195,60 +275,61 @@ class ListBookNowActivity : BaseActivity() {
             dateCount++
             bookNowDialogBinding.numberOfDaysTxt.text = dateCount.toString()
             if (dateCount > 1) {
-                bookNowDialogBinding.llHours.visibility = View.GONE
-                val totalCharge = (bookByDay * dateCount) + (dateCount * totalDayTax)
-                bookNowDialogBinding.totalChargeEt.text = totalCharge.toString()
+                bookNowDialogBinding.timeLayout.visibility = View.GONE
+                bookNowDialogBinding.noOfHoursLayout.visibility = View.GONE
+                val totalCharge = bookByDay * dateCount
+                bookNowDialogBinding.totalChargeEt.text = calculateByDay(totalCharge)
             } else {
-                bookNowDialogBinding.llHours.visibility = View.VISIBLE
+                bookNowDialogBinding.timeLayout.visibility = View.VISIBLE
+                bookNowDialogBinding.noOfHoursLayout.visibility = View.VISIBLE
 
-                if (dateCount == 0) {
-                    bookNowDialogBinding.totalChargeEt.text = "0"
-                } else {
-                    bookNowDialogBinding.totalChargeEt.text = (bookByDay + totalDayTax).toString()
-                }
+                /* if (dateCount == 0) {
+                     bookNowDialogBinding.totalChargeEt.text = "0"
+                 } else {
+                     bookNowDialogBinding.totalChargeEt.text =   calculateByHour(bookByDay)
+                 }*/
             }
         }
 
         bookNowDialogBinding.minusDateImg.setOnClickListener {
+
             dateCount--
-            if (dateCount >= 0) {
-                bookNowDialogBinding.numberOfDaysTxt.text = dateCount.toString()
-                if (dateCount > 1) {
-                    bookNowDialogBinding.llHours.visibility = View.GONE
-                    val totalCharge = (bookByDay * dateCount) + (dateCount * totalDayTax)
-                    bookNowDialogBinding.totalChargeEt.text = totalCharge.toString()
-                } else {
-                    bookNowDialogBinding.llHours.visibility = View.VISIBLE
-                    if (dateCount == 0) {
-                        bookNowDialogBinding.totalChargeEt.text = "0"
-                    } else {
-                        bookNowDialogBinding.totalChargeEt.text =
-                            (bookByDay + totalDayTax).toString()
-                    }
-                }
+            bookNowDialogBinding.numberOfDaysTxt.text = dateCount.toString()
+            if (dateCount > 1) {
+
+                bookNowDialogBinding.timeLayout.visibility = View.GONE
+                bookNowDialogBinding.noOfHoursLayout.visibility = View.GONE
+                val totalCharge = bookByDay * dateCount
+                bookNowDialogBinding.totalChargeEt.text = calculateByDay(totalCharge)
             } else {
-                dateCount = 0
-                bookNowDialogBinding.llHours.visibility = View.VISIBLE
-                bookNowDialogBinding.totalChargeEt.text = "0"
+                dateCount = 1
+                bookNowDialogBinding.numberOfDaysTxt.text = dateCount.toString()
+                bookNowDialogBinding.timeLayout.visibility = View.VISIBLE
+                bookNowDialogBinding.noOfHoursLayout.visibility = View.VISIBLE
+                val totalCharge = bookByHour * timeCount
+                bookNowDialogBinding.totalChargeEt.text = calculateByHour(totalCharge)
             }
+
         }
 
         bookNowDialogBinding.plusTimeImg.setOnClickListener {
-            timeCount++
-            val totalCharge = (bookByHour.toInt() * timeCount) + (totalHourTax * timeCount)
-            bookNowDialogBinding.totalChargeEt.text = totalCharge.toString()
-            bookNowDialogBinding.numberOfHoursTxt.text = timeCount.toString()
+            if (timeCount in 1..23) {
+                timeCount++
+                val totalCharge = bookByHour * timeCount
+                bookNowDialogBinding.totalChargeEt.text = calculateByHour(totalCharge)
+                bookNowDialogBinding.numberOfHoursTxt.text = timeCount.toString()
+            }
         }
 
         bookNowDialogBinding.minusTimeImg.setOnClickListener {
-            timeCount--
-            if (timeCount >= 0) {
-                val totalCharge = (bookByHour.toInt() * timeCount) + (totalHourTax * timeCount)
-                bookNowDialogBinding.totalChargeEt.text = totalCharge.toString()
+            if (timeCount in 2..24) {
+                timeCount--
+                val totalCharge = bookByHour * timeCount
+                bookNowDialogBinding.totalChargeEt.text = calculateByHour(totalCharge)
                 bookNowDialogBinding.numberOfHoursTxt.text = timeCount.toString()
             } else {
-                timeCount = 0
-                bookNowDialogBinding.totalChargeEt.text = "0"
+//                timeCount = 0
+//                bookNowDialogBinding.totalChargeEt.text = "0"
             }
         }
 
@@ -257,6 +338,46 @@ class ListBookNowActivity : BaseActivity() {
             startActivity(intent)
             finish()
         }
+    }
+
+    private fun validations(): Boolean {
+
+        if (bookNowDialogBinding.purposeEt.text.toString().isEmpty()) {
+
+            Utils.showToast(this, "Please enter purpose")
+            return false
+        }
+        if (chargeable == "Yes") {
+            if (bookNowDialogBinding.numberOfDaysTxt.text.toString() == "0" && bookNowDialogBinding.numberOfHoursTxt.text.toString() == "0") {
+                Utils.showToast(this, "Please select number of days or number of hours")
+                return false
+            }
+            /*  if (bookNowDialogBinding.numberOfHoursTxt.text.toString() == "0") {
+                  Utils.showToast(this, "Please select number of hours")
+                  return false
+              }*/
+        }
+
+        if (bookNowDialogBinding.startDateTxt.text.toString() == "DD/MM/YYYY") {
+            Utils.showToast(this, "Please select start date")
+            return false
+        }
+        if (bookNowDialogBinding.endDateTxt.text.toString() == "DD/MM/YYYY") {
+            Utils.showToast(this, "Please select end date")
+            return false
+        }
+        if (bookNowDialogBinding.numberOfDaysTxt.text.toString() == "0" || bookNowDialogBinding.numberOfDaysTxt.text.toString() == "1") {
+            if (bookNowDialogBinding.startTimeText.text.toString() == "HH:MM") {
+                Utils.showToast(this, "Please select start time")
+                return false
+            }
+            if (bookNowDialogBinding.endTime.text.toString() == "HH:MM") {
+                Utils.showToast(this, "Please select end time")
+            }
+        }
+
+
+        return true
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)

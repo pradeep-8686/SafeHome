@@ -1,14 +1,16 @@
 package com.example.safehome.model
 
+import java.io.Serializable
+
 data class FaciBookings(
     val `data`: Data,
     val message: String,
     val statusCode: Int
-) {
+) : Serializable{
     data class Data(
         val facililities: List<Facilility>,
         val totalRecords: Int
-    ) {
+    ): Serializable {
         data class Facilility(
             val approvalStatusId: Int,
             val approvalStatusName: String,
@@ -64,6 +66,6 @@ data class FaciBookings(
             val totalAmount: Double,
             val transactionID: Any,
             val transactionStatus: Any
-        )
+        ): Serializable
     }
 }

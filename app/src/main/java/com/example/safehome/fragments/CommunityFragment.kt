@@ -10,6 +10,7 @@ import com.example.safehome.communityview.AssociationMembersActivity
 import com.example.safehome.communityview.EmergencyContactActivity
 import com.example.safehome.communityview.EmergencyContactCategoryActivity
 import com.example.safehome.communityview.ResidentsActivity
+import com.example.safehome.communityview.VendorsActivity
 import com.example.safehome.databinding.FragmentCommunityBinding
 
 
@@ -42,6 +43,10 @@ class CommunityFragment : Fragment() {
         }
         binding.emergencyContactsLayout.setOnClickListener {
             val residentIntent = Intent(requireContext(), EmergencyContactCategoryActivity::class.java)
+            startActivity(residentIntent)
+        }
+        binding.vendorsLayout.setOnClickListener {
+            val residentIntent = Intent(requireContext(), VendorsActivity::class.java)
             startActivity(residentIntent)
         }
     }

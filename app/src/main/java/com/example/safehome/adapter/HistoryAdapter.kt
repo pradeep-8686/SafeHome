@@ -34,14 +34,16 @@ class HistoryAdapter(
         if (myDues.catageroyName != null && myDues.catageroyName.isNotEmpty()) {
             holder.History_type_tv.text = myDues.catageroyName
         }
-        if (myDues.paymentStatus != null && myDues.paymentStatus.isNotEmpty()) {
-            holder.payment_mode_text_tv.text = ""
+        if (myDues.paymentMode!= null && myDues.paymentMode.isNotEmpty()) {
+            holder.payment_mode_text_tv.text = myDues.paymentMode
         }
         if (myDues.paidAmount != null) {
             "${context.getString(R.string.rupee)}${myDues.paidAmount}/-".also {
                 holder.total_invoice_amount_tv.text = it
             }
         }
+
+
 //        var invoiceDate: S    tring?= null
 //        if (myDues.invoiceDate.isNotEmpty()){
 //            val invoiceDates = myDues.invoiceDate.split("T")
@@ -64,25 +66,25 @@ class HistoryAdapter(
 
             }else{
                 invoiceFromdate =myDues.invoiceFromDate
-
             }
-            if (myDues.invoiceToDate!!.contains("T")) {
-                invoiceTodate = "${Utils.dateToMonthYear(myDues.invoiceToDate)} "
 
+            invoiceTodate = if (myDues.invoiceToDate!!.contains("T")) {
+                "${Utils.dateToMonthYear(myDues.invoiceToDate)} "
             }else{
-                invoiceTodate =myDues.invoiceToDate
-
+                myDues.invoiceToDate
             }
-
             myDues.invoiceFromDate = invoiceFromdate
             myDues.invoiceToDate = invoiceTodate
-
             if (invoiceFromdate == invoiceTodate) {
                 holder.invoice_period_text_tv.text = "$invoiceFromdate"
             } else {
                 holder.invoice_period_text_tv.text = "$invoiceFromdate, $invoiceTodate"
 
             }
+        }
+
+        if (!myDues.paidDate.isNullOrEmpty()){
+            holder.paid_on_txt_tv.text = Utils.formatDateMonthYear(myDues.paidDate)
         }
 
         holder.due_type_image_view.setImageResource(R.drawable.common_area_maintainance_icon)

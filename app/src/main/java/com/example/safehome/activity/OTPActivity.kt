@@ -66,7 +66,9 @@ class OTPActivity : AppCompatActivity() {
         screenName = intent.getStringExtra("SCREEN")
         setupApiService()
         getUserData()
-
+        Utils.saveStringPref(this@OTPActivity, "User_Id", "")
+        Utils.saveStringPref(this@OTPActivity, "Token", "")
+        Utils.saveStringPref(this@OTPActivity, "residentId", "")
         addTextWatcher(binding.otpEditText1)
         addTextWatcher(binding.otpEditText2)
         addTextWatcher(binding.otpEditText3)

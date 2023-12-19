@@ -119,5 +119,7 @@ class AppConstants {
         const val GetAllEmergencyTypeDetailsDropDown= "masters/GetAllEmergencyTypeDetailsDropDown"
         const val SendAlertDetails= "others/SendAlertDetails"
         const val UpdateAlertDetails= "others/UpdateAlertDetails"
+        const val getVendorAPI= "masters/GetVendorTypeDetailsDropDown"
+        const val getVendorDetailsAPI= "others/GetVendorTypeServicesProvidedDetails"
     }
 }

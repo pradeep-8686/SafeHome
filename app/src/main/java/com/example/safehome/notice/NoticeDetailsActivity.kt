@@ -38,6 +38,7 @@ class NoticeDetailsActivity : AppCompatActivity() {
 
         readStatusSendToNotice(noticeData?.readStatusId)
         noticeBinding.backBtnClick.setOnClickListener { onBackPressed() }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)

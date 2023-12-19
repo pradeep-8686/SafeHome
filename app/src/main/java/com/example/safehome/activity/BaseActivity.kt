@@ -15,7 +15,6 @@ abstract class BaseActivity : AppCompatActivity() {
             .replace(containerId, fragment).addToBackStack(null)
             .commit()
 
-
     }
 
 }

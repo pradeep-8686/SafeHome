@@ -226,6 +226,9 @@ class VisitorsListAdapter(
             }
         }
 
+        holder.shareOtpLayout.setOnClickListener {
+            expectedVisitorsListFragment?.shareOtp(visitorListItem)
+        }
 
     }
 

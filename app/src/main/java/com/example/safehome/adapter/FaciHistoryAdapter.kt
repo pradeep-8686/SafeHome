@@ -70,8 +70,8 @@ class FaciHistoryAdapter (
             if (faciBookings.endDate != null && faciBookings.endDate.isNotEmpty()) {
 
                 if (faciBookings.startDate!!.contains("T")) {
-                    startDate = Utils.changeDateFormat(faciBookings?.startDate!!.split("T")[0])
-                        .replace("-", "/")
+            //        startDate = Utils.changeDateFormat(faciBookings?.startDate!!.split("T")[0]) .replace("-", "/")
+                    startDate = Utils.formatDateMonthYear(faciBookings.startDate)
                 } else {
                     startDate = faciBookings?.startDate!!.replace("-", "/")
                 }
@@ -81,8 +81,8 @@ class FaciHistoryAdapter (
                 holder.start_date_tv.text = "$startDate"
 
                 if (faciBookings.endDate!!.contains("T")) {
-                    endDate = Utils.changeDateFormat(faciBookings?.endDate!!.split("T")[0])
-                        .replace("-", "/")
+            //        endDate = Utils.changeDateFormat(faciBookings?.endDate!!.split("T")[0]).replace("-", "/")
+                    endDate = Utils.formatDateMonthYear(faciBookings.endDate)
                 } else {
                     endDate = faciBookings?.endDate!!.replace("-", "/")
                 }

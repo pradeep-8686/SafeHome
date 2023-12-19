@@ -4,16 +4,15 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.content.ContentResolver
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.provider.OpenableColumns
+import android.text.Editable
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -21,7 +20,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
-import android.webkit.MimeTypeMap
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.ImageView
@@ -45,21 +43,32 @@ import com.example.safehome.model.TotalDuesMaintenanceList
 import com.example.safehome.model.UpdateMaintenanceModel
 import com.example.safehome.repository.APIClient
 import com.example.safehome.repository.APIInterface
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 
 class MyDuesFragment : Fragment() {
 
-    private var fileName: String?= null
-    private lateinit var  uploadDocumentName: TextView
+    private var selectedImagePath: String? = null
+    private var selectedTransactionStatusRbtn: RadioButton? = null
+    private var selectedPaymentModeRbtn: RadioButton? = null
+    private lateinit var thirdPartyNameRBtn: RadioButton
+    private lateinit var rdGroup: RadioGroup
+    private lateinit var rdGroupTransactionStatus: RadioGroup
+    private lateinit var transactionNoEditTxt: EditText
+    private lateinit var comments_et: EditText
+    private lateinit var transactionAmountEditTxt: EditText
+    private var fileName: String? = null
+    private lateinit var uploadDocumentName: TextView
     private val REQUEST_CODE: Int = 100
     private lateinit var Auth_Token: String
     private lateinit var residentId: String
@@ -86,15 +95,10 @@ class MyDuesFragment : Fragment() {
 
     var cal = Calendar.getInstance()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentMyDuesBinding.inflate(inflater, container, false)
 
@@ -104,7 +108,7 @@ class MyDuesFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun inIt() {
-        binding.totalDueText.setText("Dues :" + getString(R.string.Rs) + " 0")
+        binding.totalDueText.text = "Dues :" + getString(R.string.Rs) + " 0"
         Auth_Token = Utils.getStringPref(requireContext(), "Token", "")!!
         residentId = Utils.getStringPref(requireContext(), "residentId", "")!!
         customProgressDialog = CustomProgressDialog()
@@ -125,12 +129,12 @@ class MyDuesFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun getDueMaintenanceDetailsServiceCall() {
         customProgressDialog.progressDialogShow(requireContext(), this.getString(R.string.loading))
-        getDuesMaintenanceDetails =
-            apiInterface.getDueMaintenanceDetailsByResident("bearer " + Auth_Token, residentId.toInt())
+        getDuesMaintenanceDetails = apiInterface.getDueMaintenanceDetailsByResident(
+            "bearer " + Auth_Token, residentId.toInt()
+        )
         getDuesMaintenanceDetails.enqueue(object : Callback<TotalDuesMaintenanceList> {
             override fun onResponse(
-                call: Call<TotalDuesMaintenanceList>,
-                response: Response<TotalDuesMaintenanceList>
+                call: Call<TotalDuesMaintenanceList>, response: Response<TotalDuesMaintenanceList>
             ) {
                 customProgressDialog.progressDialogDismiss()
 
@@ -144,8 +148,9 @@ class MyDuesFragment : Fragment() {
                                     if (myDyesList.isNotEmpty()) {
                                         myDyesList.clear()
                                     }
-                                    myDyesList = response.body()!!.data as ArrayList<MyDuesMaintenanceDetails>
-                                    Log.e("myDyesList", myDyesList.size.toString())
+                                    myDyesList =
+                                        response.body()!!.data as ArrayList<MyDuesMaintenanceDetails>
+                                    Log.e("myDyesList", "" + myDyesList)
 
                                     if (myDyesList.isNotEmpty()) {
                                         for (i in 0 until myDyesList.size) {
@@ -153,7 +158,7 @@ class MyDuesFragment : Fragment() {
                                                 totalDues!!.plus(myDyesList[i].invoiceAmount.toDouble())
                                         }
                                         binding.totalDueText.text =
-                                            "Dues:"+"${context!!.getString(R.string.rupee)}${totalDues}/-"
+                                            "Dues:" + "${context!!.getString(R.string.rupee)}${totalDues}/-"
                                     }
 
                                 }
@@ -165,8 +170,7 @@ class MyDuesFragment : Fragment() {
                                 if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
 
                                     Utils.showToast(
-                                        requireContext(),
-                                        response.body()!!.message
+                                        requireContext(), response.body()!!.message
                                     )
                                 }
                             }
@@ -175,8 +179,7 @@ class MyDuesFragment : Fragment() {
                                 if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
 
                                     Utils.showToast(
-                                        requireContext(),
-                                        response.body()!!.message
+                                        requireContext(), response.body()!!.message
                                     )
                                 }
                             }
@@ -208,8 +211,7 @@ class MyDuesFragment : Fragment() {
         }
     }
 
-    private fun addMyDuesData() {
-        /*  myDyesList.add(
+    private fun addMyDuesData() {/*  myDyesList.add(
               MyDuesMaintenanceDetails(
                   "Common Area Maintainance", "#6653", "Apr 2023",
                   "15 May, 2021", 500, R.drawable.common_area_maintainance_icon, "Unpaid"
@@ -285,14 +287,20 @@ class MyDuesFragment : Fragment() {
             invoice_number_et.setText(myDuesMaintenanceDetails.invoiceNumber)
         }
         if (myDuesMaintenanceDetails.invoiceDate.isNotEmpty() && myDuesMaintenanceDetails.invoiceDueDate.isNotEmpty()) {
-           if (myDuesMaintenanceDetails.invoiceToDate.isNotEmpty()) {
-               val invoiceToDates = myDuesMaintenanceDetails.invoiceToDate.split("T")
-               val invoiceToDate = invoiceToDates[0]
-               val monthYear = Utils.formatDateToMonth(invoiceToDate)
-               invoice_period_et.setText(monthYear)
-           }
+            if (myDuesMaintenanceDetails.invoiceToDate.isNotEmpty()) {
+                val invoiceToDates = myDuesMaintenanceDetails.invoiceToDate.split("T")
+                val invoiceToDate = invoiceToDates[0]
+                val monthYear = Utils.formatDateToMonth(invoiceToDate)
+                val invoiceStartDate =
+                    Utils.dateToMonthYear(myDuesMaintenanceDetails.invoiceFromDate)
+                if (monthYear == invoiceStartDate) {
+                    invoice_period_et.setText(invoiceStartDate)
+                } else {
+                    invoice_period_et.setText("$invoiceStartDate - $monthYear")
+                }
+            }
             invoice_date_et.text = formatDateMonthYear(myDuesMaintenanceDetails.invoiceDate)
-                due_date_et.text = formatDateMonthYear(myDuesMaintenanceDetails.invoiceDueDate)
+            due_date_et.text = formatDateMonthYear(myDuesMaintenanceDetails.invoiceDueDate)
 
         }
         if (myDuesMaintenanceDetails.invoiceAmount != null) {
@@ -310,7 +318,7 @@ class MyDuesFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.Q)
     fun selectedPaid(myDuesMaintenanceDetails: MyDuesMaintenanceDetails) {
         if (myDuesMaintenanceDetails != null) {
-             payUsingPopup(myDuesMaintenanceDetails)
+            payUsingPopup(myDuesMaintenanceDetails)
             //paymentModeOthers(myDuesMaintenanceDetails)
         }
     }
@@ -339,17 +347,19 @@ class MyDuesFragment : Fragment() {
         val continue_btn = view.findViewById<TextView>(R.id.continue_btn)
 
         val radioGroup = view.findViewById<RadioGroup>(R.id.rdGroup) as RadioGroup
-        val third_party_name_radio_option = view.findViewById<RadioButton>(R.id.third_party_name) as RadioButton
+        val third_party_name_radio_option =
+            view.findViewById<RadioButton>(R.id.third_party_name) as RadioButton
         val other_radio_Option = view.findViewById<RadioButton>(R.id.other_rd_option) as RadioButton
 
         third_party_name_radio_option.text = "Safe Home app"
         // get selected radio button from radioGroup
-        val selectedId: Int = radioGroup.getCheckedRadioButtonId()
+        val selectedId: Int = radioGroup.checkedRadioButtonId
         // find the radiobutton by returned id
 //        radioButton = view.findViewById<RadioButton>(selectedId) as RadioButton
 
         continue_btn.setOnClickListener {
-            if (radioGroup?.getCheckedRadioButtonId() == -1) {
+
+            if (radioGroup.checkedRadioButtonId == -1) {
                 Toast.makeText(requireContext(), "Please select option", Toast.LENGTH_LONG).show()
             } else {
                 if (payUsingDialog!!.isShowing) {
@@ -367,6 +377,38 @@ class MyDuesFragment : Fragment() {
 
 
         payUsingDialog!!.show()
+    }
+
+    private fun checkPaymentValidations(): Boolean {
+        val selectedId = rdGroup.checkedRadioButtonId
+        val selectedTransactionStatusId = rdGroupTransactionStatus.checkedRadioButtonId
+        if (transactionAmountEditTxt.text.toString().isNullOrEmpty()) {
+            Toast.makeText(requireContext(), "Amount Paid field is required", Toast.LENGTH_SHORT)
+                .show()
+            return false
+        } else if (paid_on_date_txt!!.text.toString().isNullOrEmpty()) {
+            Toast.makeText(requireContext(), "Paid On field is required", Toast.LENGTH_SHORT).show()
+            return false
+        } else if (selectedId == -1) {
+            Toast.makeText(requireContext(), "Payment Mode field is required", Toast.LENGTH_SHORT)
+                .show()
+            return false
+        } else if (transactionNoEditTxt.text.toString().isNullOrEmpty()) {
+            Toast.makeText(
+                requireContext(), "Transaction Number field is required", Toast.LENGTH_SHORT
+            ).show()
+            return false
+        } else if (selectedTransactionStatusId == -1) {
+            Toast.makeText(
+                requireContext(), "Transaction Status field is required", Toast.LENGTH_SHORT
+            ).show()
+            return false
+        }
+        else if (selectedImagePath == null) {
+            Toast.makeText(requireContext(), "Document is required", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
     }
 
 
@@ -393,41 +435,59 @@ class MyDuesFragment : Fragment() {
         // here logic ..
         val close = view.findViewById<ImageView>(R.id.close_btn_click)
         paid_on_date_txt = view.findViewById<TextView>(R.id.paid_on_date_txt)
+        transactionAmountEditTxt = view.findViewById<EditText>(R.id.et_amount)
+        if (myDuesMaintenanceDetails.invoiceAmount != null) {
+            "${myDuesMaintenanceDetails.invoiceAmount}".also {
+                transactionAmountEditTxt.text = Editable.Factory.getInstance().newEditable(it)
+            }
+        }
+        //   transactionAmountEditTxt.text = myDuesMaintenanceDetails.invoiceAmount.toLong()
+        transactionNoEditTxt = view.findViewById<EditText>(R.id.et_transaction_number)
         val cancel_btn = view.findViewById<TextView>(R.id.cancel_btn)
-        val comments_et: EditText = view.findViewById(R.id.comments_et)
+         comments_et = view.findViewById(R.id.comments_et)
         comments_et.setBackgroundResource(android.R.color.transparent)
         val saveBtn = view.findViewById<TextView>(R.id.save_btn)
-        val rdGroup = view.findViewById<RadioGroup>(R.id.rdGroup)
-        val thirdPartyNameRBtn = view.findViewById<RadioButton>(R.id.third_party_name)
-        val eftRBtn = view.findViewById<RadioButton>(R.id.eft)
-        val UpiRBtn = view.findViewById<RadioButton>(R.id.Upi)
-        val chequeRBtn = view.findViewById<RadioButton>(R.id.cheque)
-        val cash = view.findViewById<RadioButton>(R.id.cash)
-        val selectedId: Int = rdGroup.checkedRadioButtonId
+        rdGroup = view.findViewById<RadioGroup>(R.id.rdGroup)
+        rdGroupTransactionStatus = view.findViewById<RadioGroup>(R.id.rdGroupTransactionStatus)
 
         val documentLayout = view.findViewById<RelativeLayout>(R.id.upload_doc_rl)
         uploadDocumentName = view.findViewById<TextView>(R.id.upload_doc_text)
+
+        val calendar: Calendar = Calendar.getInstance()
+        val currentDate: Date = calendar.time
+
+        // Format the date as "dd/MM/yyyy"
+        val sdf = SimpleDateFormat("dd/MM/yyyy")
+        val formattedDate: String = sdf.format(currentDate)
+        paid_on_date_txt!!.text = formattedDate
+
+
         paid_on_date_txt?.setOnClickListener {
             val datePickerDialog = DatePickerDialog(
-                requireContext(),
-                dateSetListener,
+                requireContext(), dateSetListener,
                 // set DatePickerDialog to point to today's date when it loads up
-                cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH)
+                cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)
             )
-            datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
+            //   datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
+            datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+
             datePickerDialog.show()
         }
+
         saveBtn.setOnClickListener {
-            if (rdGroup?.checkedRadioButtonId == -1) {
-                Toast.makeText(requireContext(), "Please select option", Toast.LENGTH_LONG).show()
-            } else {
+
+            if (checkPaymentValidations()) {
                 if (paymentModeOther!!.isShowing) {
                     paymentModeOther!!.dismiss()
                 }
+                val selectedId = rdGroup.checkedRadioButtonId
+                val selectedTransactionStatusId = rdGroupTransactionStatus.checkedRadioButtonId
+                selectedPaymentModeRbtn = view.findViewById<RadioButton>(selectedId)
+                selectedTransactionStatusRbtn =
+                    view.findViewById<RadioButton>(selectedTransactionStatusId)
                 updateMaintenancePaymentNetworkCall(myDuesMaintenanceDetails)
             }
+
         }
 
         close.setOnClickListener {
@@ -443,7 +503,8 @@ class MyDuesFragment : Fragment() {
         documentLayout.setOnClickListener {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
-            intent.type = "*/*" // This sets the MIME type to all file types, you can restrict it to specific types if needed
+            intent.type =
+                "*/*" // This sets the MIME type to all file types, you can restrict it to specific types if needed
             startActivityForResult(intent, REQUEST_CODE)
         }
         paymentModeOther!!.show()
@@ -455,58 +516,62 @@ class MyDuesFragment : Fragment() {
 
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val selectedFileUri = data?.data
+            Log.e("Document" , selectedFileUri.toString())
+
+//            selectedImagePath = selectedFileUri?.let { getRealPathFromURI(it) }
+//            selectedImagePath = selectedFileUri?.let { getPathFromUri(requireContext(), it) }
+
+            Log.e("Document" , selectedImagePath.toString())
+
             // Handle the selected file URI here
-            val cursor = requireContext().contentResolver.query(selectedFileUri!!, null, null, null, null)
+            val cursor =
+                requireContext().contentResolver.query(selectedFileUri!!, null, null, null, null)
             cursor?.use {
                 val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                 it.moveToFirst()
-                 fileName = it.getString(nameIndex)
+                fileName = it.getString(nameIndex)
                 // Now `fileName` contains the name of the selected file.
                 uploadDocumentName.text = fileName.toString()
 
             }
-            selectedDocumentUri(selectedFileUri)
+            selectedImagePath = fileName
+            //   selectedDocumentUri(selectedFileUri)
         }
     }
+    fun getPathFromUri(context: Context, uri: Uri?): String? {
+        uri ?: return null
 
-    @RequiresApi(Build.VERSION_CODES.Q)
-    private fun selectedDocumentUri(selectedFileUri: Uri) {
-        val inputStream: InputStream? = requireContext().contentResolver.openInputStream(selectedFileUri)
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = context.contentResolver.query(uri, projection, null, null, null)
 
-        if (inputStream != null) {
-            val contentValues = ContentValues()
-            contentValues.put(MediaStore.Downloads.DISPLAY_NAME,
-                "https://qa.msafehome.com/files/$fileName"
-            )
-            contentValues.put(MediaStore.Downloads.MIME_TYPE, getMimeType(fileName.toString()))
-            contentValues.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
-
-            val contentResolver: ContentResolver = requireContext().contentResolver
-            val fileUri = contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
-
-            if (fileUri != null) {
-                val outputStream: OutputStream? = contentResolver.openOutputStream(fileUri)
-
-                if (outputStream != null) {
-                    val buffer = ByteArray(1024)
-                    var read: Int
-
-                    while (inputStream.read(buffer).also { read = it } != -1) {
-                        outputStream.write(buffer, 0, read)
-                    }
-
-                    inputStream.close()
-                    outputStream.close()
-                }
+        cursor?.use {
+            if (it.moveToFirst()) {
+                val columnIndex = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                return it.getString(columnIndex)
             }
         }
+
+        return null
     }
-    fun getMimeType(fileName: String): String {
-        val extension = MimeTypeMap.getFileExtensionFromUrl(fileName)
-        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension) ?: "application/octet-stream"
+
+
+    private fun getRealPathFromURI(uri: Uri): String {
+        val cursor: Cursor? = requireContext().contentResolver.query(uri, null, null, null, null)
+        val result = if (cursor == null) uri.path else {
+            cursor.moveToFirst()
+            val index: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            cursor.getString(index)
+        }
+        cursor?.close()
+        return result ?: ""
     }
+
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun updateMaintenancePaymentNetworkCall(myDuesMaintenanceDetails: MyDuesMaintenanceDetails) {
+
+//        val imageFile = File(selectedImagePath)
+//        val requestFile = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+//        val imagePart = MultipartBody.Part.createFormData("image", imageFile.name, requestFile)
         val parsedValue: Double = myDuesMaintenanceDetails.invoiceAmount.toDouble()
 
         customProgressDialog.progressDialogShow(requireContext(), this.getString(R.string.loading))
@@ -516,16 +581,17 @@ class MyDuesFragment : Fragment() {
             myDuesMaintenanceDetails.transactionId.toInt(),
             residentId.toInt(),
             parsedValue.toInt(),
-            "UPI",
-            "Success",
-            "",
-            ""
+            selectedPaymentModeRbtn!!.text.toString(),
+            selectedTransactionStatusRbtn!!.text.toString(),
+            transactionNoEditTxt.text.toString(),
+            selectedImagePath.toString(),
+            comments_et.text.toString().let { it },
+            paid_on_date_txt!!.text.toString()
         )
 
         updateMaintenanceDetails.enqueue(object : Callback<UpdateMaintenanceModel> {
             override fun onResponse(
-                call: Call<UpdateMaintenanceModel>,
-                response: Response<UpdateMaintenanceModel>
+                call: Call<UpdateMaintenanceModel>, response: Response<UpdateMaintenanceModel>
             ) {
 
                 customProgressDialog.progressDialogDismiss()
@@ -542,8 +608,7 @@ class MyDuesFragment : Fragment() {
                             1 -> {
                                 if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
                                     Utils.showToast(
-                                        requireContext(),
-                                        response.body()!!.message
+                                        requireContext(), response.body()!!.message
                                     )
                                 }
                             }
@@ -552,8 +617,7 @@ class MyDuesFragment : Fragment() {
                                 if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
 
                                     Utils.showToast(
-                                        requireContext(),
-                                        response.body()!!.message
+                                        requireContext(), response.body()!!.message
                                     )
                                 }
                             }
@@ -561,8 +625,7 @@ class MyDuesFragment : Fragment() {
                             3 -> {
                                 if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
                                     Utils.showToast(
-                                        requireContext(),
-                                        response.body()!!.message
+                                        requireContext(), response.body()!!.message
                                     )
                                 }
                             }
@@ -570,7 +633,7 @@ class MyDuesFragment : Fragment() {
                     }
 
 
-                }else{
+                } else {
                     if (paymentModeOther!!.isShowing) {
                         paymentModeOther!!.dismiss()
                     }
@@ -596,15 +659,14 @@ class MyDuesFragment : Fragment() {
     // create an OnDateSetListener
     val dateSetListener = object : DatePickerDialog.OnDateSetListener {
         override fun onDateSet(
-            view: DatePicker, year: Int, monthOfYear: Int,
-            dayOfMonth: Int
+            view: DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int
         ) {
             cal.set(Calendar.YEAR, year)
             cal.set(Calendar.MONTH, monthOfYear)
             cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
             val myFormat = "dd/MM/YYYY" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.US)
-            paid_on_date_txt!!.text = sdf.format(cal.getTime())
+            paid_on_date_txt!!.text = sdf.format(cal.time)
         }
     }
 

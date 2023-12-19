@@ -75,6 +75,12 @@ class FaciBookingsAdapter(
             }
 
         }
+        if (faciBookings.chargeable.equals("no", true)){
+            holder.payment_status_tv.visibility = View.GONE
+        }else{
+            holder.payment_status_tv.visibility = View.VISIBLE
+
+        }
         if (faciBookings.totalAmount != null) {
             "${context.getString(R.string.rupee)}${faciBookings.totalAmount}/-".also {
                 holder.total_charge_tv.text = it

@@ -63,7 +63,7 @@
             android:textSize="@dimen/_14sp"
             android:textColor="@color/black"
             android:layout_marginLeft="20dp"
-            android:text="Third Party Name">
+            android:text="Safe Home app">
         </RadioButton>
 
         <RadioButton

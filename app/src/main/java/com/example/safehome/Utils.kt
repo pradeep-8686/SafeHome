@@ -157,11 +157,10 @@ class Utils {
             try {
                 // Parse the input date string to a Date object
                 val date = inputFormat.parse(inputDate)
-
                 // Format the parsed date to the desired output format
                 return outputFormat.format(date)
             } catch (e: Exception) {
-                e.printStackTrace()
+             //   e.printStackTrace()
                 return inputDate // Return the input string if parsing fails
             }
         }
@@ -177,7 +176,7 @@ class Utils {
                 // Format the parsed date to the desired output format
                 return outputFormat.format(date)
             } catch (e: Exception) {
-                e.printStackTrace()
+              //  e.printStackTrace()
                 return inputDate // Return the input string if parsing fails
             }
         }
@@ -186,15 +185,13 @@ class Utils {
             // Define the input and output date formats
             val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val outputFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
-
             try {
                 // Parse the input date string to a Date object
                 val date = inputFormat.parse(inputDate)
-
                 // Format the parsed date to the desired output format
                 return outputFormat.format(date)
             } catch (e: Exception) {
-                e.printStackTrace()
+                //e.printStackTrace()
                 return inputDate // Return the input string if parsing fails
             }
         }

@@ -48,8 +48,6 @@ import java.util.Locale
 
 
 class CommunityFragment : Fragment() {
-
-
     private lateinit var binding: FragmentCommunity2Binding
     private var personalComplaintsModelList: ArrayList<CommunityComplaintsModel> = ArrayList()
     private lateinit var communityComplaintsAdapter: CommunityComplaintsAdapter

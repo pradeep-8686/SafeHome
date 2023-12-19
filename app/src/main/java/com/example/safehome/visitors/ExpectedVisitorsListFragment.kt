@@ -19,6 +19,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.safehome.R
 import com.example.safehome.Utils
 import com.example.safehome.custom.CustomProgressDialog
@@ -31,6 +32,7 @@ import com.example.safehome.visitors.guest.GuestActivity
 import com.example.safehome.visitors.others.OthersActivity
 import com.example.safehome.visitors.staff.DeleteVisitorDetailsModel
 import com.example.safehome.visitors.staff.StaffActivity
+import com.example.safehome.visitors.staff.StaffServiceBookedDropDownModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -47,6 +49,12 @@ class ExpectedVisitorsListFragment(private val approvalStatus : ArrayList<Approv
     var User_Id: String? = ""
     var Auth_Token: String? = ""
     var ScreenFrom: String? = ""
+
+    private lateinit var shareOTPCall: Call<ShareOTPModel>
+    private var shareOTPData : ShareOTPModel.Data? = null
+    private lateinit var shareOTPDialog: Dialog
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -250,4 +258,77 @@ class ExpectedVisitorsListFragment(private val approvalStatus : ArrayList<Approv
         intent?.putExtra("VisitorTypeId", visitorListItem.visitorTypeId)
         intent?.let { startActivity(it) }
     }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun shareOtp(visitorListItem: GetAllVisitorDetailsModel.Data.Event) {
+       /* customProgressDialog.progressDialogShow(requireContext(), getString(R.string.loading))
+        shareOTPCall = apiInterface.getStaffdetailsbyStafftypeIdDropdown("bearer "+Auth_Token, 1, "No")
+        shareOTPCall.enqueue(object: Callback<ShareOTPModel> {
+            @SuppressLint("SuspiciousIndentation")
+            override fun onResponse(
+                call: Call<ShareOTPModel>,
+                response: Response<ShareOTPModel>
+            ) {
+                if (response.isSuccessful && response.body()!= null){
+                    if (response.body()!!.statusCode!= null){
+                        customProgressDialog.progressDialogDismiss()
+
+                        when(response.body()!!.statusCode){
+
+                            1 -> {
+                                if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
+                                    shareOTPData = response.body()!!.data as ArrayList<StaffServiceBookedDropDownModel.Data>
+                                    //     Utils.showToast(requireContext(), response.body()!!.message.toString())
+                                    staffServiceBookedDropdown()
+                                }
+
+                            }
+
+                            else -> {
+                                if (response.body()!!.message != null && response.body()!!.message.isNotEmpty()) {
+                                    Utils.showToast(requireContext(), response.body()!!.message.toString())
+                                }
+                            }
+                        }
+                    }else{
+                        customProgressDialog.progressDialogDismiss()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ShareOTPModel>, t: Throwable) {
+                customProgressDialog.progressDialogDismiss()
+                Utils.showToast(requireContext(), t.message.toString())
+            }
+
+        })*/
+    }
+    private fun staffServiceBookedDropdown() {
+        val layoutInflater: LayoutInflater =
+            requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view = layoutInflater.inflate(R.layout.invite_for_visitor_dialog, null)
+        shareOTPDialog = Dialog(requireContext(), R.style.CustomAlertDialog)
+        shareOTPDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        shareOTPDialog!!.setContentView(view)
+        shareOTPDialog!!.setCanceledOnTouchOutside(true)
+        shareOTPDialog!!.setCancelable(true)
+
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(shareOTPDialog!!.window!!.attributes)
+
+//        lp.width = (Utils.screenWidth * 1.0).toInt()
+//        lp.height = LinearLayout.LayoutParams.WRAP_CONTENT
+//        lp.gravity = Gravity.CENTER
+//        staffBookedDropdownDialog!!.window!!.attributes = lp
+
+      /*  val staffServiceBookedRecyclerView = view.findViewById<RecyclerView>(R.id.service_booked_dropdown_recyclerview)
+        if (shareOTPData.isNotEmpty()) {
+
+
+        }*/
+
+        shareOTPDialog!!.show()
+    }
+
+
 }

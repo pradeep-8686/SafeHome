@@ -25,6 +25,8 @@ data class MaintenanceHistoryModel(
         val sgst: Any,
         val sgstPercentage: Double,
         val totalAmount: Any,
-        val transactionId: Int
+        val transactionId: Int,
+        val paymentMode: String,
+        val paidDate: String
     )
 }

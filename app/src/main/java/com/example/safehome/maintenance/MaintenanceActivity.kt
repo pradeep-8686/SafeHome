@@ -20,7 +20,6 @@ class MaintenanceActivity : BaseActivity() {
     var User_Id: String? = ""
     var Auth_Token: String? = ""
     var ScreenFrom: String? = ""
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMaintenanceBinding.inflate(layoutInflater)
@@ -64,6 +63,7 @@ class MaintenanceActivity : BaseActivity() {
         }
     }
 
+    @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
 //        if(supportFragmentManager.backStackEntryCount>0){
 //            supportFragmentManager.popBackStackImmediate()

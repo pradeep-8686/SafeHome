@@ -390,7 +390,6 @@
                     android:layout_weight="1"
                     android:background="@drawable/make_payment_bg"
                     android:gravity="center"
-                    android:padding="9dp"
                     android:text="Make Payment"
                     android:textColor="@color/white"
                     android:textSize="14sp" />

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.safehome.R
 import com.example.safehome.Utils
 import com.example.safehome.Utils.Companion.dateMonthYear
+import com.example.safehome.Utils.Companion.dateToMonthYear
 import com.example.safehome.Utils.Companion.formatDateToMonth
 import com.example.safehome.Utils.Companion.getMonth
 import com.example.safehome.maintenance.MyDuesFragment
@@ -40,66 +41,66 @@ class MyDuesAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val myDues = myDuesMaintenanceDetailsList[position]
         holder.view_invoice_tv.tag = myDues
-        holder.paid_tv.tag = myDues
+        holder.payNowText.tag = myDues
 
-                if (myDues.catageroyName != null && myDues.catageroyName.isNotEmpty()) {
-                    holder.due_type_tv.text = myDues.catageroyName
-                }
+        if (myDues.catageroyName != null && myDues.catageroyName.isNotEmpty()) {
+            holder.due_type_tv.text = myDues.catageroyName
+        }
 
-                if (myDues.invoiceFromDate != null && myDues.invoiceFromDate.isNotEmpty()) {
-                    if (myDues.invoiceToDate != null && myDues.invoiceToDate.isNotEmpty()){
+        if (myDues.invoiceFromDate != null && myDues.invoiceFromDate.isNotEmpty()) {
+            if (myDues.invoiceToDate != null && myDues.invoiceToDate.isNotEmpty()){
 
-                        var invoiceFromdate = "${formatDateToMonth(myDues.invoiceFromDate)} "
-                        var invoiceTodate = "${formatDateToMonth(myDues.invoiceToDate)} "
+                var invoiceFromdate = "${dateToMonthYear(myDues.invoiceFromDate)} "
+                var invoiceTodate = "${dateToMonthYear(myDues.invoiceToDate)} "
 
 //                        var invoiceFromdate = "${formatDateToMonth("08-02-2023T00:00:00")} "
 //                        var invoiceTodate = "${formatDateToMonth("08-02-2023T00:00:00")} "
 
-                        var monthYear: String? = null
-                        val fromMonth = "${getMonth(myDues.invoiceFromDate)} "
-                        val toMonth = "${getMonth(myDues.invoiceToDate)} "
-                        try {
-                           if(fromMonth.equals(toMonth)){
-                               monthYear = invoiceFromdate
-                           }else{
-                               monthYear = invoiceFromdate + "- "+ invoiceTodate
-                           }
-                        } catch (ex: Exception){
-
-                        }
-                        holder.invoice_period_tv.text = monthYear
+                var monthYear: String? = null
+                val fromMonth = "${getMonth(myDues.invoiceFromDate)} "
+                val toMonth = "${getMonth(myDues.invoiceToDate)} "
+                try {
+                    if(fromMonth.equals(toMonth)){
+                        monthYear = invoiceFromdate
+                    }else{
+                        monthYear = invoiceFromdate + "- "+ invoiceTodate
                     }
+                } catch (ex: Exception){
+
                 }
-                if (myDues.invoiceDueDate != null && myDues.invoiceDueDate.isNotEmpty()) {
+                holder.invoice_period_tv.text = monthYear
+            }
+        }
+        if (myDues.invoiceDueDate != null && myDues.invoiceDueDate.isNotEmpty()) {
 //                    val invoiceDueDates = myDues.invoiceDueDate.split("T")
 //                    val invoiceDueDate = Utils.changeDateFormat(invoiceDueDates[0])
-                    val formattedDate = dateMonthYear(myDues.invoiceDueDate)
-                    holder.due_date_tv.text = formattedDate
-                }
-                if(myDues.paymentStatus.isNotEmpty()){
-                    if (myDues.paymentStatus == "UnPaid") {
-                        holder.paid_tv.text = myDues.paymentStatus
-                        holder.payNowText.visibility = View.VISIBLE
-                        holder.cardPaymentButton.visibility = View.GONE
-                    }else{
-                        holder.paid_tv.text = myDues.paymentStatus
-                        holder.payNowText.visibility = View.GONE
-                        holder.cardPaymentButton.visibility = View.VISIBLE
-                    }
-                }
+            val formattedDate = dateToMonthYear(myDues.invoiceDueDate)
+            holder.due_date_tv.text = formattedDate
+        }
+        if(myDues.paymentStatus.isNotEmpty()){
+            if (myDues.paymentStatus == "UnPaid") {
+                //     holder.paid_tv.text = myDues.paymentStatus
+                holder.payNowText.visibility = View.VISIBLE
+                holder.cardPaymentButton.visibility = View.GONE
+            }else{
+                //     holder.paid_tv.text = myDues.paymentStatus
+                holder.payNowText.visibility = View.GONE
+                holder.cardPaymentButton.visibility = View.VISIBLE
+            }
+        }
 
-                if (myDues.invoiceAmount != null) {
-                    "${context.getString(R.string.rupee)}${myDues.invoiceAmount}".also {
-                        holder.total_invoice_amount_tv.text = it
-                    }
-                }
+        if (myDues.invoiceAmount != null) {
+            "${context.getString(R.string.rupee)}${myDues.invoiceAmount}".also {
+                holder.total_invoice_amount_tv.text = it
+            }
+        }
 
-             //   holder.due_type_image_view.setImageResource(myDues.imageResource)
+        //   holder.due_type_image_view.setImageResource(myDues.imageResource)
         holder.view_invoice_tv.setOnClickListener {
             myDuesFragment.selectedInvoice(it.tag as MyDuesMaintenanceDetails)
         }
 
-        holder.paid_tv.setOnClickListener {
+        holder.payNowText.setOnClickListener {
             myDuesFragment.selectedPaid(it.tag as MyDuesMaintenanceDetails)
         }
 

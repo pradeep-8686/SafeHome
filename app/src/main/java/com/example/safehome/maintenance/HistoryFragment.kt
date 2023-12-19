@@ -40,7 +40,6 @@ class HistoryFragment : Fragment() {
     private var yearList: ArrayList<String> = ArrayList()
     private var yearPopupWindow: PopupWindow? = null
     private var categoryPopupWindow: PopupWindow? = null
-
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var apiInterface: APIInterface
     var User_Id: String? = ""
@@ -174,8 +173,8 @@ class HistoryFragment : Fragment() {
         selectedYear = yearList[0]
 
         if (categoryModelList.isNotEmpty()) {
-           // binding.tvCategory.text = categoryModelList[0].categoryName
-           // selectedCategoryId = categoryModelList[0].categoryId.toString()
+            // binding.tvCategory.text = categoryModelList[0].categoryName
+            // selectedCategoryId = categoryModelList[0].categoryId.toString()
             selectedCategoryId = ""
             binding.tvCategory.text = ""
         }
@@ -336,12 +335,11 @@ class HistoryFragment : Fragment() {
                 customProgressDialog.progressDialogDismiss()
                 // here successfully response
                 if (response.isSuccessful && response.body() != null) {
-                        if (maintenanceHistoryList.isNotEmpty()) {
-                            maintenanceHistoryList.clear()
-                        }
-                        maintenanceHistoryList =
-                            response.body()!!.data as ArrayList<MaintenanceHistoryModel.Data>
-
+                    if (maintenanceHistoryList.isNotEmpty()) {
+                        maintenanceHistoryList.clear()
+                    }
+                    maintenanceHistoryList = response.body()!!.data as ArrayList<MaintenanceHistoryModel.Data>
+                    Log.e("historyList", ""+maintenanceHistoryList)
                     populateData()
 //                    historyAdapter.notifyDataSetChanged()
                 } else {

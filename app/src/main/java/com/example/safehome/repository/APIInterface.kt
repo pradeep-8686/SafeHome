@@ -56,6 +56,8 @@ import com.example.safehome.model.UpdateAttendStatusMeetingResponse
 import com.example.safehome.model.UserDetail
 import com.example.safehome.model.VehicleDetails
 import com.example.safehome.model.VehicleModel
+import com.example.safehome.model.VendorDetailsModel
+import com.example.safehome.model.VendorTypeModel
 import com.example.safehome.model.YearModel
 import com.example.safehome.policies.PoliciesModel
 import com.example.safehome.polls.AddPollResponse
@@ -310,7 +312,9 @@ interface APIInterface {
         @Part("PaymentMode") PaymentMode: String,
         @Part("TransactionStatus") TransactionStatus: String,
         @Part("TransactionNumber") TransactionNumber: String,
-        @Part("TransactionPath") TransactionPath: String
+        @Part("TransactionPath") TransactionPath: String,
+        @Part("TransactionComments") TransactionComments: String,
+        @Part("PaidDate") PaidOnDate: String
     ): Call<UpdateMaintenanceModel>
 
     @GET(AppConstants.RetrofitApis.getAllMaintenanceCategorys)
@@ -872,4 +876,17 @@ interface APIInterface {
         @Header("Authorization") authorizationValue: String,
         @Body alertRequest: AlertRequest
     ): Call<AlertDeleteResponse>
+
+
+    @GET(AppConstants.RetrofitApis.getVendorAPI)
+    fun getVendorAPI(
+        @Header("Authorization") authorizationValue: String
+    ): Call<VendorTypeModel>
+
+    @GET(AppConstants.RetrofitApis.getVendorDetailsAPI)
+    fun getVendorDetailsAPI(
+        @Header("Authorization") authorizationValue: String,
+        @Query("vendorTypeId") vendorTypeId : Int
+    ): Call<VendorDetailsModel>
+
 }

@@ -36,7 +36,7 @@
         android:fontFamily="@font/poppins_regular"
         android:gravity="left"
         android:paddingStart="@dimen/_20dp"
-        android:text="Amount Paid"
+        android:text="Amount Paid*"
         android:textColor="@color/black"
         android:textSize="@dimen/_14sp"
         android:textStyle="bold"
@@ -73,7 +73,7 @@
         android:fontFamily="@font/poppins_regular"
         android:gravity="left"
         android:paddingStart="@dimen/_20dp"
-        android:text="Paid On"
+        android:text="Paid On*"
         android:textColor="@color/black"
         android:textSize="@dimen/_14sp"
         android:textStyle="bold"
@@ -119,7 +119,7 @@
         android:fontFamily="@font/poppins_regular"
         android:gravity="left"
         android:paddingStart="@dimen/_20dp"
-        android:text="Payment Mode"
+        android:text="Payment Mode*"
         android:textColor="@color/black"
         android:textSize="@dimen/_14sp"
         android:textStyle="bold"
@@ -169,6 +169,7 @@
         </RadioButton>
 
         <RadioButton
+            android:visibility="gone"
             android:id="@+id/cash"
             android:layout_width="match_parent"
             android:layout_height="35dp"
@@ -189,7 +190,7 @@
         android:fontFamily="@font/poppins_regular"
         android:gravity="left"
         android:paddingStart="@dimen/_20dp"
-        android:text="Transaction Number"
+        android:text="Transaction Number*"
         android:textColor="@color/black"
         android:textSize="@dimen/_14sp"
         android:textStyle="bold"
@@ -226,7 +227,7 @@
         android:fontFamily="@font/poppins_regular"
         android:gravity="left"
         android:paddingStart="@dimen/_20dp"
-        android:text="Transaction Status"
+        android:text="Transaction Status*"
         android:textColor="@color/black"
         android:textSize="@dimen/_14sp"
         android:textStyle="bold"
@@ -346,7 +347,7 @@
             android:layout_toEndOf="@id/download_invoice_img"
             android:fontFamily="@font/poppins_regular"
             android:gravity="left|center|center_horizontal"
-            android:text="@string/document"
+            android:text="Document*"
             android:textColor="@color/black"
             android:textSize="14sp" />
 

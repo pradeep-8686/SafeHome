@@ -92,6 +92,33 @@
         </TextView>
 
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/vendors_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:layout_margin="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/my_vehicles_tab_bg">
+
+        <TextView
+            android:id="@+id/vendors_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:gravity="start"
+            android:paddingStart="15dp"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:text="Vendors"
+            android:drawableRight="@drawable/right_side_arrow"
+            android:textColor="@color/white">
+
+        </TextView>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/admin_contacts_layout"
