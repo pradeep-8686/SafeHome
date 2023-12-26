@@ -525,14 +525,15 @@ class BookingsFragment : Fragment() {
     fun editBookingRequest(faciBookings: FaciBookings.Data.Facilility) {
         try {
             val fIntent = Intent(requireContext(), ListBookNowActivity::class.java)
+
             fIntent.putExtra("faciBookings", faciBookings)
 
             fIntent.putExtra("bookType", faciBookings.name)
             fIntent.putExtra("facilityId", faciBookings.facilityId)
             fIntent.putExtra("bookFacilityId", faciBookings.bookFacilityId)
             fIntent.putExtra("from", "bookings")
-            fIntent.putExtra("bookByHour", faciBookings.residentsChargeByDay)
-            fIntent.putExtra("bookByTime",  faciBookings.residentsChargeByHour)
+            fIntent.putExtra("bookByDay", faciBookings.residentsChargeByDay)
+            fIntent.putExtra("bookByHour",  faciBookings.residentsChargeByHour)
 
             fIntent.putExtra("cgstBookByDay", faciBookings.cgstpercentageForResidentsChargeByDay)
             fIntent.putExtra("cgstBookByHour", faciBookings.cgstpercentageForResidentsChargeByHour)

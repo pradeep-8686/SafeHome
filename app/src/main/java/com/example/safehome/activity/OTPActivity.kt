@@ -66,9 +66,9 @@ class OTPActivity : AppCompatActivity() {
         screenName = intent.getStringExtra("SCREEN")
         setupApiService()
         getUserData()
-        Utils.saveStringPref(this@OTPActivity, "User_Id", "")
+ /*       Utils.saveStringPref(this@OTPActivity, "User_Id", "")
         Utils.saveStringPref(this@OTPActivity, "Token", "")
-        Utils.saveStringPref(this@OTPActivity, "residentId", "")
+        Utils.saveStringPref(this@OTPActivity, "residentId", "")*/
         addTextWatcher(binding.otpEditText1)
         addTextWatcher(binding.otpEditText2)
         addTextWatcher(binding.otpEditText3)
@@ -291,8 +291,10 @@ class OTPActivity : AppCompatActivity() {
                         //  binding.resendBtn.isEnabled = true
                         binding.resendBtn.background = getDrawable(R.drawable.verify_new_red_bg)
                         binding.invalidOtpTxt.visibility = View.GONE
+                        binding.resendTxt.setTextColor(getColor(R.color.app_color))
                     }
                 } else {
+                    binding.resendTxt.setTextColor(getColor(R.color.gray_color))
                     binding.timeTxt.text = "in " + "00:" + millisUntilFinished / 1000
                 }
             }

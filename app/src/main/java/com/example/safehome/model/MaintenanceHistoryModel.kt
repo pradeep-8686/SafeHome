@@ -15,7 +15,7 @@ data class MaintenanceHistoryModel(
         var invoiceDate: String,
         val invoiceDueDate: String,
         var invoiceFromDate: String,
-        val invoiceNumber: Int,
+        val invoiceNumber: String,
         val invoicePath: Any,
         var invoiceToDate: String,
         val maintenanceType: String,

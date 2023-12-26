@@ -322,8 +322,14 @@ class VehiclesFragment : Fragment() {
         var selectedVehicleType: String = ""
         if (vehicle.vehicleType.isNotEmpty()) {
             selectedVehicleType = vehicle.vehicleType
+            var vehicleType = "0"
+            if(selectedVehicleType.split("-")[0].equals("2")){
+                vehicleType = "1"
+            } else {
+                vehicleType = "2"
+            }
             // here vehicle model api call
-            getAllVehicleModelServiceCall(selectedVehicleType.split("-")[0])
+            getAllVehicleModelServiceCall(vehicleType)
         }
 
         selectedVehicleModel = vehicle.vehicleModel

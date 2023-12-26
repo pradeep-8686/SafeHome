@@ -38,7 +38,7 @@ class HistoryAdapter(
             holder.payment_mode_text_tv.text = myDues.paymentMode
         }
         if (myDues.paidAmount != null) {
-            "${context.getString(R.string.rupee)}${myDues.paidAmount}/-".also {
+            "${context.getString(R.string.rupee)} ${myDues.paidAmount.toInt()}".also {
                 holder.total_invoice_amount_tv.text = it
             }
         }

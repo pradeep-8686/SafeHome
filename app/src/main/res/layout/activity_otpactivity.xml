@@ -260,7 +260,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:text="@string/resend_code_in"
-                android:textColor="@color/app_color"
+                android:textColor="@color/gray_color"
                 android:textSize="@dimen/_14sp"
                 android:visibility="visible" />
 

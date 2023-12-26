@@ -84,6 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="43dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="20dp"
             android:orientation="horizontal">
 
@@ -210,7 +211,7 @@
                 android:gravity="start"
                 android:paddingTop="1dp"
                 android:paddingBottom="5dp"
-                android:paddingRight="5dp"
+                android:paddingRight="2dp"
                 android:text="@string/total_invoice_amount_title"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
@@ -220,7 +221,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_toEndOf="@id/total_invoice_amount_title"
                 android:gravity="start"

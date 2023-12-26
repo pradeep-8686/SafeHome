@@ -67,6 +67,7 @@ class MyFamilyActivity : AppCompatActivity() {
     private var isPermissionGranted: Boolean = false
     private var imageMultipartBody: MultipartBody.Part? = null
     val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\$"
+    private var Relationship_id:Int = 0
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -378,6 +379,7 @@ class MyFamilyActivity : AppCompatActivity() {
             addFamilyDetailsCall = apiInterface.addMyFamily(
                 "bearer " + Auth_Token,
                 User_Id!!.toInt(),
+                Relationship_id,
                 firstName!!.replace("\"", ""),
                 lastName!!.replace("\"", ""),
                 mobileNumber!!,
@@ -389,6 +391,7 @@ class MyFamilyActivity : AppCompatActivity() {
             addFamilyDetailsCall = apiInterface.addMyFamilyNoImae(
                 "bearer " + Auth_Token,
                 User_Id!!.toInt(),
+                Relationship_id,
                 firstName!!.replace("\"", ""),
                 lastName!!.replace("\"", ""),
                 mobileNumber!!,
@@ -668,6 +671,7 @@ class MyFamilyActivity : AppCompatActivity() {
 
         if (!relationTypeName.relationShipName.isNullOrEmpty()){
             binding.selectRelationTxt.text = relationTypeName.relationShipName
+            Relationship_id = relationTypeName.relationShipId
         }
     }
 

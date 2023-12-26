@@ -21,7 +21,7 @@ data class MyDuesMaintenanceDetails(
     var totalAmount: String = "",
     var paidAmount: String = "",
     var dueAmount: String = "",
-    var invoiceAmount: String = "",
+    var invoiceAmount: Double ?= 0.00,
     var cgstPercentage: String = "",
     var sgstPercentage: String = "",
     var cgst: String = "",

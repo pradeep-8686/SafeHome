@@ -164,6 +164,7 @@ interface APIInterface {
     fun addMyFamily(
         @Header("Authorization") authorizationValue: String,
         @Part("ResidentId") UserId: Int,
+        @Part("RelationshipId") RelationshipId: Int,
         @Part("FirstName") FirstName: String,
         @Part("LastName") LastName: String,
         @Part("MobileNo") MobileNo: String,
@@ -177,6 +178,7 @@ interface APIInterface {
     fun addMyFamilyNoImae(
         @Header("Authorization") authorizationValue: String,
         @Part("ResidentId") UserId: Int,
+        @Part("RelationshipId") RelationshipId: Int,
         @Part("FirstName") FirstName: String,
         @Part("LastName") LastName: String,
         @Part("MobileNo") MobileNo: String,

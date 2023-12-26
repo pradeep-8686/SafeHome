@@ -146,8 +146,7 @@ class FacilitiesHistoryFragment : Fragment() {
 
         // here sign up service call
         facilitiesModel = apiInterface.getAllBookedFacilities(
-            "Bearer " + Auth_Token, year.toString()
-        )
+            "Bearer " + Auth_Token, year.toString())
         facilitiesModel.enqueue(object : Callback<FaciBookings> {
             override fun onResponse(
                 call: Call<FaciBookings>,

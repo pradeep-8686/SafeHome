@@ -53,7 +53,7 @@ class FaciHistoryAdapter (
         if (faciBookings.dateOfBooking != null && faciBookings.dateOfBooking.isNotEmpty()) {
 
             if (faciBookings.dateOfBooking!!.contains("T")) {
-                dateOfBooking = "${Utils.dateToMonthYear(faciBookings.dateOfBooking)} "
+                dateOfBooking = "${Utils.dateMonthYear(faciBookings.dateOfBooking)} "
 
             }else{
                 dateOfBooking =faciBookings.dateOfBooking

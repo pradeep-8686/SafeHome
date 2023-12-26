@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.safehome.R
 import com.example.safehome.Utils
+import com.example.safehome.Utils.Companion.dateMonthYear
 import com.example.safehome.Utils.Companion.formatDateMonthYear
 import com.example.safehome.facilitiesview.BookingsFragment
 import com.example.safehome.model.FaciBookings
@@ -87,7 +88,7 @@ class FaciBookingsAdapter(
             }
         }
         if (faciBookings.dateOfBooking != null && faciBookings.dateOfBooking.isNotEmpty()) {
-            var dateOfBookings = "${formatDateMonthYear(faciBookings.dateOfBooking)} "
+            var dateOfBookings = "${dateMonthYear(faciBookings.dateOfBooking)} "
             holder.booking_date_tv.text = dateOfBookings
            }
 

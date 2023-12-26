@@ -350,6 +350,7 @@ class HistoryFragment : Fragment() {
             override fun onFailure(call: Call<MaintenanceHistoryModel>, t: Throwable) {
                 customProgressDialog.progressDialogDismiss()
                 Utils.showToast(requireContext(), t.message.toString())
+                Log.d("Error Response", t.message.toString())
             }
         })
     }

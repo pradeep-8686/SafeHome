@@ -86,8 +86,8 @@ class MyVehicleActivity : AppCompatActivity() {
     }
 
     private fun addvehicleTypeList() {
-        vehicleTypeList.add("2-Wheeler")
-        vehicleTypeList.add("4-Wheeler")
+        vehicleTypeList.add("2 Wheeler")
+        vehicleTypeList.add("4 Wheeler")
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -103,6 +103,12 @@ class MyVehicleActivity : AppCompatActivity() {
         }
 
         binding.selectVehicleTypeCl.setOnClickListener {
+            if (vehicleModelPopupWindow != null) {
+                if (vehicleModelPopupWindow!!.isShowing) {
+                    vehicleModelPopupWindow!!.dismiss()
+                }
+            }
+
             if (vehilceTypePopupWindow != null) {
                 if (vehilceTypePopupWindow!!.isShowing) {
                     vehilceTypePopupWindow!!.dismiss()
@@ -115,6 +121,11 @@ class MyVehicleActivity : AppCompatActivity() {
         }
 
         binding.selectVehicleModelCl.setOnClickListener {
+            if (vehilceTypePopupWindow != null) {
+                if (vehilceTypePopupWindow!!.isShowing) {
+                    vehilceTypePopupWindow!!.dismiss()
+                }
+            }
             if (vehicleModelPopupWindow != null) {
                 if (vehicleModelPopupWindow!!.isShowing) {
                     vehicleModelPopupWindow!!.dismiss()
@@ -283,7 +294,17 @@ class MyVehicleActivity : AppCompatActivity() {
         if (s.isNotEmpty()) {
             selectedVehicleType = s
             binding.selectVehilceTxt.text = s
-            getAllVehicleModelServieCall(selectedVehicleType!!.split("-")[0])
+            var vehicleType: String="0"
+                try {
+                    if (selectedVehicleType!!.split(" ")[0] == "2") {
+                        vehicleType = "1"
+                    } else if (selectedVehicleType!!.split(" ")[0] == "4") {
+                        vehicleType = "2"
+                    }
+                }catch (ex: Exception){
+                    vehicleType = "2"
+                }
+            getAllVehicleModelServieCall(vehicleType)
         }
     }
 

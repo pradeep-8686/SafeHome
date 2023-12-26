@@ -74,7 +74,7 @@ class MyDuesAdapter(
         if (myDues.invoiceDueDate != null && myDues.invoiceDueDate.isNotEmpty()) {
 //                    val invoiceDueDates = myDues.invoiceDueDate.split("T")
 //                    val invoiceDueDate = Utils.changeDateFormat(invoiceDueDates[0])
-            val formattedDate = dateToMonthYear(myDues.invoiceDueDate)
+            val formattedDate = dateMonthYear(myDues.invoiceDueDate)
             holder.due_date_tv.text = formattedDate
         }
         if(myDues.paymentStatus.isNotEmpty()){
@@ -90,7 +90,7 @@ class MyDuesAdapter(
         }
 
         if (myDues.invoiceAmount != null) {
-            "${context.getString(R.string.rupee)}${myDues.invoiceAmount}".also {
+            "${context.getString(R.string.rupee)} ${myDues.invoiceAmount!!.toInt()}/-".also {
                 holder.total_invoice_amount_tv.text = it
             }
         }

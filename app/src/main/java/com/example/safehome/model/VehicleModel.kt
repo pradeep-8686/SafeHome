@@ -10,5 +10,5 @@ data class VehicleModelResp(
     val vehicleModelId : Int = 0,
     val vehicleModel : String = "",
     val isActive : String = "",
-    val vehicleType : Int = 4
+    val vehicleType : String = "4"
 )

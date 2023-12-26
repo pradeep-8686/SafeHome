@@ -34,6 +34,7 @@ import com.example.safehome.repository.APIInterface
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -66,6 +67,8 @@ class ListBookNowActivity : BaseActivity() {
     private var bookFacilityId: String? = null
     private var from: String? = null
     private var chargeable: String? = "Yes"
+
+    private val decimalFormat = DecimalFormat("#.00")
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -120,10 +123,21 @@ class ListBookNowActivity : BaseActivity() {
             }
             if (faciBookings.noOfDays != null) {
                 bookNowDialogBinding.numberOfDaysTxt.text = faciBookings.noOfDays.toString()
+                dateCount = faciBookings.noOfDays
+                if(dateCount > 1){
+                    bookNowDialogBinding.timeLayout.visibility = View.GONE
+                    bookNowDialogBinding.noOfHoursLayout.visibility = View.GONE
+                }else{
+                    bookNowDialogBinding.timeLayout.visibility = View.VISIBLE
+                    bookNowDialogBinding.noOfHoursLayout.visibility = View.VISIBLE
+                }
+
 
             }
             if (faciBookings.noOfHours != null) {
                 bookNowDialogBinding.numberOfHoursTxt.text = faciBookings.noOfHours.toString()
+                timeCount = faciBookings.noOfHours
+
             }
             if (faciBookings.startDate != null) {
                 bookNowDialogBinding.startDateTxt.text =
@@ -140,10 +154,11 @@ class ListBookNowActivity : BaseActivity() {
                 bookNowDialogBinding.endTime.text = faciBookings.endTime
             }
             if (faciBookings.totalAmount != null) {
-                bookNowDialogBinding.totalChargeEt.text =
-                    faciBookings.totalAmount.toString()
+                bookNowDialogBinding.totalChargeEt.text = decimalFormat.format(faciBookings.totalAmount).toString()
 
             }
+
+
         }
     }
 
@@ -169,15 +184,18 @@ class ListBookNowActivity : BaseActivity() {
         val sgst = (sgstBookByHour * hour) / 100.0
 
         Log.d("Calculations", "Total : $hour \ncgst : $cgst \nsgst : $sgst")
+        val formattedValue = decimalFormat.format(hour + cgst + sgst)
 
-        return (hour + cgst + sgst).toString()
+        return formattedValue.toString()
     }
 
     private fun calculateByDay(day: Double): String {
         val cgst = (cgstBookByDay * day) / 100.0
         val sgst = (cgstBookByHour * day) / 100.0
+        val formattedValue = decimalFormat.format(day + cgst + sgst)
 
-        return (day + cgst + sgst).toString()
+
+        return formattedValue.toString()
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -313,7 +331,7 @@ class ListBookNowActivity : BaseActivity() {
         }
 
         bookNowDialogBinding.plusTimeImg.setOnClickListener {
-            if (timeCount in 1..23) {
+            if (timeCount in 0..23) {
                 timeCount++
                 val totalCharge = bookByHour * timeCount
                 bookNowDialogBinding.totalChargeEt.text = calculateByHour(totalCharge)

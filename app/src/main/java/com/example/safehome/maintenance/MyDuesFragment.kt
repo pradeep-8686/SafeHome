@@ -155,7 +155,7 @@ class MyDuesFragment : Fragment() {
                                     if (myDyesList.isNotEmpty()) {
                                         for (i in 0 until myDyesList.size) {
                                             totalDues =
-                                                totalDues!!.plus(myDyesList[i].invoiceAmount.toDouble())
+                                                totalDues!!.plus(myDyesList[i].invoiceAmount!!.toInt())
                                         }
                                         binding.totalDueText.text =
                                             "Dues:" + "${context!!.getString(R.string.rupee)}${totalDues}/-"
@@ -281,7 +281,7 @@ class MyDuesFragment : Fragment() {
         total_invoice_amount_et.setBackgroundResource(android.R.color.transparent)
 
         if (myDuesMaintenanceDetails.maintenanceType.isNotEmpty()) {
-            due_type_tv.text = myDuesMaintenanceDetails.maintenanceType
+            due_type_tv.text = myDuesMaintenanceDetails.catageroyName
         }
         if (myDuesMaintenanceDetails.invoiceNumber.isNotEmpty()) {
             invoice_number_et.setText(myDuesMaintenanceDetails.invoiceNumber)
@@ -304,7 +304,7 @@ class MyDuesFragment : Fragment() {
 
         }
         if (myDuesMaintenanceDetails.invoiceAmount != null) {
-            total_invoice_amount_et.setText(myDuesMaintenanceDetails.invoiceAmount.toString())
+            total_invoice_amount_et.setText(myDuesMaintenanceDetails.invoiceAmount!!.toInt().toString())
         }
 
         close.setOnClickListener {
@@ -437,7 +437,7 @@ class MyDuesFragment : Fragment() {
         paid_on_date_txt = view.findViewById<TextView>(R.id.paid_on_date_txt)
         transactionAmountEditTxt = view.findViewById<EditText>(R.id.et_amount)
         if (myDuesMaintenanceDetails.invoiceAmount != null) {
-            "${myDuesMaintenanceDetails.invoiceAmount}".also {
+            "${myDuesMaintenanceDetails.invoiceAmount!!.toInt()}".also {
                 transactionAmountEditTxt.text = Editable.Factory.getInstance().newEditable(it)
             }
         }
@@ -572,7 +572,7 @@ class MyDuesFragment : Fragment() {
 //        val imageFile = File(selectedImagePath)
 //        val requestFile = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
 //        val imagePart = MultipartBody.Part.createFormData("image", imageFile.name, requestFile)
-        val parsedValue: Double = myDuesMaintenanceDetails.invoiceAmount.toDouble()
+        val parsedValue: Double = myDuesMaintenanceDetails.invoiceAmount!!
 
         customProgressDialog.progressDialogShow(requireContext(), this.getString(R.string.loading))
         updateMaintenanceDetails = apiInterface.UpdateMaintenancePayment(
